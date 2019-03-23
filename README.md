@@ -27,6 +27,6 @@ Let's say I have 3 games: Game 1, Game 2, and Game 3. To start, they have the fo
 * Game 3 has genres: Action; Adventure;
 
 After using this Bulk Genre Editor to add the genre "Beat 'em up", the result is this:
-* Game 1  genres: Action; Beat 'em up;
-* Game 2 genres: Role-Playing; Action; Beat 'em up;
+* Game 1 genres: Action; Beat 'em up;
+* Game 2 genres: Action; Beat 'em up; Role-Playing;
 * Game 3 genres: Action; Adventure; Beat 'em up;
