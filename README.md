@@ -1,7 +1,7 @@
 # Launchbox Plugins
 Various plugins for the LaunchBox frontend for PC games and emulated console platforms.
 
-## Bulk Add/Remove Genres
+## Bulk Genre Editor
 
 Currently, LaunchBox allows you to edit genres for games, however if use the default Bulk Edit Wizard to edit genres for multiple selected games then they will all be overwritten with the same exact set of genres. for 
 
