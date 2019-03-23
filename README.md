@@ -18,3 +18,15 @@ The new **menu item** is available for one or multiple selected games:
 The menu item opens the following dialog form, where you can select the genre(s) that you want to either add or remove from each game:
 
 ![Bulk Add/Edit Genres dialog form](https://i.imgur.com/LC1zj0G.png)
+
+#### Example:
+
+Let's say I have 3 games: Game 1, Game 2, and Game 3. To start, they have the following genres:
+* Game 1 has genres: Action;
+* Game 2 has genres: Role-Playing;
+* Game 3 has genres: Action; Adventure;
+
+After using this Bulk Genre Editor to add the genre "Beat 'em up", the result is this:
+* Game 1  genres: Action; Beat 'em up;
+* Game 2 genres: Role-Playing; Action; Beat 'em up;
+* Game 3 genres: Action; Adventure; Beat 'em up;
