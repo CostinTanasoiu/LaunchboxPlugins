@@ -1,4 +1,4 @@
-# Launchbox Plugins
+# LaunchBox Plugins
 Various plugins for the LaunchBox frontend for PC games and emulated console platforms.
 
 ## Bulk Genre Editor
