@@ -1,0 +1,376 @@
+﻿namespace ExtraGameVideos
+{
+    partial class VideoManagerForm
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.linkMoreInfo = new System.Windows.Forms.LinkLabel();
+            this.label7 = new System.Windows.Forms.Label();
+            this.btnTestNewVideo = new System.Windows.Forms.Button();
+            this.numericStopTime = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
+            this.numericStartTime = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.btnAddVideo = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtVideoPath = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtVideoTitle = new System.Windows.Forms.TextBox();
+            this.gridVideos = new System.Windows.Forms.DataGridView();
+            this.Title = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.VideoPath = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StartTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StopTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Delete = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.Play = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lblGridError = new System.Windows.Forms.Label();
+            this.btnSaveAll = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericStopTime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericStartTime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridVideos)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.linkMoreInfo);
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.btnTestNewVideo);
+            this.groupBox1.Controls.Add(this.numericStopTime);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.numericStartTime);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.btnAddVideo);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.txtVideoPath);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.txtVideoTitle);
+            this.groupBox1.Location = new System.Drawing.Point(13, 13);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(772, 154);
+            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Add new video";
+            // 
+            // linkMoreInfo
+            // 
+            this.linkMoreInfo.AutoSize = true;
+            this.linkMoreInfo.Location = new System.Drawing.Point(350, 124);
+            this.linkMoreInfo.Name = "linkMoreInfo";
+            this.linkMoreInfo.Size = new System.Drawing.Size(67, 17);
+            this.linkMoreInfo.TabIndex = 12;
+            this.linkMoreInfo.TabStop = true;
+            this.linkMoreInfo.Text = "More info";
+            this.linkMoreInfo.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkMoreInfo_LinkClicked);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 124);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(347, 17);
+            this.label7.TabIndex = 11;
+            this.label7.Text = "Supports YouTube, Steam videos, network paths, etc.";
+            // 
+            // btnTestNewVideo
+            // 
+            this.btnTestNewVideo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnTestNewVideo.Location = new System.Drawing.Point(536, 112);
+            this.btnTestNewVideo.Name = "btnTestNewVideo";
+            this.btnTestNewVideo.Size = new System.Drawing.Size(112, 29);
+            this.btnTestNewVideo.TabIndex = 10;
+            this.btnTestNewVideo.Text = "Test";
+            this.btnTestNewVideo.UseVisualStyleBackColor = true;
+            this.btnTestNewVideo.Click += new System.EventHandler(this.btnTestNewVideo_Click);
+            // 
+            // numericStopTime
+            // 
+            this.numericStopTime.ForeColor = System.Drawing.Color.Gray;
+            this.numericStopTime.Location = new System.Drawing.Point(646, 70);
+            this.numericStopTime.Name = "numericStopTime";
+            this.numericStopTime.Size = new System.Drawing.Size(120, 22);
+            this.numericStopTime.TabIndex = 9;
+            this.numericStopTime.ValueChanged += new System.EventHandler(this.numericStartEndTime_ValueChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(463, 70);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(176, 17);
+            this.label6.TabIndex = 8;
+            this.label6.Text = "Video stop time (seconds):";
+            // 
+            // numericStartTime
+            // 
+            this.numericStartTime.ForeColor = System.Drawing.Color.Gray;
+            this.numericStartTime.Location = new System.Drawing.Point(646, 42);
+            this.numericStartTime.Maximum = new decimal(new int[] {
+            7200,
+            0,
+            0,
+            0});
+            this.numericStartTime.Name = "numericStartTime";
+            this.numericStartTime.Size = new System.Drawing.Size(120, 22);
+            this.numericStartTime.TabIndex = 7;
+            this.numericStartTime.ValueChanged += new System.EventHandler(this.numericStartEndTime_ValueChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(463, 18);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(136, 17);
+            this.label5.TabIndex = 6;
+            this.label5.Text = "Optional settings:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(463, 42);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(177, 17);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "Video start time (seconds):";
+            // 
+            // btnAddVideo
+            // 
+            this.btnAddVideo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAddVideo.Location = new System.Drawing.Point(654, 112);
+            this.btnAddVideo.Name = "btnAddVideo";
+            this.btnAddVideo.Size = new System.Drawing.Size(112, 29);
+            this.btnAddVideo.TabIndex = 4;
+            this.btnAddVideo.Text = "Add video";
+            this.btnAddVideo.UseVisualStyleBackColor = true;
+            this.btnAddVideo.Click += new System.EventHandler(this.btnAddVideo_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 73);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(98, 17);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "File path/URL:";
+            // 
+            // txtVideoPath
+            // 
+            this.txtVideoPath.Location = new System.Drawing.Point(110, 70);
+            this.txtVideoPath.Name = "txtVideoPath";
+            this.txtVideoPath.Size = new System.Drawing.Size(284, 22);
+            this.txtVideoPath.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 45);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(39, 17);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Title:";
+            // 
+            // txtVideoTitle
+            // 
+            this.txtVideoTitle.Location = new System.Drawing.Point(110, 42);
+            this.txtVideoTitle.Name = "txtVideoTitle";
+            this.txtVideoTitle.Size = new System.Drawing.Size(284, 22);
+            this.txtVideoTitle.TabIndex = 0;
+            // 
+            // gridVideos
+            // 
+            this.gridVideos.AllowUserToAddRows = false;
+            this.gridVideos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gridVideos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gridVideos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Title,
+            this.VideoPath,
+            this.StartTime,
+            this.StopTime,
+            this.Delete,
+            this.Play});
+            this.gridVideos.Location = new System.Drawing.Point(13, 203);
+            this.gridVideos.Name = "gridVideos";
+            this.gridVideos.RowTemplate.Height = 24;
+            this.gridVideos.Size = new System.Drawing.Size(772, 182);
+            this.gridVideos.TabIndex = 1;
+            this.gridVideos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridVideos_CellContentClick);
+            this.gridVideos.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.gridVideos_CellValidating);
+            this.gridVideos.RowValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridVideos_RowValidated);
+            // 
+            // Title
+            // 
+            this.Title.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Title.DataPropertyName = "Title";
+            this.Title.HeaderText = "Title";
+            this.Title.Name = "Title";
+            // 
+            // VideoPath
+            // 
+            this.VideoPath.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.VideoPath.DataPropertyName = "VideoPath";
+            this.VideoPath.HeaderText = "Video file path / URL";
+            this.VideoPath.Name = "VideoPath";
+            // 
+            // StartTime
+            // 
+            this.StartTime.DataPropertyName = "StartTime";
+            this.StartTime.HeaderText = "Start (s)";
+            this.StartTime.Name = "StartTime";
+            this.StartTime.Width = 70;
+            // 
+            // StopTime
+            // 
+            this.StopTime.DataPropertyName = "StopTime";
+            this.StopTime.HeaderText = "Stop (s)";
+            this.StopTime.Name = "StopTime";
+            this.StopTime.Width = 70;
+            // 
+            // Delete
+            // 
+            this.Delete.HeaderText = "";
+            this.Delete.Name = "Delete";
+            this.Delete.Text = "Delete";
+            this.Delete.UseColumnTextForButtonValue = true;
+            this.Delete.Width = 50;
+            // 
+            // Play
+            // 
+            this.Play.HeaderText = "";
+            this.Play.Name = "Play";
+            this.Play.Text = "Play";
+            this.Play.UseColumnTextForButtonValue = true;
+            this.Play.Width = 50;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(10, 183);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(141, 17);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Videos for this game:";
+            // 
+            // lblGridError
+            // 
+            this.lblGridError.AutoSize = true;
+            this.lblGridError.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblGridError.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lblGridError.Location = new System.Drawing.Point(13, 399);
+            this.lblGridError.Name = "lblGridError";
+            this.lblGridError.Size = new System.Drawing.Size(40, 17);
+            this.lblGridError.TabIndex = 3;
+            this.lblGridError.Text = "Error";
+            this.lblGridError.Visible = false;
+            // 
+            // btnSaveAll
+            // 
+            this.btnSaveAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaveAll.Location = new System.Drawing.Point(12, 425);
+            this.btnSaveAll.Name = "btnSaveAll";
+            this.btnSaveAll.Size = new System.Drawing.Size(112, 29);
+            this.btnSaveAll.TabIndex = 11;
+            this.btnSaveAll.Text = "OK";
+            this.btnSaveAll.UseVisualStyleBackColor = true;
+            this.btnSaveAll.Click += new System.EventHandler(this.btnSaveAll_Click);
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Location = new System.Drawing.Point(130, 425);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(112, 29);
+            this.btnCancel.TabIndex = 12;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // VideoManagerForm
+            // 
+            this.AcceptButton = this.btnSaveAll;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnCancel;
+            this.ClientSize = new System.Drawing.Size(797, 466);
+            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnSaveAll);
+            this.Controls.Add(this.lblGridError);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.gridVideos);
+            this.Controls.Add(this.groupBox1);
+            this.Name = "VideoManagerForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "GameVideoManagerForm";
+            this.Load += new System.EventHandler(this.GameVideoManagerForm_Load);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericStopTime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericStartTime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridVideos)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtVideoTitle;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtVideoPath;
+        private System.Windows.Forms.Button btnAddVideo;
+        private System.Windows.Forms.DataGridView gridVideos;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown numericStopTime;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown numericStartTime;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lblGridError;
+        private System.Windows.Forms.Button btnTestNewVideo;
+        private System.Windows.Forms.Button btnSaveAll;
+        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Title;
+        private System.Windows.Forms.DataGridViewTextBoxColumn VideoPath;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StartTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StopTime;
+        private System.Windows.Forms.DataGridViewButtonColumn Delete;
+        private System.Windows.Forms.DataGridViewButtonColumn Play;
+        private System.Windows.Forms.LinkLabel linkMoreInfo;
+        private System.Windows.Forms.Label label7;
+    }
+}
