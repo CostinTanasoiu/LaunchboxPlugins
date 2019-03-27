@@ -71,9 +71,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ExtraGameVideos\ExtraGameVideos.csproj">
+    <ProjectReference Include="..\OnlineVideoLinks\OnlineVideoLinks.csproj">
       <Project>{18eb8079-c8d5-4063-a935-588bd80cb338}</Project>
-      <Name>ExtraGameVideos</Name>
+      <Name>OnlineVideoLinks</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

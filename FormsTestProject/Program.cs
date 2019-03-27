@@ -17,7 +17,7 @@ namespace FormsTestProject
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var form = new ExtraGameVideos.VideoManagerForm();
+            var form = new OnlineVideoLinks.VideoManagerForm();
             Application.Run(form);
         }
     }

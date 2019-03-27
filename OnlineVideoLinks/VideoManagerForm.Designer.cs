@@ -1,4 +1,4 @@
-﻿namespace ExtraGameVideos
+﻿namespace OnlineVideoLinks
 {
     partial class VideoManagerForm
     {
@@ -331,9 +331,13 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.gridVideos);
             this.Controls.Add(this.groupBox1);
+            this.HelpButton = true;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "VideoManagerForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "GameVideoManagerForm";
+            this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.VideoManagerForm_HelpButtonClicked);
             this.Load += new System.EventHandler(this.GameVideoManagerForm_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

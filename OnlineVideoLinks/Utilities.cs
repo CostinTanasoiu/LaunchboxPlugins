@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExtraGameVideos
+namespace OnlineVideoLinks
 {
     public class Utilities
     {

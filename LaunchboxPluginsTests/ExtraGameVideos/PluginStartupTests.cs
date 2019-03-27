@@ -8,7 +8,7 @@ using Unbroken.LaunchBox.Plugins.Data;
 using Xunit;
 using YoutubeGameVideos;
 
-namespace LaunchboxPluginsTests.ExtraGameVideos
+namespace LaunchboxPluginsTests.OnlineVideoLinks
 {
     public class PluginStartupTests
     {

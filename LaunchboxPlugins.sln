@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormsTestProject", "FormsTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaunchboxPluginsTests", "LaunchboxPluginsTests\LaunchboxPluginsTests.csproj", "{EB8E8202-EC42-472F-AD7B-D180C81DEEB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtraGameVideos", "ExtraGameVideos\ExtraGameVideos.csproj", "{18EB8079-C8D5-4063-A935-588BD80CB338}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineVideoLinks", "OnlineVideoLinks\OnlineVideoLinks.csproj", "{18EB8079-C8D5-4063-A935-588BD80CB338}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unbroken.LaunchBox.Plugins.Data;
 
-namespace ExtraGameVideos.Models
+namespace OnlineVideoLinks.Models
 {
     public class GameVideo
     {

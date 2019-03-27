@@ -8,10 +8,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Unbroken.LaunchBox.Plugins.Data;
 using Xunit;
-using ExtraGameVideos;
-using ExtraGameVideos.Models;
+using OnlineVideoLinks;
+using OnlineVideoLinks.Models;
 
-namespace LaunchboxPluginsTests.ExtraGameVideos
+namespace LaunchboxPluginsTests.OnlineVideoLinks
 {
     public class VideoManagerFormTests
     {

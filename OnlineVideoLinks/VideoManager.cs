@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
 
-namespace ExtraGameVideos
+namespace OnlineVideoLinks
 {
     public class VideoManager : IGameMenuItemPlugin
     {

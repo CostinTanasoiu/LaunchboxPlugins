@@ -90,9 +90,9 @@
     <Analyzer Include="..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ExtraGameVideos\ExtraGameVideos.csproj">
+    <ProjectReference Include="..\OnlineVideoLinks\OnlineVideoLinks.csproj">
       <Project>{18eb8079-c8d5-4063-a935-588bd80cb338}</Project>
-      <Name>ExtraGameVideos</Name>
+      <Name>OnlineVideoLinks</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

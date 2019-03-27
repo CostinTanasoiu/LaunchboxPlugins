@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
-using ExtraGameVideos.Models;
+using OnlineVideoLinks.Models;
 
-namespace ExtraGameVideos
+namespace OnlineVideoLinks
 {
     public partial class VideoManagerForm : Form
     {
@@ -196,6 +196,12 @@ namespace ExtraGameVideos
 
         private void linkMoreInfo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            _helpForm.ShowDialog();
+        }
+
+        private void VideoManagerForm_HelpButtonClicked(object sender, CancelEventArgs e)
+        {
+            e.Cancel = true;
             _helpForm.ShowDialog();
         }
     }
