@@ -1,4 +1,24 @@
-﻿using OnlineVideoLinks.Models;
+﻿/*
+    Costin's LaunchBox Plugins
+    https://github.com/SsjCosty/LaunchboxPlugins
+    Copyright (C) 2019  Costin Tănăsoiu
+    GNU General Public License v3.0
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+using OnlineVideoLinks.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -60,7 +80,8 @@ namespace YoutubeGameVideos
             {
                 // When a game is selected, I want to check that the additional apps 
                 // for launching our videos are set up correctly.
-                // This ensures that video links are always up to date.
+                // This ensures that video link apps are always up to date with 
+                // the latest VLC path and command-line arguments.
                 var selectedGames = PluginHelper.StateManager.GetAllSelectedGames();
                 if(selectedGames.Length == 1)
                 {
