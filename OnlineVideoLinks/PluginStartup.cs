@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OnlineVideoLinks.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -54,6 +55,32 @@ namespace YoutubeGameVideos
                 }
 
                 // All done. Now VLC should be able to play YouTube videos!
+            }
+            else if(eventType == SystemEventTypes.SelectionChanged)
+            {
+                // When a game is selected, I want to check that the additional apps 
+                // for launching our videos are set up correctly.
+                // This ensures that video links are always up to date.
+                var selectedGames = PluginHelper.StateManager.GetAllSelectedGames();
+                if(selectedGames.Length == 1)
+                {
+                    var game = selectedGames[0];
+                    var videoLinkApps = game.GetAllAdditionalApplications()
+                                        .Where(x => x.Name.StartsWith(GameVideo.TitlePrefix))
+                                        .ToList();
+
+                    if (videoLinkApps.Count != 0)
+                    {
+                        foreach(var app in videoLinkApps)
+                        {
+                            if (!GameVideo.IsAppCorrectlySetup(app))
+                            {
+                                var gameVideo = new GameVideo(app);
+                                gameVideo.UpdateExistingApp(app);
+                            }
+                        }
+                    }
+                }
             }
         }
     }

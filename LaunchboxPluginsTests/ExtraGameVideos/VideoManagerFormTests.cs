@@ -58,28 +58,5 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
             Assert.Equal(122, form.GameVideos[2].StartTime);
             Assert.Equal(387, form.GameVideos[3].StopTime);
         }
-
-        [Fact]
-        public void CanImportAndExportAppDetails()
-        {
-            var additionalAppDummy = new AdditionalApplicationMock
-            {
-                ApplicationPath = Utilities.GetVlcExecutablePath(),
-                Name = "Video: Presentation",
-                CommandLine = "-f --start-time=337 --stop-time=387 https://youtu.be/q_7KUC6CY6Q"
-            };
-
-            var gameMock = Substitute.For<IGame>();
-            gameMock.AddNewAdditionalApplication().Returns(new AdditionalApplicationMock());
-
-            var video = new GameVideo(additionalAppDummy);
-
-            var exportedApp = video.AddVideoToGame(gameMock);
-
-            Assert.Equal(additionalAppDummy.ApplicationPath, exportedApp.ApplicationPath);
-            Assert.Equal(additionalAppDummy.Name, exportedApp.Name);
-            Assert.Equal("-f --play-and-exit --start-time=337 --stop-time=387 https://youtu.be/q_7KUC6CY6Q", 
-                exportedApp.CommandLine);
-        }
     }
 }

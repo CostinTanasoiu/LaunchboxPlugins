@@ -8,11 +8,14 @@ using Unbroken.LaunchBox.Plugins.Data;
 
 namespace OnlineVideoLinks
 {
-    public class VideoManager : IGameMenuItemPlugin
+    /// <summary>
+    /// This controls the game's context menu item for managing game videos.
+    /// </summary>
+    public class VideoManagerGameMenuItem : IGameMenuItemPlugin
     {
         public bool SupportsMultipleGames => false;
 
-        public string Caption => "Manage game videos...";
+        public string Caption => "Manage online video links...";
 
         public System.Drawing.Image IconImage => null;
 

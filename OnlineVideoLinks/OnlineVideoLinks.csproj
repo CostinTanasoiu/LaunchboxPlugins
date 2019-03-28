@@ -59,7 +59,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Utilities.cs" />
-    <Compile Include="VideoManager.cs" />
+    <Compile Include="VideoManagerGameMenuItem.cs" />
     <Compile Include="VideoManagerForm.cs">
       <SubType>Form</SubType>
     </Compile>

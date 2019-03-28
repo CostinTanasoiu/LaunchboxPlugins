@@ -9,6 +9,14 @@ namespace OnlineVideoLinks.Models
 {
     public class GameVideo
     {
+        #region Private members
+
+        private static string[] _commonVlcArguments = new string[] { "-f", "--play-and-exit", "--qt-start-minimized" };
+
+        #endregion
+
+        #region Public properties
+
         public const string TitlePrefix = "Video: ";
 
         public string Title { get; set; }
@@ -35,6 +43,8 @@ namespace OnlineVideoLinks.Models
         /// This is the name of the corresponding "additional application" for this video.
         /// </summary>
         public string TitleWithPrefix => TitlePrefix + Title;
+
+        #endregion
 
         public GameVideo() { }
 
@@ -65,7 +75,7 @@ namespace OnlineVideoLinks.Models
         /// </summary>
         public string GetVlcCmdArguments()
         {
-            var cmdArgs = $"-f --play-and-exit";
+            var cmdArgs = string.Join(" ", _commonVlcArguments);
             if (StartTime > 0)
                 cmdArgs += " --start-time=" + StartTime.ToString();
             if (StopTime > 0)
@@ -87,6 +97,36 @@ namespace OnlineVideoLinks.Models
             app.ApplicationPath = Utilities.GetVlcExecutablePath();
             app.CommandLine = GetVlcCmdArguments();
             return app;
+        }
+
+        /// <summary>
+        /// This method updates an existing Additional App with the current video details.
+        /// </summary>
+        /// <param name="additionalApplication"></param>
+        public void UpdateExistingApp(IAdditionalApplication additionalApplication)
+        {
+            additionalApplication.Name = TitleWithPrefix;
+            additionalApplication.ApplicationPath = Utilities.GetVlcExecutablePath();
+            additionalApplication.CommandLine = GetVlcCmdArguments();
+        }
+
+        /// <summary>
+        /// Verifies if an 'additional app' is properly set up with all the expected arguments.
+        /// </summary>
+        /// <param name="app">The Additional App entry.</param>
+        public static bool IsAppCorrectlySetup(IAdditionalApplication app)
+        {
+            if (app.ApplicationPath != Utilities.GetVlcExecutablePath())
+                return false;
+
+            // Checking if the app's command line string is missing any of the VLC arguments expected by our plugin
+            foreach(var expectedArg in _commonVlcArguments)
+            {
+                if (!app.CommandLine.Contains(expectedArg))
+                    return false;
+            }
+
+            return true;
         }
     }
 }

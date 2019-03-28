@@ -78,6 +78,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtraGameVideos\GameVideoTests.cs" />
     <Compile Include="MockedClasses\AdditionalApplicationMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExtraGameVideos\PluginStartupTests.cs" />
