@@ -75,5 +75,15 @@ namespace OnlineVideoLinks.Properties {
                 return ResourceManager.GetString("HelpDocument", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Video {
+            get {
+                object obj = ResourceManager.GetObject("Video", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

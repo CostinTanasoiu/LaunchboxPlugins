@@ -35,9 +35,9 @@ namespace OnlineVideoLinks
     {
         public bool SupportsMultipleGames => false;
 
-        public string Caption => "Manage online video links...";
+        public string Caption => "Manage Online Video Links...";
 
-        public System.Drawing.Image IconImage => null;
+        public System.Drawing.Image IconImage => Properties.Resources.Video;
 
         public bool ShowInLaunchBox => true;
 

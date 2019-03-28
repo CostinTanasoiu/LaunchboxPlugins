@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VideoManagerForm));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.linkMoreInfo = new System.Windows.Forms.LinkLabel();
             this.label7 = new System.Windows.Forms.Label();
@@ -116,6 +117,7 @@
             // 
             // numericStopTime
             // 
+            this.numericStopTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numericStopTime.ForeColor = System.Drawing.Color.Gray;
             this.numericStopTime.Location = new System.Drawing.Point(646, 70);
             this.numericStopTime.Name = "numericStopTime";
@@ -125,6 +127,7 @@
             // 
             // label6
             // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(463, 70);
             this.label6.Name = "label6";
@@ -134,6 +137,7 @@
             // 
             // numericStartTime
             // 
+            this.numericStartTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numericStartTime.ForeColor = System.Drawing.Color.Gray;
             this.numericStartTime.Location = new System.Drawing.Point(646, 42);
             this.numericStartTime.Maximum = new decimal(new int[] {
@@ -148,6 +152,7 @@
             // 
             // label5
             // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(463, 18);
@@ -158,6 +163,7 @@
             // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(463, 42);
             this.label4.Name = "label4";
@@ -187,6 +193,8 @@
             // 
             // txtVideoPath
             // 
+            this.txtVideoPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtVideoPath.Location = new System.Drawing.Point(110, 70);
             this.txtVideoPath.Name = "txtVideoPath";
             this.txtVideoPath.Size = new System.Drawing.Size(284, 22);
@@ -203,6 +211,8 @@
             // 
             // txtVideoTitle
             // 
+            this.txtVideoTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtVideoTitle.Location = new System.Drawing.Point(110, 42);
             this.txtVideoTitle.Name = "txtVideoTitle";
             this.txtVideoTitle.Size = new System.Drawing.Size(284, 22);
@@ -211,9 +221,10 @@
             // gridVideos
             // 
             this.gridVideos.AllowUserToAddRows = false;
-            this.gridVideos.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.gridVideos.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.gridVideos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gridVideos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.gridVideos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Title,
             this.VideoPath,
@@ -246,17 +257,19 @@
             // 
             // StartTime
             // 
+            this.StartTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.StartTime.DataPropertyName = "StartTime";
             this.StartTime.HeaderText = "Start (s)";
             this.StartTime.Name = "StartTime";
-            this.StartTime.Width = 70;
+            this.StartTime.Width = 88;
             // 
             // StopTime
             // 
+            this.StopTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.StopTime.DataPropertyName = "StopTime";
             this.StopTime.HeaderText = "Stop (s)";
             this.StopTime.Name = "StopTime";
-            this.StopTime.Width = 70;
+            this.StopTime.Width = 87;
             // 
             // Delete
             // 
@@ -285,6 +298,7 @@
             // 
             // lblGridError
             // 
+            this.lblGridError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblGridError.AutoSize = true;
             this.lblGridError.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblGridError.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -297,7 +311,7 @@
             // 
             // btnSaveAll
             // 
-            this.btnSaveAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaveAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnSaveAll.Location = new System.Drawing.Point(12, 425);
             this.btnSaveAll.Name = "btnSaveAll";
             this.btnSaveAll.Size = new System.Drawing.Size(112, 29);
@@ -308,7 +322,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Location = new System.Drawing.Point(130, 425);
             this.btnCancel.Name = "btnCancel";
@@ -332,6 +346,7 @@
             this.Controls.Add(this.gridVideos);
             this.Controls.Add(this.groupBox1);
             this.HelpButton = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "VideoManagerForm";
@@ -368,13 +383,13 @@
         private System.Windows.Forms.Button btnTestNewVideo;
         private System.Windows.Forms.Button btnSaveAll;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.LinkLabel linkMoreInfo;
+        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.DataGridViewTextBoxColumn Title;
         private System.Windows.Forms.DataGridViewTextBoxColumn VideoPath;
         private System.Windows.Forms.DataGridViewTextBoxColumn StartTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn StopTime;
         private System.Windows.Forms.DataGridViewButtonColumn Delete;
         private System.Windows.Forms.DataGridViewButtonColumn Play;
-        private System.Windows.Forms.LinkLabel linkMoreInfo;
-        private System.Windows.Forms.Label label7;
     }
 }

@@ -84,5 +84,8 @@
   <ItemGroup>
     <None Include="Resources\HelpDocument.rtf" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Video.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

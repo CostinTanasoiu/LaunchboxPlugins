@@ -52,7 +52,7 @@
     <Compile Include="FormGenreEditor.Designer.cs">
       <DependentUpon>FormGenreEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Plugin.cs" />
+    <Compile Include="PluginMenuItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -71,6 +71,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\green-loading-bar.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tag-128.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
