@@ -11,13 +11,9 @@ This plugin allows you to add online videos to your game, which will appear on t
 
 #### LaunchBox Interface
 
-There is a new **menu item** on the game's menu in LaunchBox, allowing you to manage your game's video links, which can be seen in the following screenshot, along with two sample video links:
+There is a new **menu item** on the game's menu in LaunchBox, allowing you to manage your game's video links, which can be seen in the following screenshot, along with two sample video links. Once you open the video manager dialog, follow the on-screen instructions (and click "More info") to add, edit or remove your video links.
 
-![Manage Online Video Links menu item](https://i.imgur.com/uznkC4s.png)
-
-Once you open the open the video manager dialog, follow the on-screen instructions (and click "More info") to add, edit or remove your video links.
-
-![Online video links manager](https://i.imgur.com/H2KUADI.png)
+![LaunchBox Online Video Links interface](https://i.imgur.com/dININZs.png)
 
 #### BigBox Interface
 
