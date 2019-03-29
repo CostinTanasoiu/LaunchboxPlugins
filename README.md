@@ -3,7 +3,7 @@ Various plugins for the LaunchBox frontend for PC games and emulated console pla
 
 ## Installation details
 
-To install the one available plugin, download the DLL file from the latest [release](https://github.com/SsjCosty/LaunchboxPlugins/releases), and add it to the Plugins subfolder from your main LaunchBox installation folder.
+To install any available plugins, download its corresponding DLL file from the latest [release](https://github.com/SsjCosty/LaunchboxPlugins/releases), and add it to the Plugins subfolder from your main LaunchBox installation folder.
 
 ## Online Video Links
 
