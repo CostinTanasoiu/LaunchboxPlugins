@@ -5,6 +5,18 @@ Various plugins for the LaunchBox frontend for PC games and emulated console pla
 
 To install the one available plugin, download the DLL file from the latest [release](https://github.com/SsjCosty/LaunchboxPlugins/releases), and add it to the Plugins subfolder from your main LaunchBox installation folder.
 
+## Online Video Links
+
+This plugin allows you to add online videos to your game, which will appear on the game's menu both in LaunchBox and BigBox. Mainly, it supports YouTube and Steam videos. The videos get played by LaunchBox's portable VLC distribution, so you don't have to worry about having the right video player installed.
+
+There is a new **menu item** on the game's menu, allowing you to manage your game's video links, which can be seen in the following screenshot, along with two sample video links:
+
+![Manage Online Video Links menu item](https://i.imgur.com/uznkC4s.png)
+
+Once you open the open the video manager dialog, follow the on-screen instructions (and click "More info") to add, edit or remove your video links.
+
+![Online video links manager](https://i.imgur.com/H2KUADI.png)
+
 ## Bulk Genre Editor
 
 Currently, LaunchBox allows you to edit genres for games, however if use the default Bulk Edit Wizard to edit genres for multiple selected games then they will all be overwritten with the same exact set of genres. for 
@@ -13,7 +25,7 @@ This plugin allows you to add or remove genres to multiple games, while keeping 
 
 The new **menu item** is available for one or multiple selected games:
 
-![Bulk Add/Edit Genres menu item](https://i.imgur.com/VPfsDFL.png)
+![Bulk Add/Edit Genres menu item](https://i.imgur.com/8ywzK9h.png)
 
 The menu item opens the following dialog form, where you can select the genre(s) that you want to either add or remove from each game:
 
