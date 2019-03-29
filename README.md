@@ -9,13 +9,21 @@ To install any available plugins, download its corresponding DLL file from the l
 
 This plugin allows you to add online videos to your game, which will appear on the game's menu both in LaunchBox and BigBox. Mainly, it supports YouTube and Steam videos. The videos get played by LaunchBox's portable VLC distribution, so you don't have to worry about having the right video player installed.
 
-There is a new **menu item** on the game's menu, allowing you to manage your game's video links, which can be seen in the following screenshot, along with two sample video links:
+#### LaunchBox Interface
+
+There is a new **menu item** on the game's menu in LaunchBox, allowing you to manage your game's video links, which can be seen in the following screenshot, along with two sample video links:
 
 ![Manage Online Video Links menu item](https://i.imgur.com/uznkC4s.png)
 
 Once you open the open the video manager dialog, follow the on-screen instructions (and click "More info") to add, edit or remove your video links.
 
 ![Online video links manager](https://i.imgur.com/H2KUADI.png)
+
+#### BigBox Interface
+
+In BigBox, the video links can be played from the game's "Additional Apps/Versions" menu, as exemplified here:
+
+![BigBox video links interface](https://i.imgur.com/9LRo3Op.png)
 
 ## Bulk Genre Editor
 
