@@ -44,7 +44,8 @@ namespace YoutubeGameVideos
         public void OnEventRaised(string eventType)
         {
             // On startup, we want to check if Launchbox's VLC distribution has the latest YouTube addon.
-            if(eventType == SystemEventTypes.LaunchBoxStartupCompleted)
+            if (eventType == SystemEventTypes.LaunchBoxStartupCompleted
+                || eventType == SystemEventTypes.BigBoxStartupCompleted)
             {
                 // Look for Launchbox's VLC distro
                 var vlcEnvironment = Environment.Is64BitOperatingSystem ? "x64" : "x86";
