@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VideoManagerForm));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.linkMoreInfo = new System.Windows.Forms.LinkLabel();
@@ -54,6 +55,7 @@
             this.lblGridError = new System.Windows.Forms.Label();
             this.btnSaveAll = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericStopTime)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericStartTime)).BeginInit();
@@ -235,7 +237,7 @@
             this.gridVideos.Location = new System.Drawing.Point(13, 203);
             this.gridVideos.Name = "gridVideos";
             this.gridVideos.RowTemplate.Height = 24;
-            this.gridVideos.Size = new System.Drawing.Size(772, 182);
+            this.gridVideos.Size = new System.Drawing.Size(772, 179);
             this.gridVideos.TabIndex = 1;
             this.gridVideos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridVideos_CellContentClick);
             this.gridVideos.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.gridVideos_CellValidating);
@@ -298,11 +300,11 @@
             // 
             // lblGridError
             // 
-            this.lblGridError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblGridError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblGridError.AutoSize = true;
             this.lblGridError.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblGridError.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lblGridError.Location = new System.Drawing.Point(13, 399);
+            this.lblGridError.Location = new System.Drawing.Point(745, 400);
             this.lblGridError.Name = "lblGridError";
             this.lblGridError.Size = new System.Drawing.Size(40, 17);
             this.lblGridError.TabIndex = 3;
@@ -312,7 +314,7 @@
             // btnSaveAll
             // 
             this.btnSaveAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSaveAll.Location = new System.Drawing.Point(12, 425);
+            this.btnSaveAll.Location = new System.Drawing.Point(12, 394);
             this.btnSaveAll.Name = "btnSaveAll";
             this.btnSaveAll.Size = new System.Drawing.Size(112, 29);
             this.btnSaveAll.TabIndex = 11;
@@ -324,7 +326,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(130, 425);
+            this.btnCancel.Location = new System.Drawing.Point(130, 394);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(112, 29);
             this.btnCancel.TabIndex = 12;
@@ -338,7 +340,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(797, 466);
+            this.ClientSize = new System.Drawing.Size(797, 435);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSaveAll);
             this.Controls.Add(this.lblGridError);
@@ -349,6 +351,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(815, 482);
             this.Name = "VideoManagerForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "GameVideoManagerForm";
@@ -391,5 +394,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn StopTime;
         private System.Windows.Forms.DataGridViewButtonColumn Delete;
         private System.Windows.Forms.DataGridViewButtonColumn Play;
+        private System.Windows.Forms.ToolTip toolTip;
     }
 }
