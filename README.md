@@ -46,3 +46,6 @@ After using this Bulk Genre Editor to add the genre "Beat 'em up", the result is
 * Game 1 genres: Action; Beat 'em up;
 * Game 2 genres: Action; Beat 'em up; Role-Playing;
 * Game 3 genres: Action; Adventure; Beat 'em up;
+
+
+[BUY ME A BEER!](https://www.paypal.me/CostinsPaypal)
