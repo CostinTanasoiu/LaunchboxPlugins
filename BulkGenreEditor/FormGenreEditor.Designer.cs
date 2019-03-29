@@ -167,6 +167,7 @@
             this.Controls.Add(this.btnAddGenres);
             this.Controls.Add(this.btnRemoveGenres);
             this.Controls.Add(this.lblInstructions);
+            this.MinimumSize = new System.Drawing.Size(574, 529);
             this.Name = "FormGenreEditor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Bulk Add/Remove Genres";

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C578868B-7002-4110-9C3C-8E4E9B19E3F4}</ProjectGuid>
+    <ProjectGuid>{18EB8079-C8D5-4063-A935-588BD80CB338}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BulkGenreEditor</RootNamespace>
-    <AssemblyName>BulkGenreEditor</AssemblyName>
+    <RootNamespace>OnlineVideoLinks</RootNamespace>
+    <AssemblyName>OnlineVideoLinks</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -46,34 +46,46 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormGenreEditor.cs">
+    <Compile Include="HelpForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormGenreEditor.Designer.cs">
-      <DependentUpon>FormGenreEditor.cs</DependentUpon>
+    <Compile Include="HelpForm.Designer.cs">
+      <DependentUpon>HelpForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="PluginMenuItem.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PluginStartup.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utilities.cs" />
+    <Compile Include="VideoManagerGameMenuItem.cs" />
+    <Compile Include="VideoManagerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="VideoManagerForm.Designer.cs">
+      <DependentUpon>VideoManagerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\GameVideo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FormGenreEditor.resx">
-      <DependentUpon>FormGenreEditor.cs</DependentUpon>
+    <EmbeddedResource Include="HelpForm.resx">
+      <DependentUpon>HelpForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="VideoManagerForm.resx">
+      <DependentUpon>VideoManagerForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\green-loading-bar.gif" />
+    <None Include="Resources\HelpDocument.rtf" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\tag-128.png" />
+    <None Include="Resources\Video.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

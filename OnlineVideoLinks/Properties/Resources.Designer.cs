@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BulkGenreEditor.Properties {
+namespace OnlineVideoLinks.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace BulkGenreEditor.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("BulkGenreEditor.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OnlineVideoLinks.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,21 +61,27 @@ namespace BulkGenreEditor.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil Consolas;}{\f2\fnil\fcharset2 Symbol;}}
+        ///{\colortbl ;\red163\green21\blue21;\red0\green0\blue255;}
+        ///{\*\generator Riched20 10.0.17763}\viewkind4\uc1 
+        ///\pard\sl276\slmult1\f0\fs22\lang9 How to get playable YouTube or Steam video links?\par
+        ///\par
+        ///For YouTube:\par
+        ///
+        ///\pard{\pntext\f2\&apos;B7\tab}{\*\pn\pnlvlblt\pnf2\pnindent0{\pntxtb\&apos;B7}}\fi-360\li720\sl276\slmult1 Get the YouTube video URL either from the Browser [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static System.Drawing.Bitmap green_loading_bar {
+        internal static string HelpDocument {
             get {
-                object obj = ResourceManager.GetObject("green-loading-bar", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ResourceManager.GetString("HelpDocument", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap tag_128 {
+        internal static System.Drawing.Bitmap Video {
             get {
-                object obj = ResourceManager.GetObject("tag_128", resourceCulture);
+                object obj = ResourceManager.GetObject("Video", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

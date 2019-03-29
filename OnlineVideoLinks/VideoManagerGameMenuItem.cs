@@ -20,22 +20,24 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
 
-namespace BulkGenreEditor
+namespace OnlineVideoLinks
 {
-    public class Plugin : IGameMenuItemPlugin
+    /// <summary>
+    /// This controls the game's context menu item for managing game videos.
+    /// </summary>
+    public class VideoManagerGameMenuItem : IGameMenuItemPlugin
     {
-        public bool SupportsMultipleGames => true;
+        public bool SupportsMultipleGames => false;
 
-        public string Caption => "Bulk Add/Remove Genres...";
+        public string Caption => "Manage Online Video Links...";
 
-        public Image IconImage => null;
+        public System.Drawing.Image IconImage => Properties.Resources.Video;
 
         public bool ShowInLaunchBox => true;
 
@@ -48,24 +50,19 @@ namespace BulkGenreEditor
 
         public bool GetIsValidForGames(IGame[] selectedGames)
         {
-            return true;
+            return false;
         }
 
         public void OnSelected(IGame selectedGame)
         {
-            HandleSelectedGames(new IGame[] { selectedGame });
+            var form = new VideoManagerForm(selectedGame);
+            form.ShowDialog();
+            form.Dispose();
         }
 
         public void OnSelected(IGame[] selectedGames)
         {
-            HandleSelectedGames(selectedGames);
-        }
-
-        private void HandleSelectedGames(IGame[] selectedGames)
-        {
-            var form = new FormGenreEditor(selectedGames);
-            form.ShowDialog();
-            form.Dispose();
+            return;
         }
     }
 }
