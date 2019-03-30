@@ -122,6 +122,11 @@
             this.numericStopTime.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.numericStopTime.ForeColor = System.Drawing.Color.Gray;
             this.numericStopTime.Location = new System.Drawing.Point(646, 70);
+            this.numericStopTime.Maximum = new decimal(new int[] {
+            7200,
+            0,
+            0,
+            0});
             this.numericStopTime.Name = "numericStopTime";
             this.numericStopTime.Size = new System.Drawing.Size(120, 22);
             this.numericStopTime.TabIndex = 9;
