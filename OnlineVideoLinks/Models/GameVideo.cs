@@ -31,7 +31,7 @@ namespace OnlineVideoLinks.Models
     {
         #region Private members
 
-        private static string[] _commonVlcArguments = new string[] { "-f", "--play-and-exit", "--qt-start-minimized" };
+        private static string[] _commonVlcArguments = new string[] { "-f", "--play-and-exit" };
 
         #endregion
 
