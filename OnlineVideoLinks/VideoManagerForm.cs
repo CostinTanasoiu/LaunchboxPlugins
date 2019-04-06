@@ -94,8 +94,8 @@ namespace OnlineVideoLinks
                     {
                         Title = txtVideoTitle.Text,
                         VideoPath = txtVideoPath.Text,
-                        StartTime = (int)numericStartTime.Value,
-                        StopTime = (int)numericStopTime.Value
+                        StartTime = ParseSecondsFromTextbox(txtStartTime.Text),
+                        StopTime = ParseSecondsFromTextbox(txtStopTime.Text)
                     };
 
                     if (addToList)
@@ -123,7 +123,7 @@ namespace OnlineVideoLinks
         private void ResetNewVideoFields()
         {
             txtVideoTitle.Text = txtVideoPath.Text = "";
-            numericStartTime.Value = numericStopTime.Value = 0;
+            txtStartTime.Text = txtStopTime.Text = "";
         }
 
         private void btnAddVideo_Click(object sender, EventArgs e)
@@ -155,17 +155,6 @@ namespace OnlineVideoLinks
                     PlayVideo(_gameVideos[e.RowIndex]);
                 }
             }
-        }
-
-        private void numericStartEndTime_ValueChanged(object sender, EventArgs e)
-        {
-            var numericBox = (NumericUpDown)sender;
-
-            if (numericBox.Value > 0)
-                numericBox.ForeColor = Color.Black;
-            else
-                // Show it as greyed out
-                numericBox.ForeColor = Color.Gray;
         }
 
         private void gridVideos_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
@@ -223,6 +212,29 @@ namespace OnlineVideoLinks
         {
             e.Cancel = true;
             _helpForm.ShowDialog();
+        }
+
+        private void timeBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != ':'))
+                e.Handled = true;
+
+            // only allow one separator
+            if ((e.KeyChar == ':') && ((sender as TextBox).Text.IndexOf(':') > -1))
+                e.Handled = true;
+        }
+
+        private int ParseSecondsFromTextbox(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return 0;
+
+            if (text.Contains(':'))
+            {
+                var values = text.Split(':');
+                return int.Parse(values[0]) * 60 + int.Parse(values[1]);
+            }
+            else return int.Parse(text);
         }
     }
 }
