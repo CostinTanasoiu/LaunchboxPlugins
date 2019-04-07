@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HtmlAgilityPack, Version=1.11.2.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.11.2\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -52,11 +55,19 @@
     <Compile Include="HelpForm.Designer.cs">
       <DependentUpon>HelpForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\YoutubeVideoInfo.cs" />
     <Compile Include="PluginStartup.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Services\YoutubeScraperService.cs" />
+    <Compile Include="UserControls\YoutubeSearchResult.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\YoutubeSearchResult.Designer.cs">
+      <DependentUpon>YoutubeSearchResult.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities.cs" />
     <Compile Include="VideoManagerGameMenuItem.cs" />
@@ -68,6 +79,12 @@
     </Compile>
     <Compile Include="Models\GameVideo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="YoutubeScraperForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YoutubeScraperForm.Designer.cs">
+      <DependentUpon>YoutubeScraperForm.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="HelpForm.resx">
@@ -77,11 +94,18 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\YoutubeSearchResult.resx">
+      <DependentUpon>YoutubeSearchResult.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="VideoManagerForm.resx">
       <DependentUpon>VideoManagerForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="YoutubeScraperForm.resx">
+      <DependentUpon>YoutubeScraperForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Resources\HelpDocument.rtf" />
   </ItemGroup>
   <ItemGroup>

@@ -37,7 +37,7 @@ namespace FormsTestProject
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var form = new OnlineVideoLinks.VideoManagerForm();
+            var form = new OnlineVideoLinks.YoutubeScraperForm();
             Application.Run(form);
         }
     }
