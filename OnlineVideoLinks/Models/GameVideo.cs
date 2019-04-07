@@ -148,5 +148,37 @@ namespace OnlineVideoLinks.Models
 
             return true;
         }
+
+        /// <summary>
+        /// This method checks if the given game has any video links.
+        /// </summary>
+        /// <param name="game"></param>
+        /// <returns></returns>
+        public static bool HasVideoLinks(IGame game)
+        {
+            return game.GetAllAdditionalApplications().Any(x => x.Name.StartsWith(GameVideo.TitlePrefix));
+        }
+
+        /// <summary>
+        /// Extracts a list of video links from the given game object.
+        /// </summary>
+        /// <param name="game"></param>
+        /// <returns></returns>
+        public static List<GameVideo> ExtractVideoLinksFromGame(IGame game)
+        {
+            var results = new List<GameVideo>();
+
+            var videoAppList = game.GetAllAdditionalApplications()
+                .Where(x => x.Name.StartsWith(GameVideo.TitlePrefix))
+                .ToList();
+
+            foreach (var app in videoAppList)
+            {
+                var gameVideo = new GameVideo(app);
+                results.Add(gameVideo);
+            }
+
+            return results;
+        }
     }
 }

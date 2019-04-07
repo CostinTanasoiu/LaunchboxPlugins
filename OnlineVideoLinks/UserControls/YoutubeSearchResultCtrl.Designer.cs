@@ -1,6 +1,6 @@
 ﻿namespace OnlineVideoLinks.UserControls
 {
-    partial class YoutubeSearchResult
+    partial class YoutubeSearchResultCtrl
     {
         /// <summary> 
         /// Required designer variable.

@@ -30,7 +30,7 @@ using System.Threading.Tasks;
 using Unbroken.LaunchBox.Plugins.Data;
 using Xunit;
 
-namespace LaunchboxPluginsTests.ExtraGameVideos
+namespace LaunchboxPluginsTests.OnlineVideoLinks
 {
     public class GameVideoTests
     {

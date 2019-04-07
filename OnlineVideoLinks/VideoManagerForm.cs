@@ -58,15 +58,9 @@ namespace OnlineVideoLinks
 
             this.Text = "Manage videos for: " + game.Title;
 
-            var videoAppList = _game.GetAllAdditionalApplications()
-                .Where(x => x.Name.StartsWith(GameVideo.TitlePrefix))
-                .ToList();
-
-            foreach (var app in videoAppList)
-            {
-                var gameVideo = new GameVideo(app);
+            var videoList = GameVideo.ExtractVideoLinksFromGame(_game);
+            foreach(var gameVideo in videoList)
                 _gameVideos.Add(gameVideo);
-            }
         }
 
         private void GameVideoManagerForm_Load(object sender, EventArgs e)

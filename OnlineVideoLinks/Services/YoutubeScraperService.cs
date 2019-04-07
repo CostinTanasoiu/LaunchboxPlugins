@@ -21,21 +21,39 @@ namespace OnlineVideoLinks.Services
         /// <param name="channelName">The name of the YouTube channel.</param>
         /// <param name="gameName">The name of the game.</param>
         /// <param name="strictSearch">If true, the method will return only videos which contain the game name in the title.</param>
+        /// <param name="maxNrOfItemsPerGame">The maximum number of results per game.</param>
         /// <returns>List of video information objects.</returns>
-        public List<YoutubeVideoInfo> GetVideos(string channelName, string gameName, bool strictSearch)
+        public List<YoutubeVideoInfo> GetVideos(string channelName, string gameName, bool strictSearch, int maxNrOfItemsPerGame)
         {
             var results = new List<YoutubeVideoInfo>();
+            var processedGameName = gameName;
+
+            if (processedGameName.EndsWith(", The", StringComparison.InvariantCultureIgnoreCase))
+                processedGameName = processedGameName.Substring(0, processedGameName.Length - ", The".Length);
+
+            if (processedGameName.StartsWith("The "))
+                processedGameName = processedGameName.Substring("The ".Length);
+
+            var processedGameNameLow = processedGameName.ToLowerInvariant();
+
             var scrapedResults = ScrapeYoutubeSearchPage(channelName + " " + gameName);
 
-            var gameNameLow = gameName.ToLowerInvariant();
             foreach (var item in scrapedResults)
             {
-                // If strict search is enabled, we want only the videos which contain the game name in their title
-                if (!strictSearch || (strictSearch && item.Title.ToLowerInvariant().Contains(gameNameLow)))
-                    results.Add(item);
+                // Filtering the given channel name
+                if (item.ChannelName.Equals(channelName, StringComparison.InvariantCultureIgnoreCase)
+                    || item.Author.Equals(channelName, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    // If strict search is enabled, we want only the videos which contain the game name in their title
+                    if (!strictSearch || (strictSearch && item.Title.ToLowerInvariant().Contains(processedGameNameLow)))
+                    {
+                        item.GameSearched = gameName;
+                        results.Add(item);
+                    }
+                }
             }
 
-            return results;
+            return results.Take(maxNrOfItemsPerGame).ToList();
         }
 
         /// <summary>
@@ -43,10 +61,18 @@ namespace OnlineVideoLinks.Services
         /// </summary>
         /// <param name="channelName">The name of the YouTube channel.</param>
         /// <param name="gameNames">The list of game names.</param>
-        /// <returns>A dictionary where the key is the game name, and the value is the list of GameVideo objects.</returns>
-        public Dictionary<string, List<GameVideo>> GetVideos(string channelName, string[] gameNames)
+        /// <param name="strictSearch">If true, the method will return only videos which contain the game name in the title.</param>
+        /// <param name="maxNrOfItemsPerGame">The maximum number of results per game.</param>
+        /// <returns>A dictionary where the key is the game name, and the value is the list of video information objects.</returns>
+        public Dictionary<string, List<YoutubeVideoInfo>> GetVideos(string channelName, string[] gameNames, bool strictSearch, int maxNrOfItemsPerGame)
         {
-            throw new NotImplementedException();
+            var result = new Dictionary<string, List<YoutubeVideoInfo>>();
+            foreach(var gameName in gameNames.Distinct())
+            {
+                result[gameName] = GetVideos(channelName, gameName, strictSearch, maxNrOfItemsPerGame);
+            }
+
+            return result;
         }
 
         private List<YoutubeVideoInfo> ScrapeYoutubeSearchPage(string searchQuery)
@@ -83,7 +109,7 @@ namespace OnlineVideoLinks.Services
                     continue;
 
                 var itemId = link.Attributes["href"]?.Value.Replace("/watch?v=", "");
-                item.Title = link.InnerText.Trim();
+                item.Title = System.Web.HttpUtility.HtmlDecode(link.InnerText.Trim());
                 item.Url = YtWatchUrl + itemId;
                 item.Thumbnail = string.Format(YtThumbnailUrl, itemId);
 

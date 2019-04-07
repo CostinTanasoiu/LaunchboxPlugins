@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace LaunchboxPluginsTests.ExtraGameVideos
+namespace LaunchboxPluginsTests.OnlineVideoLinks
 {
     public class YoutubeScraperServiceTests
     {
@@ -14,7 +14,7 @@ namespace LaunchboxPluginsTests.ExtraGameVideos
         public void CanGetVideos()
         {
             var scraper = new YoutubeScraperService();
-            var results = scraper.GetVideos("SNES drunk", "Superman", true);
+            var results = scraper.GetVideos("SNES drunk", "Superman", true, 3);
 
             Assert.NotEmpty(results);
         }

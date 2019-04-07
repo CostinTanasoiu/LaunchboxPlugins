@@ -33,33 +33,37 @@
             this.panelVideoResults = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.txtChannel = new System.Windows.Forms.TextBox();
-            this.txtQuery = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.btnSearch = new System.Windows.Forms.Button();
             this.lblResults = new System.Windows.Forms.Label();
             this.checkStrictSearch = new System.Windows.Forms.CheckBox();
+            this.checkSkipGamesWithVideos = new System.Windows.Forms.CheckBox();
+            this.numericMaxItemsPerGame = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.numericMaxItemsPerGame)).BeginInit();
             this.SuspendLayout();
             // 
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(248, 506);
+            this.btnCancel.Location = new System.Drawing.Point(309, 506);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(112, 29);
-            this.btnCancel.TabIndex = 5;
+            this.btnCancel.TabIndex = 6;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnSaveAll
             // 
             this.btnSaveAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnSaveAll.Location = new System.Drawing.Point(12, 506);
             this.btnSaveAll.Name = "btnSaveAll";
-            this.btnSaveAll.Size = new System.Drawing.Size(230, 29);
-            this.btnSaveAll.TabIndex = 4;
-            this.btnSaveAll.Text = "Add Selected Videos To Game";
+            this.btnSaveAll.Size = new System.Drawing.Size(291, 29);
+            this.btnSaveAll.TabIndex = 5;
+            this.btnSaveAll.Text = "Add selected videos to selected game(s)";
             this.btnSaveAll.UseVisualStyleBackColor = true;
+            this.btnSaveAll.Click += new System.EventHandler(this.btnSaveAll_Click);
             // 
             // panelVideoResults
             // 
@@ -69,9 +73,9 @@
             this.panelVideoResults.AutoScroll = true;
             this.panelVideoResults.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelVideoResults.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.panelVideoResults.Location = new System.Drawing.Point(13, 91);
+            this.panelVideoResults.Location = new System.Drawing.Point(13, 133);
             this.panelVideoResults.Name = "panelVideoResults";
-            this.panelVideoResults.Size = new System.Drawing.Size(1011, 409);
+            this.panelVideoResults.Size = new System.Drawing.Size(1011, 367);
             this.panelVideoResults.TabIndex = 103;
             this.panelVideoResults.WrapContents = false;
             // 
@@ -88,31 +92,15 @@
             // 
             this.txtChannel.Location = new System.Drawing.Point(16, 34);
             this.txtChannel.Name = "txtChannel";
-            this.txtChannel.Size = new System.Drawing.Size(226, 22);
+            this.txtChannel.Size = new System.Drawing.Size(287, 22);
             this.txtChannel.TabIndex = 0;
-            // 
-            // txtQuery
-            // 
-            this.txtQuery.Location = new System.Drawing.Point(248, 34);
-            this.txtQuery.Name = "txtQuery";
-            this.txtQuery.Size = new System.Drawing.Size(226, 22);
-            this.txtQuery.TabIndex = 1;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(245, 13);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(91, 17);
-            this.label2.TabIndex = 106;
-            this.label2.Text = "Game Name:";
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(641, 30);
+            this.btnSearch.Location = new System.Drawing.Point(16, 62);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(75, 30);
-            this.btnSearch.TabIndex = 3;
+            this.btnSearch.TabIndex = 4;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
@@ -121,7 +109,7 @@
             // 
             this.lblResults.AutoSize = true;
             this.lblResults.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblResults.Location = new System.Drawing.Point(13, 71);
+            this.lblResults.Location = new System.Drawing.Point(13, 113);
             this.lblResults.Name = "lblResults";
             this.lblResults.Size = new System.Drawing.Size(67, 17);
             this.lblResults.TabIndex = 109;
@@ -132,23 +120,71 @@
             this.checkStrictSearch.AutoSize = true;
             this.checkStrictSearch.Checked = true;
             this.checkStrictSearch.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkStrictSearch.Location = new System.Drawing.Point(480, 36);
+            this.checkStrictSearch.Location = new System.Drawing.Point(309, 61);
             this.checkStrictSearch.Name = "checkStrictSearch";
-            this.checkStrictSearch.Size = new System.Drawing.Size(155, 21);
+            this.checkStrictSearch.Size = new System.Drawing.Size(427, 21);
             this.checkStrictSearch.TabIndex = 2;
-            this.checkStrictSearch.Text = "Enable strict search";
+            this.checkStrictSearch.Text = "Show only video results which have the game name in their title";
             this.checkStrictSearch.UseVisualStyleBackColor = true;
+            // 
+            // checkSkipGamesWithVideos
+            // 
+            this.checkSkipGamesWithVideos.AutoSize = true;
+            this.checkSkipGamesWithVideos.Checked = true;
+            this.checkSkipGamesWithVideos.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkSkipGamesWithVideos.Location = new System.Drawing.Point(309, 34);
+            this.checkSkipGamesWithVideos.Name = "checkSkipGamesWithVideos";
+            this.checkSkipGamesWithVideos.Size = new System.Drawing.Size(287, 21);
+            this.checkSkipGamesWithVideos.TabIndex = 1;
+            this.checkSkipGamesWithVideos.Text = "Skip games that already have video links";
+            this.checkSkipGamesWithVideos.UseVisualStyleBackColor = true;
+            // 
+            // numericMaxItemsPerGame
+            // 
+            this.numericMaxItemsPerGame.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.numericMaxItemsPerGame.Location = new System.Drawing.Point(957, 33);
+            this.numericMaxItemsPerGame.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericMaxItemsPerGame.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericMaxItemsPerGame.Name = "numericMaxItemsPerGame";
+            this.numericMaxItemsPerGame.Size = new System.Drawing.Size(67, 22);
+            this.numericMaxItemsPerGame.TabIndex = 3;
+            this.numericMaxItemsPerGame.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(774, 34);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(177, 17);
+            this.label2.TabIndex = 111;
+            this.label2.Text = "Max. No. results per game:";
             // 
             // YoutubeScraperForm
             // 
+            this.AcceptButton = this.btnSearch;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(1036, 547);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.numericMaxItemsPerGame);
+            this.Controls.Add(this.checkSkipGamesWithVideos);
             this.Controls.Add(this.checkStrictSearch);
             this.Controls.Add(this.lblResults);
             this.Controls.Add(this.btnSearch);
-            this.Controls.Add(this.txtQuery);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.txtChannel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.panelVideoResults);
@@ -156,6 +192,7 @@
             this.Controls.Add(this.btnSaveAll);
             this.Name = "YoutubeScraperForm";
             this.Text = "YoutubeScraperForm";
+            ((System.ComponentModel.ISupportInitialize)(this.numericMaxItemsPerGame)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -168,10 +205,11 @@
         private System.Windows.Forms.FlowLayoutPanel panelVideoResults;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtChannel;
-        private System.Windows.Forms.TextBox txtQuery;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Label lblResults;
         private System.Windows.Forms.CheckBox checkStrictSearch;
+        private System.Windows.Forms.CheckBox checkSkipGamesWithVideos;
+        private System.Windows.Forms.NumericUpDown numericMaxItemsPerGame;
+        private System.Windows.Forms.Label label2;
     }
 }

@@ -12,12 +12,15 @@ using System.Diagnostics;
 
 namespace OnlineVideoLinks.UserControls
 {
-    public partial class YoutubeSearchResult : UserControl
+    public partial class YoutubeSearchResultCtrl : UserControl
     {
         private YoutubeVideoInfo _videoInfo;
         public event EventHandler DeleteClicked;
 
-        public YoutubeSearchResult(YoutubeVideoInfo videoInfo)
+        public bool IsSelected => checkBox1.Checked;
+        public YoutubeVideoInfo VideoInfo => _videoInfo;
+
+        public YoutubeSearchResultCtrl(YoutubeVideoInfo videoInfo)
         {
             InitializeComponent();
 

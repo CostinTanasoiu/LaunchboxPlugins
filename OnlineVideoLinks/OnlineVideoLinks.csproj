@@ -37,6 +37,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -63,11 +64,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Services\YoutubeScraperService.cs" />
-    <Compile Include="UserControls\YoutubeSearchResult.cs">
+    <Compile Include="UserControls\YoutubeSearchResultCtrl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\YoutubeSearchResult.Designer.cs">
-      <DependentUpon>YoutubeSearchResult.cs</DependentUpon>
+    <Compile Include="UserControls\YoutubeSearchResultCtrl.Designer.cs">
+      <DependentUpon>YoutubeSearchResultCtrl.cs</DependentUpon>
     </Compile>
     <Compile Include="Utilities.cs" />
     <Compile Include="VideoManagerGameMenuItem.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="YoutubeScraperForm.Designer.cs">
       <DependentUpon>YoutubeScraperForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="YoutubeScraperSystemMenuItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="HelpForm.resx">
@@ -94,8 +96,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\YoutubeSearchResult.resx">
-      <DependentUpon>YoutubeSearchResult.cs</DependentUpon>
+    <EmbeddedResource Include="UserControls\YoutubeSearchResultCtrl.resx">
+      <DependentUpon>YoutubeSearchResultCtrl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="VideoManagerForm.resx">
       <DependentUpon>VideoManagerForm.cs</DependentUpon>

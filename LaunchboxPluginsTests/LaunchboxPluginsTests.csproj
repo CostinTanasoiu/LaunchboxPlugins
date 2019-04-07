@@ -78,12 +78,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExtraGameVideos\GameVideoTests.cs" />
-    <Compile Include="ExtraGameVideos\YoutubeScraperServiceTests.cs" />
+    <Compile Include="MockedClasses\GameMock.cs" />
+    <Compile Include="OnlineVideoLinks\GameVideoTests.cs" />
+    <Compile Include="OnlineVideoLinks\YoutubeScraperFormTests.cs" />
+    <Compile Include="OnlineVideoLinks\YoutubeScraperServiceTests.cs" />
     <Compile Include="MockedClasses\AdditionalApplicationMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ExtraGameVideos\PluginStartupTests.cs" />
-    <Compile Include="ExtraGameVideos\VideoManagerFormTests.cs" />
+    <Compile Include="OnlineVideoLinks\PluginStartupTests.cs" />
+    <Compile Include="OnlineVideoLinks\VideoManagerFormTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

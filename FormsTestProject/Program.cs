@@ -18,6 +18,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+using LaunchboxPluginsTests.MockedClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,24 @@ namespace FormsTestProject
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var form = new OnlineVideoLinks.YoutubeScraperForm();
+
+            var dummyGames = new GameMock[]
+            {
+                new GameMock
+                {
+                    Title = "Death and Return of Superman, The"
+                },
+                new GameMock
+                {
+                    Title = "The Ghoul Patrol"
+                },
+                new GameMock
+                {
+                    Title = "Dragon View"
+                }
+            };
+
+            var form = new OnlineVideoLinks.YoutubeScraperForm(dummyGames);
             Application.Run(form);
         }
     }
