@@ -54,8 +54,8 @@
             this.btnSaveAll = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.txtStartTime = new System.Windows.Forms.TextBox();
-            this.txtStopTime = new System.Windows.Forms.TextBox();
+            this.txtStartTime = new OnlineVideoLinks.UserControls.TimeTextBoxCtrl();
+            this.txtStopTime = new OnlineVideoLinks.UserControls.TimeTextBoxCtrl();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridVideos)).BeginInit();
             this.SuspendLayout();
@@ -309,19 +309,17 @@
             // 
             // txtStartTime
             // 
-            this.txtStartTime.Location = new System.Drawing.Point(700, 41);
+            this.txtStartTime.Location = new System.Drawing.Point(700, 42);
             this.txtStartTime.Name = "txtStartTime";
             this.txtStartTime.Size = new System.Drawing.Size(66, 22);
             this.txtStartTime.TabIndex = 2;
-            this.txtStartTime.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.timeBox_KeyPress);
             // 
             // txtStopTime
             // 
-            this.txtStopTime.Location = new System.Drawing.Point(700, 70);
+            this.txtStopTime.Location = new System.Drawing.Point(701, 73);
             this.txtStopTime.Name = "txtStopTime";
             this.txtStopTime.Size = new System.Drawing.Size(66, 22);
             this.txtStopTime.TabIndex = 3;
-            this.txtStopTime.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.timeBox_KeyPress);
             // 
             // VideoManagerForm
             // 
@@ -380,7 +378,7 @@
         private System.Windows.Forms.DataGridViewButtonColumn Delete;
         private System.Windows.Forms.DataGridViewButtonColumn Play;
         private System.Windows.Forms.ToolTip toolTip;
-        private System.Windows.Forms.TextBox txtStartTime;
-        private System.Windows.Forms.TextBox txtStopTime;
+        private UserControls.TimeTextBoxCtrl txtStopTime;
+        private UserControls.TimeTextBoxCtrl txtStartTime;
     }
 }

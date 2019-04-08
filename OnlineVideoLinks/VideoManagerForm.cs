@@ -88,8 +88,8 @@ namespace OnlineVideoLinks
                     {
                         Title = txtVideoTitle.Text,
                         VideoPath = txtVideoPath.Text,
-                        StartTime = ParseSecondsFromTextbox(txtStartTime.Text),
-                        StopTime = ParseSecondsFromTextbox(txtStopTime.Text)
+                        StartTime = txtStartTime.GetSeconds(),
+                        StopTime = txtStopTime.GetSeconds()
                     };
 
                     if (addToList)
@@ -117,7 +117,8 @@ namespace OnlineVideoLinks
         private void ResetNewVideoFields()
         {
             txtVideoTitle.Text = txtVideoPath.Text = "";
-            txtStartTime.Text = txtStopTime.Text = "";
+            txtStartTime.ClearValue();
+            txtStopTime.ClearValue();
         }
 
         private void btnAddVideo_Click(object sender, EventArgs e)
@@ -216,19 +217,6 @@ namespace OnlineVideoLinks
             // only allow one separator
             if ((e.KeyChar == ':') && ((sender as TextBox).Text.IndexOf(':') > -1))
                 e.Handled = true;
-        }
-
-        private int ParseSecondsFromTextbox(string text)
-        {
-            if (string.IsNullOrEmpty(text))
-                return 0;
-
-            if (text.Contains(':'))
-            {
-                var values = text.Split(':');
-                return int.Parse(values[0]) * 60 + int.Parse(values[1]);
-            }
-            else return int.Parse(text);
         }
     }
 }

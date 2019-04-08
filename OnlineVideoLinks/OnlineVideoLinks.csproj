@@ -64,6 +64,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Services\YoutubeScraperService.cs" />
+    <Compile Include="UserControls\TimeTextBoxCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\TimeTextBoxCtrl.Designer.cs">
+      <DependentUpon>TimeTextBoxCtrl.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\YoutubeSearchResultCtrl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -86,6 +92,7 @@
     <Compile Include="YoutubeScraperForm.Designer.cs">
       <DependentUpon>YoutubeScraperForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="YoutubeScraperMenuItem.cs" />
     <Compile Include="YoutubeScraperSystemMenuItem.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -95,6 +102,9 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\TimeTextBoxCtrl.resx">
+      <DependentUpon>TimeTextBoxCtrl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\YoutubeSearchResultCtrl.resx">
       <DependentUpon>YoutubeSearchResultCtrl.cs</DependentUpon>

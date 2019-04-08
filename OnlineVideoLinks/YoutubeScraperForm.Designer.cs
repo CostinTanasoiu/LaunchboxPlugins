@@ -39,6 +39,7 @@
             this.checkSkipGamesWithVideos = new System.Windows.Forms.CheckBox();
             this.numericMaxItemsPerGame = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
+            this.btnSelectAllResults = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericMaxItemsPerGame)).BeginInit();
             this.SuspendLayout();
             // 
@@ -46,7 +47,7 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(309, 506);
+            this.btnCancel.Location = new System.Drawing.Point(309, 602);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(112, 29);
             this.btnCancel.TabIndex = 6;
@@ -57,7 +58,7 @@
             // btnSaveAll
             // 
             this.btnSaveAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSaveAll.Location = new System.Drawing.Point(12, 506);
+            this.btnSaveAll.Location = new System.Drawing.Point(12, 602);
             this.btnSaveAll.Name = "btnSaveAll";
             this.btnSaveAll.Size = new System.Drawing.Size(291, 29);
             this.btnSaveAll.TabIndex = 5;
@@ -75,7 +76,7 @@
             this.panelVideoResults.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.panelVideoResults.Location = new System.Drawing.Point(13, 133);
             this.panelVideoResults.Name = "panelVideoResults";
-            this.panelVideoResults.Size = new System.Drawing.Size(1011, 367);
+            this.panelVideoResults.Size = new System.Drawing.Size(1011, 429);
             this.panelVideoResults.TabIndex = 103;
             this.panelVideoResults.WrapContents = false;
             // 
@@ -84,9 +85,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(13, 13);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(126, 17);
+            this.label1.Size = new System.Drawing.Size(190, 17);
             this.label1.TabIndex = 104;
-            this.label1.Text = "YouTube Channel:";
+            this.label1.Text = "YouTube Channel (optional):";
             // 
             // txtChannel
             // 
@@ -172,13 +173,25 @@
             this.label2.TabIndex = 111;
             this.label2.Text = "Max. No. results per game:";
             // 
+            // btnSelectAllResults
+            // 
+            this.btnSelectAllResults.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSelectAllResults.Location = new System.Drawing.Point(12, 569);
+            this.btnSelectAllResults.Name = "btnSelectAllResults";
+            this.btnSelectAllResults.Size = new System.Drawing.Size(141, 27);
+            this.btnSelectAllResults.TabIndex = 112;
+            this.btnSelectAllResults.Text = "✔ Select all results";
+            this.btnSelectAllResults.UseVisualStyleBackColor = true;
+            this.btnSelectAllResults.Click += new System.EventHandler(this.btnSelectAllResults_Click);
+            // 
             // YoutubeScraperForm
             // 
             this.AcceptButton = this.btnSearch;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(1036, 547);
+            this.ClientSize = new System.Drawing.Size(1036, 643);
+            this.Controls.Add(this.btnSelectAllResults);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.numericMaxItemsPerGame);
             this.Controls.Add(this.checkSkipGamesWithVideos);
@@ -211,5 +224,6 @@
         private System.Windows.Forms.CheckBox checkSkipGamesWithVideos;
         private System.Windows.Forms.NumericUpDown numericMaxItemsPerGame;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnSelectAllResults;
     }
 }

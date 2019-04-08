@@ -39,6 +39,11 @@ namespace OnlineVideoLinks.Models
 
         public const string TitlePrefix = "Video: ";
 
+        /// <summary>
+        /// Only used internally, not displayed to the user.
+        /// </summary>
+        public string GameTitle { get; set; }
+
         public string Title { get; set; }
 
         /// <summary>

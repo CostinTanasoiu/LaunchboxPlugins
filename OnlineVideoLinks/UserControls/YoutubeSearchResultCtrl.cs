@@ -17,7 +17,11 @@ namespace OnlineVideoLinks.UserControls
         private YoutubeVideoInfo _videoInfo;
         public event EventHandler DeleteClicked;
 
-        public bool IsSelected => checkBox1.Checked;
+        public bool IsSelected
+        {
+            get { return checkBox1.Checked; }
+            set { checkBox1.Checked = value; }
+        }
         public YoutubeVideoInfo VideoInfo => _videoInfo;
 
         public YoutubeSearchResultCtrl(YoutubeVideoInfo videoInfo)
@@ -27,6 +31,7 @@ namespace OnlineVideoLinks.UserControls
             _videoInfo = videoInfo;
             pictureBox1.Load(videoInfo.Thumbnail);
             lblTitle.Text = videoInfo.Title;
+            lblTitle.Links.Add(0, lblTitle.Text.Length, videoInfo.Url);
             lblSubtitle.Text = $"Channel: {videoInfo.ChannelName} • Author: {videoInfo.Author} • {videoInfo.ViewCount} views • Posted: {videoInfo.PostedWhen} • Duration: {videoInfo.Duration}";
         }
 
@@ -37,11 +42,7 @@ namespace OnlineVideoLinks.UserControls
 
         private void btnPlay_Click(object sender, EventArgs e)
         {
-            var gameVideo = new GameVideo
-            {
-                Title = _videoInfo.Title,
-                VideoPath = _videoInfo.Url
-            };
+            var gameVideo = ExtractGameVideo();
 
             var vlcExecutable = Utilities.GetVlcExecutablePath();
             var cmdArgs = gameVideo.GetVlcCmdArguments();
@@ -60,6 +61,23 @@ namespace OnlineVideoLinks.UserControls
             {
                 handler(this, e);
             }
+        }
+
+        public GameVideo ExtractGameVideo()
+        {
+            return new GameVideo
+            {
+                GameTitle = _videoInfo.GameSearched,
+                Title = string.IsNullOrEmpty(txtAltTitle.Text) ? _videoInfo.Title : txtAltTitle.Text,
+                VideoPath = _videoInfo.Url,
+                StartTime = txtStartTime.GetSeconds(),
+                StopTime = txtStopTime.GetSeconds()
+            };
+        }
+
+        private void lblTitle_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(_videoInfo.Url);
         }
     }
 }

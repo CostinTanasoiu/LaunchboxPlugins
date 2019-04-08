@@ -110,23 +110,23 @@ namespace OnlineVideoLinks
         private void btnSaveAll_Click(object sender, EventArgs e)
         {
             // Retrieving all the selected video titles
-            var selectedVideoInfos = new List<YoutubeVideoInfo>();
+            var selectedVideoInfos = new List<GameVideo>();
             foreach(var ctrl in panelVideoResults.Controls)
             {
                 if(ctrl is YoutubeSearchResultCtrl)
                 {
                     var youtubeCtrl = ctrl as YoutubeSearchResultCtrl;
                     if (youtubeCtrl.IsSelected)
-                        selectedVideoInfos.Add(youtubeCtrl.VideoInfo);
+                        selectedVideoInfos.Add(youtubeCtrl.ExtractGameVideo());
                 }
             }
 
             // Dictionary of GameVideo lists, where the game title is the key.
             var gameVideoDictionary = selectedVideoInfos
-                .GroupBy(x => x.GameSearched)
+                .GroupBy(x => x.GameTitle)
                 .ToDictionary(
                     g => g.Key, 
-                    g => g.Select(x=>new GameVideo { Title = x.Title, VideoPath = x.Url }).ToList()
+                    g => g.ToList()
                     );
 
             foreach(var game in _selectedGames)
@@ -146,6 +146,18 @@ namespace OnlineVideoLinks
             // Save
             PluginHelper.DataManager.Save(true);
             this.Close();
+        }
+
+        private void btnSelectAllResults_Click(object sender, EventArgs e)
+        {
+            foreach (var ctrl in panelVideoResults.Controls)
+            {
+                if (ctrl is YoutubeSearchResultCtrl)
+                {
+                    var youtubeCtrl = ctrl as YoutubeSearchResultCtrl;
+                    youtubeCtrl.IsSelected = true;
+                }
+            }
         }
     }
 }
