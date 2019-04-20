@@ -8,6 +8,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Unbroken.LaunchBox.Plugins;
@@ -40,24 +41,49 @@ namespace OnlineVideoLinks
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
+            progressBar.Value = 0;
             var channel = txtChannel.Text.Trim();
+            var extraQuery = txtExtraQuery.Text.Trim();
 
             panelVideoResults.Controls.Clear();
 
             var gameNames = _selectedGames
                 .Where(x => !checkSkipGamesWithVideos.Checked || !GameVideo.HasVideoLinks(x))
-                .Select(x => x.Title).ToArray();
-            
-            if (!string.IsNullOrEmpty(channel))
+                .Select(x => x.Title)
+                .Distinct()
+                .ToArray();
+
+            progressBar.Maximum = gameNames.Length;
+            progressBar.Value = 0;
+            btnSearch.Enabled = false;
+
+            bgWorkerSearch.RunWorkerAsync(new SearchModel
             {
-                var results = youtubeScraperService.GetVideos(channel, gameNames, checkStrictSearch.Checked, (int)numericMaxItemsPerGame.Value);
-                //UpdateResultsCountLabel(results.Count);
+                ChannelName = channel,
+                ExtraQuery = extraQuery,
+                GameNames = gameNames,
+                StrictSearch = checkStrictSearch.Checked,
+                MaxNrOfItemsPerGame = (int)numericMaxItemsPerGame.Value
+            });
+            //var results = GetVideos(channel, extraQuery, gameNames, checkStrictSearch.Checked, (int)numericMaxItemsPerGame.Value);
+            
+        }
 
-                var drawingFirstElement = true;
+        /// <summary>
+        /// Displays search results in the form.
+        /// </summary>
+        /// <param name="searchResults">A dictionary where the key is the game name, and the value is the list of video information objects.</param>
+        private void DisplaySearchResults(Dictionary<string, List<YoutubeVideoInfo>> searchResults)
+        {
+            var drawingFirstElement = true;
 
-                foreach (var game in _selectedGames.OrderBy(x=>x.SortTitleOrTitle))
+            foreach (var game in _selectedGames.OrderBy(x => x.SortTitleOrTitle))
+            {
+                // If the game wasn't skipped
+                if (searchResults.ContainsKey(game.Title))
                 {
-                    var lblGameTitle = new Label {
+                    var lblGameTitle = new Label
+                    {
                         Text = game.Title,
                         Font = new Font("Microsoft Sans Serif", 10, FontStyle.Bold),
                         AutoSize = true,
@@ -66,27 +92,22 @@ namespace OnlineVideoLinks
                     panelVideoResults.Controls.Add(lblGameTitle);
                     drawingFirstElement = false;
 
-                    if (results.ContainsKey(game.Title) && results[game.Title].Count > 0)
+                    if (searchResults[game.Title].Count > 0)
                     {
-                        foreach (var item in results[game.Title])
+                        foreach (var item in searchResults[game.Title])
                         {
                             var ctrl = new UserControls.YoutubeSearchResultCtrl(item);
                             ctrl.DeleteClicked += YoutubeSearchResultCtrl_DeleteClicked;
                             ctrl.Margin = new Padding(20, 3, 3, 3);
-                            //ctrl.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
                             panelVideoResults.Controls.Add(ctrl);
                         }
                     }
                     else
                     {
-                        var reason = "- No Results";
-                        
-                        if (!results.ContainsKey(game.Title))
-                            reason = "- Skipped";
-
+                        // This means the game title wasn't skipped but we found no videos for it
                         panelVideoResults.Controls.Add(new Label
                         {
-                            Text = reason,
+                            Text = "- No Results",
                             AutoSize = true,
                             Margin = new Padding(20, 3, 3, 3)
                         });
@@ -158,6 +179,35 @@ namespace OnlineVideoLinks
                     youtubeCtrl.IsSelected = true;
                 }
             }
+        }
+
+        private void bgWorkerSearch_DoWork(object sender, DoWorkEventArgs e)
+        {
+            var searchModel = e.Argument as SearchModel;
+            var result = new Dictionary<string, List<YoutubeVideoInfo>>();
+            var channelId = youtubeScraperService.GetChannelId(searchModel.ChannelName);
+
+            for (var i = 0; i < searchModel.GameNames.Length; i++)
+            {
+                var gameName = searchModel.GameNames[i];
+                result[gameName] = youtubeScraperService.GetVideos(channelId, searchModel.ExtraQuery, gameName, 
+                    searchModel.StrictSearch, searchModel.MaxNrOfItemsPerGame);
+                bgWorkerSearch.ReportProgress(i + 1);
+
+            }
+
+            e.Result = result;
+        }
+
+        private void bgWorkerSearch_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            progressBar.Value = e.ProgressPercentage;
+        }
+
+        private void bgWorkerSearch_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            DisplaySearchResults(e.Result as Dictionary<string, List<YoutubeVideoInfo>>);
+            btnSearch.Enabled = true;
         }
     }
 }

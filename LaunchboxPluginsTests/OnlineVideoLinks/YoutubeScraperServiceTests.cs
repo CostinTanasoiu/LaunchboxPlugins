@@ -14,7 +14,7 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
         public void CanGetVideos()
         {
             var scraper = new YoutubeScraperService();
-            var results = scraper.GetVideos("SNES drunk", "Superman", true, 3);
+            var results = scraper.GetVideos("SNES drunk", "", "Superman", true, 3);
 
             Assert.NotEmpty(results);
         }

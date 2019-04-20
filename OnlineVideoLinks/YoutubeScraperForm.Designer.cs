@@ -40,6 +40,10 @@
             this.numericMaxItemsPerGame = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.btnSelectAllResults = new System.Windows.Forms.Button();
+            this.txtExtraQuery = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.bgWorkerSearch = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.numericMaxItemsPerGame)).BeginInit();
             this.SuspendLayout();
             // 
@@ -50,7 +54,7 @@
             this.btnCancel.Location = new System.Drawing.Point(309, 602);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(112, 29);
-            this.btnCancel.TabIndex = 6;
+            this.btnCancel.TabIndex = 8;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -61,7 +65,7 @@
             this.btnSaveAll.Location = new System.Drawing.Point(12, 602);
             this.btnSaveAll.Name = "btnSaveAll";
             this.btnSaveAll.Size = new System.Drawing.Size(291, 29);
-            this.btnSaveAll.TabIndex = 5;
+            this.btnSaveAll.TabIndex = 7;
             this.btnSaveAll.Text = "Add selected videos to selected game(s)";
             this.btnSaveAll.UseVisualStyleBackColor = true;
             this.btnSaveAll.Click += new System.EventHandler(this.btnSaveAll_Click);
@@ -98,10 +102,10 @@
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(16, 62);
+            this.btnSearch.Location = new System.Drawing.Point(309, 88);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(75, 30);
-            this.btnSearch.TabIndex = 4;
+            this.btnSearch.Size = new System.Drawing.Size(287, 30);
+            this.btnSearch.TabIndex = 5;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
@@ -124,7 +128,7 @@
             this.checkStrictSearch.Location = new System.Drawing.Point(309, 61);
             this.checkStrictSearch.Name = "checkStrictSearch";
             this.checkStrictSearch.Size = new System.Drawing.Size(427, 21);
-            this.checkStrictSearch.TabIndex = 2;
+            this.checkStrictSearch.TabIndex = 4;
             this.checkStrictSearch.Text = "Show only video results which have the game name in their title";
             this.checkStrictSearch.UseVisualStyleBackColor = true;
             // 
@@ -133,10 +137,10 @@
             this.checkSkipGamesWithVideos.AutoSize = true;
             this.checkSkipGamesWithVideos.Checked = true;
             this.checkSkipGamesWithVideos.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkSkipGamesWithVideos.Location = new System.Drawing.Point(309, 34);
+            this.checkSkipGamesWithVideos.Location = new System.Drawing.Point(16, 61);
             this.checkSkipGamesWithVideos.Name = "checkSkipGamesWithVideos";
             this.checkSkipGamesWithVideos.Size = new System.Drawing.Size(287, 21);
-            this.checkSkipGamesWithVideos.TabIndex = 1;
+            this.checkSkipGamesWithVideos.TabIndex = 3;
             this.checkSkipGamesWithVideos.Text = "Skip games that already have video links";
             this.checkSkipGamesWithVideos.UseVisualStyleBackColor = true;
             // 
@@ -156,7 +160,7 @@
             0});
             this.numericMaxItemsPerGame.Name = "numericMaxItemsPerGame";
             this.numericMaxItemsPerGame.Size = new System.Drawing.Size(67, 22);
-            this.numericMaxItemsPerGame.TabIndex = 3;
+            this.numericMaxItemsPerGame.TabIndex = 2;
             this.numericMaxItemsPerGame.Value = new decimal(new int[] {
             3,
             0,
@@ -179,10 +183,40 @@
             this.btnSelectAllResults.Location = new System.Drawing.Point(12, 569);
             this.btnSelectAllResults.Name = "btnSelectAllResults";
             this.btnSelectAllResults.Size = new System.Drawing.Size(141, 27);
-            this.btnSelectAllResults.TabIndex = 112;
+            this.btnSelectAllResults.TabIndex = 6;
             this.btnSelectAllResults.Text = "✔ Select all results";
             this.btnSelectAllResults.UseVisualStyleBackColor = true;
             this.btnSelectAllResults.Click += new System.EventHandler(this.btnSelectAllResults_Click);
+            // 
+            // txtExtraQuery
+            // 
+            this.txtExtraQuery.Location = new System.Drawing.Point(309, 34);
+            this.txtExtraQuery.Name = "txtExtraQuery";
+            this.txtExtraQuery.Size = new System.Drawing.Size(287, 22);
+            this.txtExtraQuery.TabIndex = 1;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(306, 13);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(131, 17);
+            this.label3.TabIndex = 114;
+            this.label3.Text = "Extra search query:";
+            // 
+            // progressBar
+            // 
+            this.progressBar.Location = new System.Drawing.Point(761, 95);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(263, 23);
+            this.progressBar.TabIndex = 115;
+            // 
+            // bgWorkerSearch
+            // 
+            this.bgWorkerSearch.WorkerReportsProgress = true;
+            this.bgWorkerSearch.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgWorkerSearch_DoWork);
+            this.bgWorkerSearch.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bgWorkerSearch_ProgressChanged);
+            this.bgWorkerSearch.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgWorkerSearch_RunWorkerCompleted);
             // 
             // YoutubeScraperForm
             // 
@@ -191,6 +225,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(1036, 643);
+            this.Controls.Add(this.progressBar);
+            this.Controls.Add(this.txtExtraQuery);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.btnSelectAllResults);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.numericMaxItemsPerGame);
@@ -225,5 +262,9 @@
         private System.Windows.Forms.NumericUpDown numericMaxItemsPerGame;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnSelectAllResults;
+        private System.Windows.Forms.TextBox txtExtraQuery;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ProgressBar progressBar;
+        private System.ComponentModel.BackgroundWorker bgWorkerSearch;
     }
 }

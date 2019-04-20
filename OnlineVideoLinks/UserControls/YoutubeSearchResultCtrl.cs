@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using OnlineVideoLinks.Models;
 using System.Diagnostics;
+using OnlineVideoLinks.Services;
 
 namespace OnlineVideoLinks.UserControls
 {
@@ -32,7 +33,7 @@ namespace OnlineVideoLinks.UserControls
             pictureBox1.Load(videoInfo.Thumbnail);
             lblTitle.Text = videoInfo.Title;
             lblTitle.Links.Add(0, lblTitle.Text.Length, videoInfo.Url);
-            lblSubtitle.Text = $"Channel: {videoInfo.ChannelName} • Author: {videoInfo.Author} • {videoInfo.ViewCount} views • Posted: {videoInfo.PostedWhen} • Duration: {videoInfo.Duration}";
+            lblSubtitle.Text = $"Channel: {videoInfo.ChannelName} • Posted: {videoInfo.PostedWhen} • Duration: {videoInfo.Duration}";
         }
 
         private void YoutubeSearchResult_Load(object sender, EventArgs e)
@@ -78,6 +79,17 @@ namespace OnlineVideoLinks.UserControls
         private void lblTitle_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start(_videoInfo.Url);
+        }
+
+        private void linkDescription_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            var youtubeService = new YoutubeScraperService();
+            var description = youtubeService.GetVideoDescription(_videoInfo.YoutubeVideoId);
+            if(!string.IsNullOrEmpty(description))
+            {
+                var htmlForm = new RtfDescriptionForm();
+                htmlForm.ShowDescription(description);
+            }
         }
     }
 }

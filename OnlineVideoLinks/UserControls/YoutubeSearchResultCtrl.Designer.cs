@@ -36,10 +36,11 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.lblTitle = new System.Windows.Forms.LinkLabel();
-            this.txtStopTime = new OnlineVideoLinks.UserControls.TimeTextBoxCtrl();
-            this.txtStartTime = new OnlineVideoLinks.UserControls.TimeTextBoxCtrl();
             this.txtAltTitle = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.txtStopTime = new OnlineVideoLinks.UserControls.TimeTextBoxCtrl();
+            this.txtStartTime = new OnlineVideoLinks.UserControls.TimeTextBoxCtrl();
+            this.linkDescription = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -120,20 +121,6 @@
             this.lblTitle.Text = "Title";
             this.lblTitle.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblTitle_LinkClicked);
             // 
-            // txtStopTime
-            // 
-            this.txtStopTime.Location = new System.Drawing.Point(527, 73);
-            this.txtStopTime.Name = "txtStopTime";
-            this.txtStopTime.Size = new System.Drawing.Size(66, 22);
-            this.txtStopTime.TabIndex = 2;
-            // 
-            // txtStartTime
-            // 
-            this.txtStartTime.Location = new System.Drawing.Point(316, 73);
-            this.txtStartTime.Name = "txtStartTime";
-            this.txtStartTime.Size = new System.Drawing.Size(66, 22);
-            this.txtStartTime.TabIndex = 1;
-            // 
             // txtAltTitle
             // 
             this.txtAltTitle.Location = new System.Drawing.Point(316, 45);
@@ -150,11 +137,37 @@
             this.label3.TabIndex = 11;
             this.label3.Text = "Alt. Title (optional):";
             // 
+            // txtStopTime
+            // 
+            this.txtStopTime.Location = new System.Drawing.Point(527, 73);
+            this.txtStopTime.Name = "txtStopTime";
+            this.txtStopTime.Size = new System.Drawing.Size(66, 22);
+            this.txtStopTime.TabIndex = 2;
+            // 
+            // txtStartTime
+            // 
+            this.txtStartTime.Location = new System.Drawing.Point(316, 73);
+            this.txtStartTime.Name = "txtStartTime";
+            this.txtStartTime.Size = new System.Drawing.Size(66, 22);
+            this.txtStartTime.TabIndex = 1;
+            // 
+            // linkDescription
+            // 
+            this.linkDescription.AutoSize = true;
+            this.linkDescription.Location = new System.Drawing.Point(188, 95);
+            this.linkDescription.Name = "linkDescription";
+            this.linkDescription.Size = new System.Drawing.Size(122, 17);
+            this.linkDescription.TabIndex = 12;
+            this.linkDescription.TabStop = true;
+            this.linkDescription.Text = "View description...";
+            this.linkDescription.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkDescription_LinkClicked);
+            // 
             // YoutubeSearchResultCtrl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
+            this.Controls.Add(this.linkDescription);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtAltTitle);
             this.Controls.Add(this.lblTitle);
@@ -190,5 +203,6 @@
         private System.Windows.Forms.LinkLabel lblTitle;
         private System.Windows.Forms.TextBox txtAltTitle;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.LinkLabel linkDescription;
     }
 }

@@ -47,12 +47,20 @@ namespace FormsTestProject
                 },
                 new GameMock
                 {
-                    Title = "The Ghoul Patrol"
+                    Title = "Aladdin",
+                    AdditionalApplications = new List<Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication>
+                    {
+                        new AdditionalApplicationMock { Name = "Video: Trailer" }
+                    }
                 },
-                new GameMock
-                {
-                    Title = "Dragon View"
-                }
+                //new GameMock
+                //{
+                //    Title = "The Ghoul Patrol"
+                //},
+                //new GameMock
+                //{
+                //    Title = "Dragon View"
+                //}
             };
 
             var form = new OnlineVideoLinks.YoutubeScraperForm(dummyGames);

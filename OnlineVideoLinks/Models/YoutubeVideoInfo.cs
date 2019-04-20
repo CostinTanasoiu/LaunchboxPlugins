@@ -9,6 +9,7 @@ namespace OnlineVideoLinks.Models
     public class YoutubeVideoInfo
     {
         public string GameSearched { get; set; }
+        public string YoutubeVideoId { get; set; }
         public string Title { get; set; }
         public string Author { get; set; }
         public string ChannelName { get; set; }
