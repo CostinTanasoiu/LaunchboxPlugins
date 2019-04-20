@@ -50,19 +50,15 @@ namespace BulkGenreEditor
 
         private void FormGenreEditor_Load(object sender, EventArgs e)
         {
-            // So far, it seems the only way to retrieve all genres
-            // is to extract them from game entries.
-            var allGames = PluginHelper.DataManager.GetAllGames();
-            var allGenres = allGames.SelectMany(x => x.Genres).Distinct().ToArray();
-            checklistGenres.Items.AddRange(allGenres);
-
-            SetLoading(false);
-
-            // Focusing on the custom genre textbox when showing the form
-            txtCustomGenre.Select();
+            LoadFieldValues();
         }
 
         #region Form event handlers
+
+        private void comboBoxFields_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
 
         private void btnAddGenres_Click(object sender, EventArgs e)
         {
@@ -86,6 +82,20 @@ namespace BulkGenreEditor
         }
 
         #endregion
+
+        private void LoadFieldValues()
+        {
+            // So far, it seems the only way to retrieve all genres
+            // is to extract them from game entries.
+            var allGames = PluginHelper.DataManager.GetAllGames();
+            var allGenres = allGames.SelectMany(x => x.Genres).Distinct().ToArray();
+            checklistGenres.Items.AddRange(allGenres);
+
+            SetLoading(false);
+
+            // Focusing on the custom genre textbox when showing the form
+            txtCustomGenre.Select();
+        }
 
         private void SetLoading(bool displayLoader)
         {

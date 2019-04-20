@@ -38,6 +38,8 @@
             this.picLoader = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.comboBoxFields = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picLoader)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -45,7 +47,7 @@
             // lblInstructions
             // 
             this.lblInstructions.AutoSize = true;
-            this.lblInstructions.Location = new System.Drawing.Point(12, 9);
+            this.lblInstructions.Location = new System.Drawing.Point(12, 53);
             this.lblInstructions.Name = "lblInstructions";
             this.lblInstructions.Size = new System.Drawing.Size(488, 17);
             this.lblInstructions.TabIndex = 0;
@@ -79,9 +81,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.checklistGenres.CheckOnClick = true;
             this.checklistGenres.FormattingEnabled = true;
-            this.checklistGenres.Location = new System.Drawing.Point(12, 39);
+            this.checklistGenres.Location = new System.Drawing.Point(12, 73);
             this.checklistGenres.Name = "checklistGenres";
-            this.checklistGenres.Size = new System.Drawing.Size(532, 242);
+            this.checklistGenres.Size = new System.Drawing.Size(532, 208);
             this.checklistGenres.Sorted = true;
             this.checklistGenres.TabIndex = 5;
             // 
@@ -153,11 +155,34 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Note";
             // 
+            // comboBoxFields
+            // 
+            this.comboBoxFields.FormattingEnabled = true;
+            this.comboBoxFields.Items.AddRange(new object[] {
+            "Genre",
+            "Play Mode"});
+            this.comboBoxFields.Location = new System.Drawing.Point(75, 12);
+            this.comboBoxFields.Name = "comboBoxFields";
+            this.comboBoxFields.Size = new System.Drawing.Size(468, 24);
+            this.comboBoxFields.TabIndex = 11;
+            this.comboBoxFields.SelectedIndexChanged += new System.EventHandler(this.comboBoxFields_SelectedIndexChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 15);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(42, 17);
+            this.label3.TabIndex = 12;
+            this.label3.Text = "Field:";
+            // 
             // FormGenreEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(556, 482);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.comboBoxFields);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.picLoader);
             this.Controls.Add(this.btnCustomGenre);
@@ -191,5 +216,7 @@
         private System.Windows.Forms.PictureBox picLoader;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.ComboBox comboBoxFields;
+        private System.Windows.Forms.Label label3;
     }
 }
