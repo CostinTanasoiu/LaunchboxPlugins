@@ -50,35 +50,35 @@ namespace BulkGenreEditor
 
         private void FormGenreEditor_Load(object sender, EventArgs e)
         {
-            LoadFieldValues();
+            comboBoxFields.Select();
         }
 
         #region Form event handlers
 
         private void comboBoxFields_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            LoadFieldValues();
         }
 
         private void btnAddGenres_Click(object sender, EventArgs e)
         {
-            PluginHelper.DataManager.BackgroundReloadSave(AddGenres);
+            PluginHelper.DataManager.BackgroundReloadSave(AddFieldValues);
         }
 
         private void btnRemoveGenres_Click(object sender, EventArgs e)
         {
-            PluginHelper.DataManager.BackgroundReloadSave(RemoveGenres);
+            PluginHelper.DataManager.BackgroundReloadSave(RemoveFieldValues);
         }
 
         private void btnCustomGenre_Click(object sender, EventArgs e)
         {
-            AddCustomGenre();
+            AddCustomFieldValue();
         }
 
         private void txtCustomGenre_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
-                AddCustomGenre();
+                AddCustomFieldValue();
         }
 
         #endregion
@@ -88,16 +88,36 @@ namespace BulkGenreEditor
             // So far, it seems the only way to retrieve all genres
             // is to extract them from game entries.
             var allGames = PluginHelper.DataManager.GetAllGames();
-            var allGenres = allGames.SelectMany(x => x.Genres).Distinct().ToArray();
-            checklistGenres.Items.AddRange(allGenres);
+            string[] allFieldValues = null;
 
-            SetLoading(false);
+            SetLoadingBar(true);
 
-            // Focusing on the custom genre textbox when showing the form
-            txtCustomGenre.Select();
+            checklistFieldValues.Items.Clear();
+            switch (comboBoxFields.SelectedItem)
+            {
+                case "Genre":
+                    allFieldValues = allGames.SelectMany(x => x.Genres).Distinct().ToArray();
+                    break;
+                case "Play Mode":
+                    allFieldValues = allGames.SelectMany(x => x.PlayModes).Distinct().ToArray();
+                    break;
+            }
+
+            btnAddGenres.Text = "Add " + comboBoxFields.SelectedItem;
+            btnRemoveGenres.Text = "Remove " + comboBoxFields.SelectedItem;
+
+            if (allFieldValues != null)
+            {
+                checklistFieldValues.Items.AddRange(allFieldValues);
+
+                // Focusing on the custom genre textbox when showing the form
+                txtCustomGenre.Select();
+            }
+
+            SetLoadingBar(false);
         }
 
-        private void SetLoading(bool displayLoader)
+        private void SetLoadingBar(bool displayLoader)
         {
             if (displayLoader)
             {
@@ -111,63 +131,93 @@ namespace BulkGenreEditor
             }
         }
 
-        private void AddGenres()
+        private void AddFieldValues()
         {
-            if (checklistGenres.CheckedItems.Count > 0)
+            if (comboBoxFields.SelectedItem != null && checklistFieldValues.CheckedItems.Count > 0)
             {
-                var checkedGenres = checklistGenres.CheckedItems.Cast<string>().ToList();
+                var fieldType = comboBoxFields.SelectedItem.ToString();
+                var checkedValues = checklistFieldValues.CheckedItems.Cast<string>().ToList();
                 foreach (var game in _selectedGames)
                 {
-                    var genres = new List<string>(game.Genres);
-                    foreach (var checkedGenre in checkedGenres)
+                    if (fieldType == "Genre")
                     {
-                        if (!game.Genres.Contains(checkedGenre))
-                            genres.Add(checkedGenre);
+                        var genres = new List<string>(game.Genres);
+                        foreach (var checkedGenre in checkedValues)
+                        {
+                            if (!game.Genres.Contains(checkedGenre))
+                                genres.Add(checkedGenre);
+                        }
+                        genres.Sort();
+                        game.GenresString = string.Join(";", genres);
                     }
-                    genres.Sort();
-                    game.GenresString = string.Join(";", genres);
+                    else if (fieldType == "Play Mode")
+                    {
+                        var playModes = new List<string>(game.PlayModes);
+                        foreach (var checkedPlayMode in checkedValues)
+                        {
+                            if (!game.PlayModes.Contains(checkedPlayMode))
+                                playModes.Add(checkedPlayMode);
+                        }
+                        playModes.Sort();
+                        game.PlayMode = string.Join(";", playModes);
+                    }
                 }
             }
 
             this.Close();
         }
 
-        private void RemoveGenres()
+        private void RemoveFieldValues()
         {
-            if (checklistGenres.CheckedItems.Count > 0)
+            if (comboBoxFields.SelectedItem != null && checklistFieldValues.CheckedItems.Count > 0)
             {
-                var checkedGenres = checklistGenres.CheckedItems.Cast<string>().ToList();
+                var fieldType = comboBoxFields.SelectedItem.ToString();
+                var checkedValues = checklistFieldValues.CheckedItems.Cast<string>().ToList();
                 foreach (var game in _selectedGames)
                 {
-                    var genres = new List<string>(game.Genres);
-                    foreach (var checkedGenre in checkedGenres)
+                    if (fieldType == "Genre")
                     {
-                        genres.Remove(checkedGenre);
+                        var genres = new List<string>(game.Genres);
+                        foreach (var checkedGenre in checkedValues)
+                        {
+                            genres.Remove(checkedGenre);
+                        }
+                        game.GenresString = string.Join("; ", genres);
                     }
-                    game.GenresString = string.Join(";", genres);
+                    else if (fieldType == "Play Mode")
+                    {
+                        var playModes = new List<string>(game.PlayModes);
+                        foreach (var checkedPlayMode in checkedValues)
+                        {
+                            playModes.Remove(checkedPlayMode);
+                        }
+                        game.PlayMode = string.Join("; ", playModes);
+                    }
                 }
             }
 
             this.Close();
         }
 
-        private void AddCustomGenre()
+        private void AddCustomFieldValue()
         {
-            var newGenre = txtCustomGenre.Text;
-            if (!string.IsNullOrWhiteSpace(newGenre))
+            var newFieldValue = txtCustomGenre.Text;
+            if (comboBoxFields.SelectedItem != null && !string.IsNullOrWhiteSpace(newFieldValue))
             {
-                // We don't want the ';' character in the genre name
-                if (newGenre.Contains(';'))
+                var fieldType = comboBoxFields.SelectedItem.ToString();
+
+                // We don't want the ';' character in the field value
+                if (newFieldValue.Contains(';'))
                 {
-                    MessageBox.Show("';' is not a valid character for a genre name.");
+                    MessageBox.Show($"';' is not a valid character for a {fieldType} name.");
                     return;
                 }
 
                 // If the new genre doesn't exist in the list, then add it
-                if (checklistGenres.FindStringExact(newGenre) == ListBox.NoMatches)
-                    checklistGenres.Items.Add(newGenre, true);
+                if (checklistFieldValues.FindStringExact(newFieldValue) == ListBox.NoMatches)
+                    checklistFieldValues.Items.Add(newFieldValue, true);
                 else
-                    MessageBox.Show("Genre already exists in the list.");
+                    MessageBox.Show($"{fieldType} already exists in the list.");
                 txtCustomGenre.Text = "";
             }
         }

@@ -11,6 +11,12 @@ namespace LaunchboxPluginsTests.MockedClasses
 {
     public class GameMock : IGame
     {
+        public GameMock()
+        {
+            AdditionalApplications = new List<IAdditionalApplication>();
+            CustomFields = new List<ICustomField>();
+        }
+
         public Image RatingImage => null;
 
         public string ScreenshotImagePath => null;
@@ -104,9 +110,9 @@ namespace LaunchboxPluginsTests.MockedClasses
         public string CloneOf { get; set; }
         public string GenresString { get; set; }
 
-        public BlockingCollection<string> Genres => new BlockingCollection<string>();
+        public BlockingCollection<string> Genres { get; set; }
 
-        public string[] PlayModes => new string[] { };
+        public string[] PlayModes { get; set; }
 
         public string[] Developers => new string[] { };
 
@@ -116,15 +122,14 @@ namespace LaunchboxPluginsTests.MockedClasses
 
         public string SortTitleOrTitle => Title;
 
+        public List<ICustomField> CustomFields { get; set; }
+
         #region Additional Applications
 
         public List<IAdditionalApplication> AdditionalApplications { get; set; }
 
         public IAdditionalApplication AddNewAdditionalApplication()
         {
-            if (AdditionalApplications == null)
-                AdditionalApplications = new List<IAdditionalApplication>();
-
             var app = new AdditionalApplicationMock();
             AdditionalApplications.Add(app);
             return app;
@@ -132,17 +137,11 @@ namespace LaunchboxPluginsTests.MockedClasses
 
         public IAdditionalApplication[] GetAllAdditionalApplications()
         {
-            if (AdditionalApplications == null)
-                AdditionalApplications = new List<IAdditionalApplication>();
-
             return AdditionalApplications.ToArray();
         }
 
         public bool TryRemoveAdditionalApplication(IAdditionalApplication additionalApplication)
         {
-            if (AdditionalApplications == null)
-                AdditionalApplications = new List<IAdditionalApplication>();
-
             return AdditionalApplications.Remove(additionalApplication);
         }
 
@@ -150,7 +149,9 @@ namespace LaunchboxPluginsTests.MockedClasses
 
         public ICustomField AddNewCustomField()
         {
-            throw new NotImplementedException();
+            var item = new CustomFieldMock();
+            CustomFields.Add(item);
+            return item;
         }
 
         public IMount AddNewMount()
@@ -165,7 +166,7 @@ namespace LaunchboxPluginsTests.MockedClasses
 
         public ICustomField[] GetAllCustomFields()
         {
-            throw new NotImplementedException();
+            return CustomFields.ToArray();
         }
 
         public ImageDetails[] GetAllImagesWithDetails()
@@ -250,7 +251,7 @@ namespace LaunchboxPluginsTests.MockedClasses
 
         public bool TryRemoveCustomField(ICustomField customField)
         {
-            throw new NotImplementedException();
+            return CustomFields.Remove(customField);
         }
 
         public bool TryRemoveMount(IMount mount)

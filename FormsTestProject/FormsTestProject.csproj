@@ -44,6 +44,10 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="Unbroken.LaunchBox.Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=558191e84f56affc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\Unbroken.LaunchBox.Plugins.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -71,6 +75,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BulkGenreEditor\BulkGenreEditor.csproj">
+      <Project>{c578868b-7002-4110-9c3c-8e4e9b19e3f4}</Project>
+      <Name>BulkGenreEditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LaunchboxPluginsTests\LaunchboxPluginsTests.csproj">
+      <Project>{eb8e8202-ec42-472f-ad7b-d180c81deeb7}</Project>
+      <Name>LaunchboxPluginsTests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OnlineVideoLinks\OnlineVideoLinks.csproj">
       <Project>{18eb8079-c8d5-4063-a935-588bd80cb338}</Project>
       <Name>OnlineVideoLinks</Name>

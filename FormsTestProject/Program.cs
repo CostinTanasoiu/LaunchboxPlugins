@@ -20,10 +20,12 @@
 
 using LaunchboxPluginsTests.MockedClasses;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Unbroken.LaunchBox.Plugins.Data;
 
 namespace FormsTestProject
 {
@@ -42,24 +44,40 @@ namespace FormsTestProject
             {
                 new GameMock
                 {
-                    Title = "Death and Return of Superman, The"
+                    Title = "Death and Return of Superman, The",
+                    Genres = new BlockingCollection<string> { "Beat' Em Up" },
+                    PlayModes = new string[] {"Single Player"},
+                    CustomFields = new List<ICustomField>
+                    {
+                        new CustomFieldMock{ Name="Fred", Value="Flintstone" }
+                    }
                 },
                 new GameMock
                 {
-                    Title = "Aladdin"
+                    Title = "Aladdin",
+                    Genres = new BlockingCollection<string>{"Action", "Adventure"},
+                    PlayModes = new string[] {"Single Player"},
+                    CustomFields = new List<ICustomField>
+                    {
+                        new CustomFieldMock{ Name="Barney", Value="Rubble" }
+                    }
                 },
                 new GameMock
                 {
-                    Title = "The Ghoul Patrol"
+                    Title = "The Ghoul Patrol",
+                    Genres = new BlockingCollection<string>(),
+                    PlayModes = new string[] {"Cooperative", "Multiplayer"}
                 },
                 new GameMock
                 {
-                    Title = "Dragon View"
+                    Title = "Dragon View",
+                    Genres = new BlockingCollection<string>{ "Action", "RPG" },
+                    PlayModes = new string[] {"Single Player"}
                 }
             };
 
             //var form = new OnlineVideoLinks.VideoManagerForm();
-            var form = new BulkGenreEditor.FormGenreEditor(dummyGames);
+            var form = new BulkGenreEditor.FormCustomFieldEditor(dummyGames);
             Application.Run(form);
         }
     }

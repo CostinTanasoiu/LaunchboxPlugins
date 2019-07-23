@@ -29,11 +29,11 @@ using Unbroken.LaunchBox.Plugins.Data;
 
 namespace BulkGenreEditor
 {
-    public class PluginMenuItem : IGameMenuItemPlugin
+    public class MenuItemGenresEdit : IGameMenuItemPlugin
     {
         public bool SupportsMultipleGames => true;
 
-        public string Caption => "Bulk Add/Remove Genres...";
+        public string Caption => "Bulk Add/Remove Genres and Play Modes...";
 
         public Image IconImage => Properties.Resources.tag_128;
 
