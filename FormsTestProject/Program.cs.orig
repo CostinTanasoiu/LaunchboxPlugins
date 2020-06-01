@@ -40,20 +40,9 @@ namespace FormsTestProject
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            RunOnlineVideoLinksForm();
-            //RunCustomFieldEditor();
-        }
-
-		static void RunOnlineVideoLinksForm()
-        {
-            var form = new OnlineVideoLinks.VideoManagerForm();
-            Application.Run(form);
-        }
-
-        static void RunCustomFieldEditor()
-        {
+<<<<<<< HEAD
             var dummyGames = new GameMock[]
-{
+            {
                 new GameMock
                 {
                     Title = "Death and Return of Superman, The",
@@ -86,9 +75,18 @@ namespace FormsTestProject
                     Genres = new BlockingCollection<string>{ "Action", "RPG" },
                     PlayModes = new string[] {"Single Player"}
                 }
-};
+            };
 
+            //var form = new OnlineVideoLinks.VideoManagerForm();
             var form = new BulkGenreEditor.FormCustomFieldEditor(dummyGames);
+=======
+            RunOnlineVideoLinksForm();
+        }
+
+        static void RunOnlineVideoLinksForm()
+        {
+            var form = new OnlineVideoLinks.VideoManagerForm();
+>>>>>>> 26b10c2353c18806e95680cb0f0441b5a4c47234
             Application.Run(form);
         }
     }

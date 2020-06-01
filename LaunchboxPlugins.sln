@@ -1,19 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.421
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BulkGenreEditor", "BulkGenreEditor\BulkGenreEditor.csproj", "{C578868B-7002-4110-9C3C-8E4E9B19E3F4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FormsTestProject", "FormsTestProject\FormsTestProject.csproj", "{3F00A658-3DD4-4B00-958F-BEFB61AFA878}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaunchboxPluginsTests", "LaunchboxPluginsTests\LaunchboxPluginsTests.csproj", "{EB8E8202-EC42-472F-AD7B-D180C81DEEB7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineVideoLinks", "OnlineVideoLinks\OnlineVideoLinks.csproj", "{18EB8079-C8D5-4063-A935-588BD80CB338}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{1ECABEDC-9DF9-4E18-921D-907BA150A091}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaunchboxPlugins.Utilities", "LaunchboxPlugins.Utilities\LaunchboxPlugins.Utilities.csproj", "{F04A0BB9-C361-405A-A581-26C41FBCA458}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaunchboxPluginsTests", "LaunchboxPluginsTests\LaunchboxPluginsTests.csproj", "{EB8E8202-EC42-472F-AD7B-D180C81DEEB7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,6 @@ Global
 		{3F00A658-3DD4-4B00-958F-BEFB61AFA878}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F00A658-3DD4-4B00-958F-BEFB61AFA878}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F00A658-3DD4-4B00-958F-BEFB61AFA878}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EB8E8202-EC42-472F-AD7B-D180C81DEEB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EB8E8202-EC42-472F-AD7B-D180C81DEEB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EB8E8202-EC42-472F-AD7B-D180C81DEEB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EB8E8202-EC42-472F-AD7B-D180C81DEEB7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{18EB8079-C8D5-4063-A935-588BD80CB338}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{18EB8079-C8D5-4063-A935-588BD80CB338}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18EB8079-C8D5-4063-A935-588BD80CB338}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -41,6 +37,10 @@ Global
 		{F04A0BB9-C361-405A-A581-26C41FBCA458}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F04A0BB9-C361-405A-A581-26C41FBCA458}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F04A0BB9-C361-405A-A581-26C41FBCA458}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB8E8202-EC42-472F-AD7B-D180C81DEEB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB8E8202-EC42-472F-AD7B-D180C81DEEB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB8E8202-EC42-472F-AD7B-D180C81DEEB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB8E8202-EC42-472F-AD7B-D180C81DEEB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

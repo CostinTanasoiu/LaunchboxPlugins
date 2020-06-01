@@ -127,6 +127,7 @@ namespace LaunchboxPluginsTests.MockedClasses
         #region Additional Applications
 
         public List<IAdditionalApplication> AdditionalApplications { get; set; }
+        public bool? Installed { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public IAdditionalApplication AddNewAdditionalApplication()
         {
