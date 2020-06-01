@@ -46,6 +46,7 @@ namespace FormsTestProject
 
 		static void RunOnlineVideoLinksForm()
         {
+            OnlineVideoLinks.VlcUtilities.VerifyYoutubeAddon();
             var form = new OnlineVideoLinks.VideoManagerForm();
             Application.Run(form);
         }

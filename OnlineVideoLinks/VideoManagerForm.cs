@@ -115,7 +115,7 @@ namespace OnlineVideoLinks
 
         private void PlayVideo(GameVideo gameVideo)
         {
-            var vlcExecutable = Utilities.GetVlcExecutablePath();
+            var vlcExecutable = VlcUtilities.GetVlcExecutablePath();
             var cmdArgs = gameVideo.GetVlcCmdArguments();
             Process.Start(vlcExecutable, cmdArgs);
         }
