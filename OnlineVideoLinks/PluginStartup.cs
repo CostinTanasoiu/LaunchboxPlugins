@@ -18,6 +18,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+using OnlineVideoLinks;
 using OnlineVideoLinks.Models;
 using System;
 using System.Collections.Generic;
@@ -49,7 +50,7 @@ namespace YoutubeGameVideos
             {
                 // Look for Launchbox's VLC distro
                 var vlcEnvironment = Environment.Is64BitOperatingSystem ? "x64" : "x86";
-                var vlcAddonsFolder = $"VLC\\{vlcEnvironment}\\lua\\playlist\\";
+                var vlcAddonsFolder = Utilities.GetVlcAddonsFolderPath();
 
                 var youtubeAddonPath = "";
 
@@ -71,7 +72,7 @@ namespace YoutubeGameVideos
                 {
                     using (var client = new WebClient())
                     {
-                        client.DownloadFile(YoutubeVlcAddonUrl, vlcAddonsFolder + "youtube.luac");
+                        client.DownloadFile(YoutubeVlcAddonUrl, vlcAddonsFolder + "\\youtube.luac");
                     }
                 }
 

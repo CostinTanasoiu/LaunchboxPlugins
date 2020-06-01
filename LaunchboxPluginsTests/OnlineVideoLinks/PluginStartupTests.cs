@@ -37,7 +37,7 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
         {
             // First check that VLC plugin doesn't already exist in the working folder
             var vlcEnvironment = Environment.Is64BitOperatingSystem ? "x64" : "x86";
-            var addonFilePath = $"VLC\\{vlcEnvironment}\\lua\\playlist\\youtube.luac";
+            var addonFilePath = $"ThirdParty\\VLC\\{vlcEnvironment}\\lua\\playlist\\youtube.luac";
             if(File.Exists(addonFilePath))
                 File.Delete(addonFilePath);
 

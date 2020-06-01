@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,14 +30,46 @@ namespace OnlineVideoLinks
     public class Utilities
     {
         /// <summary>
+        /// Retrieves the VLC folder path.
+        /// </summary>
+        /// <returns></returns>
+        public static string GetVlcFolderPath()
+        {
+            var vlcEnvironment = Environment.Is64BitOperatingSystem ? "x64" : "x86";
+            var path = $"ThirdParty\\VLC\\{vlcEnvironment}";
+
+            if (File.Exists(path + "\\vlc.exe"))
+                return path;
+
+            // Otherwise try the old Launchbox location - root level.
+            path = $"VLC\\{vlcEnvironment}\\vlc.exe";
+            if (File.Exists(path + "\\vlc.exe"))
+                return path;
+
+            // Otherwise check whether VLC is installed in Program Files and return that.
+
+            if (Environment.Is64BitOperatingSystem)
+                return $"C:\\Program Files\\VideoLAN\\VLC";
+            else
+                return $"C:\\Program Files (x86)\\VideoLAN\\VLC";
+        }
+
+        /// <summary>
         /// Retrieves the VLC executable path.
         /// </summary>
         /// <returns></returns>
         public static string GetVlcExecutablePath()
         {
-            var vlcEnvironment = Environment.Is64BitOperatingSystem ? "x64" : "x86";
-            return $"VLC\\{vlcEnvironment}\\vlc.exe";
+            return GetVlcFolderPath() + "\\vlc.exe";
         }
 
+        /// <summary>
+        /// Retrieves the VLC Addons folder path.
+        /// </summary>
+        /// <returns></returns>
+        public static string GetVlcAddonsFolderPath()
+        {
+            return GetVlcFolderPath() + "\\lua\\playlist";
+        }
     }
 }

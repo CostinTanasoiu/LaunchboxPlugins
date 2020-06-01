@@ -37,6 +37,11 @@ namespace FormsTestProject
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            RunOnlineVideoLinksForm();
+        }
+
+        static void RunOnlineVideoLinksForm()
+        {
             var form = new OnlineVideoLinks.VideoManagerForm();
             Application.Run(form);
         }

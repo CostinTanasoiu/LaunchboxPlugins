@@ -71,6 +71,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BulkGenreEditor\BulkGenreEditor.csproj">
+      <Project>{c578868b-7002-4110-9c3c-8e4e9b19e3f4}</Project>
+      <Name>BulkGenreEditor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OnlineVideoLinks\OnlineVideoLinks.csproj">
       <Project>{18eb8079-c8d5-4063-a935-588bd80cb338}</Project>
       <Name>OnlineVideoLinks</Name>

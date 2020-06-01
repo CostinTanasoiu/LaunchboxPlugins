@@ -54,6 +54,7 @@ namespace LaunchboxPluginsTests.MockedClasses
         public bool SideA { get; set; }
         public bool SideB { get; set; }
         public int Priority { get; set; }
+        public bool? Installed { get; set; }
 
         public System.Drawing.Image GetIconImage(IGame game)
         {
