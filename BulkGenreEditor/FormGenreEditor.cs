@@ -56,10 +56,12 @@ namespace BulkGenreEditor
             var allGenres = allGames.SelectMany(x => x.Genres).Distinct().ToArray();
             checklistGenres.Items.AddRange(allGenres);
 
+            comboGenres.Items.AddRange(allGenres);
+
             SetLoading(false);
 
             // Focusing on the custom genre textbox when showing the form
-            txtCustomGenre.Select();
+            comboGenres.Select();
         }
 
         #region Form event handlers
@@ -76,13 +78,13 @@ namespace BulkGenreEditor
 
         private void btnCustomGenre_Click(object sender, EventArgs e)
         {
-            AddCustomGenre();
+            //AddCustomGenre();
         }
 
         private void txtCustomGenre_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
-                AddCustomGenre();
+            //if (e.KeyCode == Keys.Enter)
+            //    AddCustomGenre();
         }
 
         #endregion
@@ -143,7 +145,7 @@ namespace BulkGenreEditor
 
         private void AddCustomGenre()
         {
-            var newGenre = txtCustomGenre.Text;
+            var newGenre = comboGenres.Text;
             if (!string.IsNullOrWhiteSpace(newGenre))
             {
                 // We don't want the ';' character in the genre name
@@ -158,7 +160,7 @@ namespace BulkGenreEditor
                     checklistGenres.Items.Add(newGenre, true);
                 else
                     MessageBox.Show("Genre already exists in the list.");
-                txtCustomGenre.Text = "";
+                comboGenres.Text = "";
             }
         }
     }

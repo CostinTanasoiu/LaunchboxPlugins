@@ -33,11 +33,11 @@
             this.btnAddGenres = new System.Windows.Forms.Button();
             this.checklistGenres = new System.Windows.Forms.CheckedListBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.txtCustomGenre = new System.Windows.Forms.TextBox();
             this.btnCustomGenre = new System.Windows.Forms.Button();
             this.picLoader = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.comboGenres = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.picLoader)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -94,16 +94,6 @@
             this.label2.TabIndex = 6;
             this.label2.Text = "Create a new genre:";
             // 
-            // txtCustomGenre
-            // 
-            this.txtCustomGenre.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtCustomGenre.Location = new System.Drawing.Point(12, 316);
-            this.txtCustomGenre.Name = "txtCustomGenre";
-            this.txtCustomGenre.Size = new System.Drawing.Size(485, 22);
-            this.txtCustomGenre.TabIndex = 7;
-            this.txtCustomGenre.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtCustomGenre_KeyDown);
-            // 
             // btnCustomGenre
             // 
             this.btnCustomGenre.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -153,15 +143,25 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Note";
             // 
+            // comboGenres
+            // 
+            this.comboGenres.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboGenres.FormattingEnabled = true;
+            this.comboGenres.Location = new System.Drawing.Point(12, 314);
+            this.comboGenres.Name = "comboGenres";
+            this.comboGenres.Size = new System.Drawing.Size(485, 24);
+            this.comboGenres.TabIndex = 11;
+            // 
             // FormGenreEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(556, 482);
+            this.Controls.Add(this.comboGenres);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.picLoader);
             this.Controls.Add(this.btnCustomGenre);
-            this.Controls.Add(this.txtCustomGenre);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.checklistGenres);
             this.Controls.Add(this.btnAddGenres);
@@ -186,10 +186,10 @@
         private System.Windows.Forms.Button btnAddGenres;
         private System.Windows.Forms.CheckedListBox checklistGenres;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtCustomGenre;
         private System.Windows.Forms.Button btnCustomGenre;
         private System.Windows.Forms.PictureBox picLoader;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.ComboBox comboGenres;
     }
 }
