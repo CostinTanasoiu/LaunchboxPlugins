@@ -114,7 +114,7 @@ namespace OnlineVideoLinks.Models
         {
             var app = game.AddNewAdditionalApplication();
             app.Name = TitleWithPrefix;
-            app.ApplicationPath = Utilities.GetVlcExecutablePath();
+            app.ApplicationPath = VlcUtilities.GetVlcExecutablePath();
             app.CommandLine = GetVlcCmdArguments();
             return app;
         }
@@ -126,7 +126,7 @@ namespace OnlineVideoLinks.Models
         public void UpdateExistingApp(IAdditionalApplication additionalApplication)
         {
             additionalApplication.Name = TitleWithPrefix;
-            additionalApplication.ApplicationPath = Utilities.GetVlcExecutablePath();
+            additionalApplication.ApplicationPath = VlcUtilities.GetVlcExecutablePath();
             additionalApplication.CommandLine = GetVlcCmdArguments();
         }
 
@@ -136,7 +136,7 @@ namespace OnlineVideoLinks.Models
         /// <param name="app">The Additional App entry.</param>
         public static bool IsAppCorrectlySetup(IAdditionalApplication app)
         {
-            if (app.ApplicationPath != Utilities.GetVlcExecutablePath())
+            if (app.ApplicationPath != VlcUtilities.GetVlcExecutablePath())
                 return false;
 
             // Checking if the app's command line string is missing any of the VLC arguments expected by our plugin

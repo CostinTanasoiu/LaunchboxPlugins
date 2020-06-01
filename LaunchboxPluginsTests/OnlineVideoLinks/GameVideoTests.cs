@@ -39,7 +39,7 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
         {
             var additionalAppDummy = new AdditionalApplicationMock
             {
-                ApplicationPath = Utilities.GetVlcExecutablePath(),
+                ApplicationPath = VlcUtilities.GetVlcExecutablePath(),
                 Name = "Video: Presentation",
                 CommandLine = "-f --start-time=337 --stop-time=387 https://youtu.be/q_7KUC6CY6Q"
             };

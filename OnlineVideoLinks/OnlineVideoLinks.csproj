@@ -63,7 +63,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Utilities.cs" />
+    <Compile Include="VlcUtilities.cs" />
     <Compile Include="VideoManagerGameMenuItem.cs" />
     <Compile Include="VideoManagerForm.cs">
       <SubType>Form</SubType>
