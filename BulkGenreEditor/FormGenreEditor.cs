@@ -25,6 +25,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Unbroken.LaunchBox.Plugins;
@@ -34,17 +35,19 @@ namespace BulkGenreEditor
 {
     public partial class FormGenreEditor : Form
     {
+        private readonly IDataManager _launchboxDataManager;
         private IGame[] _selectedGames;
+        private ActionPerformedEnum _actionPerformed = ActionPerformedEnum.None;
 
         /// <summary>
         /// The form constructor.
         /// </summary>
         /// <param name="selectedGames">The list of currently selected games in Launchbox.</param>
-        public FormGenreEditor(IGame[] selectedGames)
+        public FormGenreEditor(IDataManager launchboxDataManager, IGame[] selectedGames)
         {
             InitializeComponent();
-
-            _selectedGames = selectedGames;
+            this._launchboxDataManager = launchboxDataManager;
+            this._selectedGames = selectedGames;
             lblInstructions.Text = string.Format(lblInstructions.Text, selectedGames.Length);
         }
 
@@ -52,10 +55,13 @@ namespace BulkGenreEditor
         {
             // So far, it seems the only way to retrieve all genres
             // is to extract them from game entries.
+#if DEBUG
+            var allGames = PluginHelper.DataManager != null ? PluginHelper.DataManager.GetAllGames() : _selectedGames;
+#else
             var allGames = PluginHelper.DataManager.GetAllGames();
+#endif
             var allGenres = allGames.SelectMany(x => x.Genres).Distinct().ToArray();
             checklistGenres.Items.AddRange(allGenres);
-
             comboGenres.Items.AddRange(allGenres);
 
             SetLoading(false);
@@ -64,46 +70,61 @@ namespace BulkGenreEditor
             comboGenres.Select();
         }
 
-        #region Form event handlers
+#region Form event handlers
 
         private void btnAddGenres_Click(object sender, EventArgs e)
         {
-            PluginHelper.DataManager.BackgroundReloadSave(AddGenres);
+            SetLoading(true);
+            if(PluginHelper.DataManager != null)
+                PluginHelper.DataManager.ReloadIfNeeded();
+            AddSelectedGenres();
+            
+            backgroundWorker.RunWorkerAsync();
         }
 
         private void btnRemoveGenres_Click(object sender, EventArgs e)
         {
-            PluginHelper.DataManager.BackgroundReloadSave(RemoveGenres);
+            SetLoading(true);
+            if (PluginHelper.DataManager != null)
+                PluginHelper.DataManager.ReloadIfNeeded();
+            RemoveSelectedGenres();
+
+            backgroundWorker.RunWorkerAsync();
+        }
+
+        private void comboGenres_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                // We don't want the ';' character in the genre name
+                if (comboGenres.Text.Contains(';'))
+                {
+                    MessageBox.Show("';' is not a valid character for a genre name.");
+                    return;
+                }
+                SelectGenre(comboGenres.Text);
+            }
         }
 
         private void btnCustomGenre_Click(object sender, EventArgs e)
         {
-            //AddCustomGenre();
-        }
-
-        private void txtCustomGenre_KeyDown(object sender, KeyEventArgs e)
-        {
-            //if (e.KeyCode == Keys.Enter)
-            //    AddCustomGenre();
-        }
-
-        #endregion
-
-        private void SetLoading(bool displayLoader)
-        {
-            if (displayLoader)
+            // We don't want the ';' character in the genre name
+            if (comboGenres.Text.Contains(';'))
             {
-                picLoader.Visible = true;
-                this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+                MessageBox.Show("';' is not a valid character for a genre name.");
+                return;
             }
-            else
-            {
-                picLoader.Visible = false;
-                this.Cursor = System.Windows.Forms.Cursors.Default;
-            }
+            SelectGenre(comboGenres.Text);
         }
 
-        private void AddGenres()
+#endregion
+
+#region Public Methods
+
+        /// <summary>
+        /// Adds the selected genres to the loaded games and exits the form.
+        /// </summary>
+        public void AddSelectedGenres()
         {
             if (checklistGenres.CheckedItems.Count > 0)
             {
@@ -119,12 +140,15 @@ namespace BulkGenreEditor
                     genres.Sort();
                     game.GenresString = string.Join(";", genres);
                 }
-            }
 
-            this.Close();
+                _actionPerformed = ActionPerformedEnum.AddedGenres;
+            }
         }
 
-        private void RemoveGenres()
+        /// <summary>
+        /// Removes the selected genres from the loaded games and exits the form.
+        /// </summary>
+        public void RemoveSelectedGenres()
         {
             if (checklistGenres.CheckedItems.Count > 0)
             {
@@ -138,30 +162,106 @@ namespace BulkGenreEditor
                     }
                     game.GenresString = string.Join(";", genres);
                 }
+                _actionPerformed = ActionPerformedEnum.RemovedGenres;
             }
-
-            this.Close();
         }
 
-        private void AddCustomGenre()
+        /// <summary>
+        /// Marks a genre as selected in the checklist.
+        /// If the genre already exists, it will mark it as selected.
+        /// If the genre does not exist, then it will create it and mark it as selected.
+        /// </summary>
+        /// <param name="genre">The name of the genre to select.</param>
+        public void SelectGenre(string genre)
         {
-            var newGenre = comboGenres.Text;
-            if (!string.IsNullOrWhiteSpace(newGenre))
+            genre = genre.Trim();
+            if (!string.IsNullOrWhiteSpace(genre))
             {
-                // We don't want the ';' character in the genre name
-                if (newGenre.Contains(';'))
-                {
-                    MessageBox.Show("';' is not a valid character for a genre name.");
-                    return;
-                }
-
                 // If the new genre doesn't exist in the list, then add it
-                if (checklistGenres.FindStringExact(newGenre) == ListBox.NoMatches)
-                    checklistGenres.Items.Add(newGenre, true);
+                var itemIndex = checklistGenres.FindStringExact(genre);
+                if (itemIndex == ListBox.NoMatches)
+                    itemIndex = checklistGenres.Items.Add(genre, true);
                 else
-                    MessageBox.Show("Genre already exists in the list.");
+                    checklistGenres.SetItemChecked(itemIndex, true);
+                //MessageBox.Show("Genre already exists in the list.");
+
+                CenterAndHighlightChecklistItem(itemIndex);
+
                 comboGenres.Text = "";
             }
+        }
+
+        /// <summary>
+        /// Deselects a genre from the checklist.
+        /// </summary>
+        /// <param name="genre">The name of the genre to select.</param>
+        public void DeselectGenre(string genre)
+        {
+            genre = genre.Trim();
+
+            if (!string.IsNullOrWhiteSpace(genre))
+            {
+                var itemIndex = checklistGenres.FindStringExact(genre);
+                if (itemIndex != ListBox.NoMatches)
+                {
+                    checklistGenres.SetItemChecked(itemIndex, false);
+                }
+            }
+        }
+
+#endregion
+
+        private void SetLoading(bool displayLoader)
+        {
+            if (displayLoader)
+            {
+                progressBar.Visible = true;
+                this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+                this.Enabled = false;
+            }
+            else
+            {
+                progressBar.Visible = false;
+                this.Cursor = System.Windows.Forms.Cursors.Default;
+                this.Enabled = true;
+            }
+        }
+
+        private void CenterAndHighlightChecklistItem(int index)
+        {
+            // Center this item in the checklist and highlight it
+            var indexToScrollTo = index >= 4 ? index - 4 : 0;
+            checklistGenres.TopIndex = indexToScrollTo;
+            checklistGenres.SelectedIndex = index;
+        }
+
+        private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            if (PluginHelper.DataManager != null)
+                PluginHelper.DataManager.Save(true);
+
+#if DEBUG
+            Thread.Sleep(5000);
+#endif
+        }
+
+        private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            switch (_actionPerformed)
+            {
+                case ActionPerformedEnum.AddedGenres:
+                    MessageBox.Show($"{checklistGenres.CheckedItems.Count} genre(s) were added to the {_selectedGames.Length} selected game(s).", "Success!", MessageBoxButtons.OK);
+                    break;
+                case ActionPerformedEnum.RemovedGenres:
+                    MessageBox.Show($"{checklistGenres.CheckedItems.Count} genre(s) were removed from the {_selectedGames.Length} selected game(s).", "Success!", MessageBoxButtons.OK);
+                    break;
+                default:
+                    MessageBox.Show("No actions performed.");
+                    break;
+            }
+
+            SetLoading(false);
+            this.Close();
         }
     }
 }
