@@ -37,7 +37,6 @@ namespace BulkGenreEditor
     {
         private readonly IDataManager _launchboxDataManager;
         private IGame[] _selectedGames;
-        private ActionPerformedEnum _actionPerformed = ActionPerformedEnum.None;
 
         /// <summary>
         /// The form constructor.
@@ -74,21 +73,27 @@ namespace BulkGenreEditor
         private void btnAddGenres_Click(object sender, EventArgs e)
         {
             SetLoading(true);
-            if(PluginHelper.DataManager != null)
-                PluginHelper.DataManager.ReloadIfNeeded();
-            AddSelectedGenres();
-            
-            backgroundWorker.RunWorkerAsync();
+
+            if (PluginHelper.DataManager != null)
+                PluginHelper.DataManager.BackgroundReloadSave(AddSelectedGenres);
+
+            if (checklistGenres.CheckedItems.Count > 0)
+                MessageBox.Show($"{checklistGenres.CheckedItems.Count} genre(s) were added to the {_selectedGames.Length} selected game(s).", "Success!", MessageBoxButtons.OK);
+            else
+                MessageBox.Show("No actions performed.");
         }
 
         private void btnRemoveGenres_Click(object sender, EventArgs e)
         {
             SetLoading(true);
-            if (PluginHelper.DataManager != null)
-                PluginHelper.DataManager.ReloadIfNeeded();
-            RemoveSelectedGenres();
 
-            backgroundWorker.RunWorkerAsync();
+            if (PluginHelper.DataManager != null)
+                PluginHelper.DataManager.BackgroundReloadSave(RemoveSelectedGenres);
+
+            if (checklistGenres.CheckedItems.Count > 0)
+                MessageBox.Show($"{checklistGenres.CheckedItems.Count} genre(s) were removed from the {_selectedGames.Length} selected game(s).", "Success!", MessageBoxButtons.OK);
+            else
+                MessageBox.Show("No actions performed.");
         }
 
         private void multiSelectionBox_SelectionCompleted(object sender, UserControls.MultiSelectionEventArgs e)
@@ -119,9 +124,8 @@ namespace BulkGenreEditor
                     genres.Sort();
                     game.GenresString = string.Join(";", genres);
                 }
-
-                _actionPerformed = ActionPerformedEnum.AddedGenres;
             }
+            this.Close();
         }
 
         /// <summary>
@@ -141,8 +145,8 @@ namespace BulkGenreEditor
                     }
                     game.GenresString = string.Join(";", genres);
                 }
-                _actionPerformed = ActionPerformedEnum.RemovedGenres;
             }
+            this.Close();
         }
 
         /// <summary>
@@ -200,14 +204,10 @@ namespace BulkGenreEditor
             if (displayLoader)
             {
                 progressBar.Visible = true;
-                this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
-                this.Enabled = false;
             }
             else
             {
                 progressBar.Visible = false;
-                this.Cursor = System.Windows.Forms.Cursors.Default;
-                this.Enabled = true;
             }
         }
 
@@ -227,25 +227,6 @@ namespace BulkGenreEditor
 #if DEBUG
             Thread.Sleep(5000);
 #endif
-        }
-
-        private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            switch (_actionPerformed)
-            {
-                case ActionPerformedEnum.AddedGenres:
-                    MessageBox.Show($"{checklistGenres.CheckedItems.Count} genre(s) were added to the {_selectedGames.Length} selected game(s).", "Success!", MessageBoxButtons.OK);
-                    break;
-                case ActionPerformedEnum.RemovedGenres:
-                    MessageBox.Show($"{checklistGenres.CheckedItems.Count} genre(s) were removed from the {_selectedGames.Length} selected game(s).", "Success!", MessageBoxButtons.OK);
-                    break;
-                default:
-                    MessageBox.Show("No actions performed.");
-                    break;
-            }
-
-            SetLoading(false);
-            this.Close();
         }
 
         private void checklistGenres_ItemCheck(object sender, ItemCheckEventArgs e)
