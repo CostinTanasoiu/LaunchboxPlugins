@@ -62,12 +62,11 @@ namespace BulkGenreEditor
 #endif
             var allGenres = allGames.SelectMany(x => x.Genres).Distinct().ToArray();
             checklistGenres.Items.AddRange(allGenres);
-            comboGenres.Items.AddRange(allGenres);
-
             SetLoading(false);
 
+            multiSelectionBox.AutocompleteItems = allGenres.OrderBy(x => x).ToArray();
             // Focusing on the custom genre textbox when showing the form
-            comboGenres.Select();
+            multiSelectionBox.Select();
         }
 
 #region Form event handlers
@@ -92,29 +91,9 @@ namespace BulkGenreEditor
             backgroundWorker.RunWorkerAsync();
         }
 
-        private void comboGenres_KeyUp(object sender, KeyEventArgs e)
+        private void multiSelectionBox_SelectionCompleted(object sender, UserControls.MultiSelectionEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
-            {
-                // We don't want the ';' character in the genre name
-                if (comboGenres.Text.Contains(';'))
-                {
-                    MessageBox.Show("';' is not a valid character for a genre name.");
-                    return;
-                }
-                SelectGenre(comboGenres.Text);
-            }
-        }
-
-        private void btnCustomGenre_Click(object sender, EventArgs e)
-        {
-            // We don't want the ';' character in the genre name
-            if (comboGenres.Text.Contains(';'))
-            {
-                MessageBox.Show("';' is not a valid character for a genre name.");
-                return;
-            }
-            SelectGenre(comboGenres.Text);
+            SelectGenres(e.TextValue);
         }
 
 #endregion
@@ -167,27 +146,32 @@ namespace BulkGenreEditor
         }
 
         /// <summary>
-        /// Marks a genre as selected in the checklist.
+        /// Marks a genre or multiple genres as selected in the checklist.
         /// If the genre already exists, it will mark it as selected.
         /// If the genre does not exist, then it will create it and mark it as selected.
         /// </summary>
-        /// <param name="genre">The name of the genre to select.</param>
-        public void SelectGenre(string genre)
+        /// <param name="genres">The genres to select, separated by semicolons.</param>
+        public void SelectGenres(string genres)
         {
-            genre = genre.Trim();
-            if (!string.IsNullOrWhiteSpace(genre))
+            genres = genres.Trim();
+            if (!string.IsNullOrWhiteSpace(genres))
             {
-                // If the new genre doesn't exist in the list, then add it
-                var itemIndex = checklistGenres.FindStringExact(genre);
-                if (itemIndex == ListBox.NoMatches)
-                    itemIndex = checklistGenres.Items.Add(genre, true);
-                else
-                    checklistGenres.SetItemChecked(itemIndex, true);
-                //MessageBox.Show("Genre already exists in the list.");
+                var genreItems = genres.Split(';')
+                    .Where(x => !string.IsNullOrWhiteSpace(x))
+                    .Select(x => x.Trim());
 
-                CenterAndHighlightChecklistItem(itemIndex);
+                foreach (var genre in genreItems)
+                {
+                    // If the new genre doesn't exist in the list, then add it
+                    var itemIndex = checklistGenres.FindStringExact(genre);
+                    if (itemIndex == ListBox.NoMatches)
+                        itemIndex = checklistGenres.Items.Add(genre, true);
+                    else
+                        checklistGenres.SetItemChecked(itemIndex, true);
 
-                comboGenres.Text = "";
+                    CenterAndHighlightChecklistItem(itemIndex);
+                }
+                multiSelectionBox.Text = "";
             }
         }
 
@@ -262,6 +246,14 @@ namespace BulkGenreEditor
 
             SetLoading(false);
             this.Close();
+        }
+
+        private void checklistGenres_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            var count = e.NewValue == CheckState.Checked 
+                ? checklistGenres.CheckedItems.Count + 1 
+                : checklistGenres.CheckedItems.Count - 1;
+            lblSelectionCount.Text = $"Selected genres: {count}";
         }
     }
 }

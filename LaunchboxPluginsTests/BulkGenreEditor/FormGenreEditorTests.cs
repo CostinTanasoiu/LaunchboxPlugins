@@ -49,7 +49,7 @@ namespace LaunchboxPluginsTests.BulkGenreEditor
             Thread t = new Thread((ThreadStart)(() => {
                 var sutForm = new FormGenreEditor(_launchboxDataManagerMock, selectedGames);
                 foreach (var genre in genres)
-                    sutForm.SelectGenre(genre);
+                    sutForm.SelectGenres(genre);
                 sutForm.AddSelectedGenres();
             }));
 
@@ -89,7 +89,7 @@ namespace LaunchboxPluginsTests.BulkGenreEditor
             Thread t = new Thread((ThreadStart)(() => {
                 var sutForm = new FormGenreEditor(_launchboxDataManagerMock, selectedGames);
                 foreach (var genre in genres)
-                    sutForm.SelectGenre(genre);
+                    sutForm.SelectGenres(genre);
                 sutForm.RemoveSelectedGenres();
             }));
 
