@@ -63,7 +63,7 @@ namespace BulkGenreEditor
 
         private void HandleSelectedGames(IGame[] selectedGames)
         {
-            var form = new FormGenreEditor(selectedGames);
+            var form = new FormGenreEditor(PluginHelper.DataManager, selectedGames);
             form.ShowDialog();
             form.Dispose();
         }

@@ -46,15 +46,17 @@ namespace OnlineVideoLinks
         public static string GetVlcFolderPath()
         {
             var vlcEnvironment = Environment.Is64BitOperatingSystem ? "x64" : "x86";
-            var path = Path.Combine(Application.StartupPath, $"ThirdParty\\VLC\\{vlcEnvironment}");
+            var relativePath = $"ThirdParty\\VLC\\{vlcEnvironment}";
+            var fullPath = Path.Combine(Environment.CurrentDirectory, relativePath);
 
-            if (File.Exists(path + "\\vlc.exe"))
-                return path;
+            if (File.Exists(fullPath + "\\vlc.exe"))
+                return relativePath;
 
             // Otherwise try the old Launchbox location - root level.
-            path = $"VLC\\{vlcEnvironment}\\vlc.exe";
-            if (File.Exists(path + "\\vlc.exe"))
-                return path;
+            relativePath = $"VLC\\{vlcEnvironment}";
+            fullPath = Path.Combine(Environment.CurrentDirectory, relativePath);
+            if (File.Exists(fullPath + "\\vlc.exe"))
+                return relativePath;
 
             // Otherwise check whether VLC is installed in Program Files and return that.
 

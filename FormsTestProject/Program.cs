@@ -18,11 +18,14 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+using LaunchboxPluginsTests.MockedClasses;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Unbroken.LaunchBox.Plugins;
 
 namespace FormsTestProject
 {
@@ -37,13 +40,51 @@ namespace FormsTestProject
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            RunOnlineVideoLinksForm();
+            RunCustomFieldEditor();
+            //RunOnlineVideoLinksForm();
         }
 
         static void RunOnlineVideoLinksForm()
         {
             OnlineVideoLinks.VlcUtilities.VerifyYoutubeAddon();
             var form = new OnlineVideoLinks.VideoManagerForm();
+            Application.Run(form);
+        }
+
+        static void RunCustomFieldEditor()
+        {
+            var dummyGames = new GameMock[]
+            {
+                new GameMock
+                {
+                    Title = "Death and Return of Superman, The",
+                    Genres = new BlockingCollection<string> { "Beat' Em Up" },
+                    PlayModes = new string[] {"Single Player"}
+                },
+                new GameMock
+                {
+                    Title = "Aladdin",
+                    Genres = new BlockingCollection<string>{"Action", "Adventure"},
+                    PlayModes = new string[] {"Single Player"}
+                },
+                new GameMock
+                {
+                    Title = "The Ghoul Patrol",
+                    Genres = new BlockingCollection<string>(),
+                    PlayModes = new string[] {"Cooperative", "Multiplayer"}
+                },
+                new GameMock
+                {
+                    Title = "Dragon View",
+                    Genres = new BlockingCollection<string>{ "Action", "RPG" },
+                    PlayModes = new string[] {"Single Player"}
+                }
+            };
+
+            for (var i = 1; i <= 20; i++)
+                dummyGames.First().Genres.Add($"Test {i:00}");
+
+            var form = new BulkGenreEditor.FormGenreEditor(PluginHelper.DataManager, dummyGames);
             Application.Run(form);
         }
     }
