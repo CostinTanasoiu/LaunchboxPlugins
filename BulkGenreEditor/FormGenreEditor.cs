@@ -72,28 +72,32 @@ namespace BulkGenreEditor
 
         private void btnAddGenres_Click(object sender, EventArgs e)
         {
-            SetLoading(true);
-
-            if (PluginHelper.DataManager != null)
-                PluginHelper.DataManager.BackgroundReloadSave(AddSelectedGenres);
-
             if (checklistGenres.CheckedItems.Count > 0)
+            {
+                SetLoading(true);
+
+                if (PluginHelper.DataManager != null)
+                    PluginHelper.DataManager.BackgroundReloadSave(AddSelectedGenres);
+
                 MessageBox.Show($"{checklistGenres.CheckedItems.Count} genre(s) were added to the {_selectedGames.Length} selected game(s).", "Success!", MessageBoxButtons.OK);
+            }
             else
-                MessageBox.Show("No actions performed.");
+                MessageBox.Show("You have not selected any genres to add.");
         }
 
         private void btnRemoveGenres_Click(object sender, EventArgs e)
         {
-            SetLoading(true);
-
-            if (PluginHelper.DataManager != null)
-                PluginHelper.DataManager.BackgroundReloadSave(RemoveSelectedGenres);
-
             if (checklistGenres.CheckedItems.Count > 0)
+            {
+                SetLoading(true);
+
+                if (PluginHelper.DataManager != null)
+                    PluginHelper.DataManager.BackgroundReloadSave(RemoveSelectedGenres);
+
                 MessageBox.Show($"{checklistGenres.CheckedItems.Count} genre(s) were removed from the {_selectedGames.Length} selected game(s).", "Success!", MessageBoxButtons.OK);
+            }
             else
-                MessageBox.Show("No actions performed.");
+                MessageBox.Show("You have not selected any genres to remove.");
         }
 
         private void multiSelectionBox_SelectionCompleted(object sender, UserControls.MultiSelectionEventArgs e)
