@@ -1,6 +1,8 @@
 # LaunchBox Plugins
 Various plugins for the LaunchBox frontend for PC games and emulated console platforms.
 
+If you find these plugins useful, [BUY ME A BEER!](https://www.paypal.me/CostinsPaypal)
+
 ## Installation details
 
 To install any available plugins, download its corresponding DLL file from the latest [release](https://github.com/SsjCosty/LaunchboxPlugins/releases), and add it to the Plugins subfolder from your main LaunchBox installation folder.
@@ -33,7 +35,11 @@ The new **menu item** is available for one or multiple selected games:
 
 The menu item opens the following dialog form, where you can select the genre(s) that you want to either add or remove from each game:
 
-![Bulk Add/Edit Genres dialog form](https://i.imgur.com/LC1zj0G.png)
+![Bulk Add/Edit Genres dialog form](https://i.imgur.com/mMLqMU5.png)
+
+You can also type in new or existing genres into the search box, which allows multiple entries separated by semicolon (;) and provides real-time suggestions:
+
+![Bulk Add/Edit Genres search box](https://i.imgur.com/9HUg8KV.png)
 
 #### Example:
 
@@ -47,5 +53,3 @@ After using this Bulk Genre Editor to add the genre "Beat 'em up", the result is
 * Game 2 genres: Action; Beat 'em up; Role-Playing;
 * Game 3 genres: Action; Adventure; Beat 'em up;
 
-
-[BUY ME A BEER!](https://www.paypal.me/CostinsPaypal)
