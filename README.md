@@ -25,7 +25,7 @@ In BigBox, the video links can be played from the game's "Additional Apps/Versio
 
 ## Bulk Genre Editor
 
-Currently, LaunchBox allows you to edit genres for games, however if use the default Bulk Edit Wizard to edit genres for multiple selected games then they will all be overwritten with the same exact set of genres. for 
+Currently, LaunchBox allows you to edit genres for games, however if you use the default Bulk Edit Wizard to edit them for multiple games then they will all be overwritten with the same exact set of genres.
 
 This plugin allows you to add or remove genres to multiple games, while keeping each game's existing genres.
 
