@@ -37,7 +37,7 @@ namespace OnlineVideoLinks
 
         public string Caption => "Manage Online Video Links...";
 
-        public System.Drawing.Image IconImage => Properties.Resources.Video;
+        public System.Drawing.Image IconImage => Resources.Video;
 
         public bool ShowInLaunchBox => true;
 

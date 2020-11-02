@@ -124,6 +124,12 @@ namespace LaunchboxPluginsTests.MockedClasses
 
         public List<ICustomField> CustomFields { get; set; }
 
+        public int? MaxPlayers { get; set; }
+
+        public string ReleaseType { get; set; }
+
+        public string VideoUrl { get; set; }
+
         #region Additional Applications
 
         public List<IAdditionalApplication> AdditionalApplications { get; set; }
@@ -254,6 +260,31 @@ namespace LaunchboxPluginsTests.MockedClasses
         }
 
         public bool TryRemoveMount(IMount mount)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IAlternateName[] GetAllAlternateNames()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IAlternateName AddNewAlternateName()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool TryRemoveAlternateNames(IAlternateName alternateName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetVideoPath(string videoType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetNextVideoFilePath(string videoType, string extension)
         {
             throw new NotImplementedException();
         }

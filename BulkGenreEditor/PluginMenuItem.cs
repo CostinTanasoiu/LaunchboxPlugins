@@ -35,7 +35,7 @@ namespace BulkGenreEditor
 
         public string Caption => "Bulk Add/Remove Genres...";
 
-        public Image IconImage => Properties.Resources.tag_128;
+        public Image IconImage => Resources.tag_128;
 
         public bool ShowInLaunchBox => true;
 

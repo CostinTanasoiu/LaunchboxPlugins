@@ -41,7 +41,7 @@ namespace OnlineVideoLinks
         private void HelpForm_Load(object sender, EventArgs e)
         {
             richTextBox1.BackColor = this.BackColor;
-            richTextBox1.Rtf = Properties.Resources.HelpDocument;
+            richTextBox1.Rtf = Resources.HelpDocument;
         }
     }
 }
