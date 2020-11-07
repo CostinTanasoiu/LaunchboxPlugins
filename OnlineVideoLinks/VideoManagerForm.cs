@@ -31,6 +31,7 @@ using System.Windows.Forms;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
 using OnlineVideoLinks.Models;
+using OnlineVideoLinks.Utilities;
 
 namespace OnlineVideoLinks
 {
@@ -115,9 +116,7 @@ namespace OnlineVideoLinks
 
         private void PlayVideo(GameVideo gameVideo)
         {
-            var vlcExecutable = VlcUtilities.GetVlcExecutablePath();
-            var cmdArgs = gameVideo.GetVlcCmdArguments();
-            Process.Start(vlcExecutable, cmdArgs);
+            gameVideo.Play();
         }
 
         private void ResetNewVideoFields()

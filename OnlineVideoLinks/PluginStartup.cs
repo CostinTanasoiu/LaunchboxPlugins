@@ -18,15 +18,10 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-using OnlineVideoLinks;
-using OnlineVideoLinks.Models;
+using log4net;
+using OnlineVideoLinks.Utilities;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
 
@@ -34,40 +29,30 @@ namespace YoutubeGameVideos
 {
     public class PluginStartup : ISystemEventsPlugin
     {
+        ILog _log;
+
+        public PluginStartup()
+        {
+            var logFilePath = Path.Combine(Environment.CurrentDirectory, @"Plugins\OnlineVideoLinks\Log4Net.config");
+            var file = new FileInfo(logFilePath);
+            log4net.Config.XmlConfigurator.Configure(file);
+
+            _log = LogManager.GetLogger(nameof(PluginStartup));
+        }
+
         public void OnEventRaised(string eventType)
         {
             // On startup, we want to check if Launchbox's VLC distribution has the latest YouTube addon.
             if (eventType == SystemEventTypes.LaunchBoxStartupCompleted
                 || eventType == SystemEventTypes.BigBoxStartupCompleted)
             {
-                VlcUtilities.VerifyYoutubeAddon();
-            }
-            else if(eventType == SystemEventTypes.SelectionChanged)
-            {
-                // When a game is selected, I want to check that the additional apps 
-                // for launching our videos are set up correctly.
-                // This ensures that video link apps are always up to date with 
-                // the latest VLC path and command-line arguments.
-                var selectedGames = PluginHelper.StateManager.GetAllSelectedGames();
-                if(selectedGames.Length == 1)
-                {
-                    var game = selectedGames[0];
-                    var videoLinkApps = game.GetAllAdditionalApplications()
-                                        .Where(x => x.Name.StartsWith(GameVideo.TitlePrefix))
-                                        .ToList();
+                _log.Info("Event raised: " + eventType.ToString());
 
-                    if (videoLinkApps.Count != 0)
-                    {
-                        foreach(var app in videoLinkApps)
-                        {
-                            if (!GameVideo.IsAppCorrectlySetup(app))
-                            {
-                                var gameVideo = new GameVideo(app);
-                                gameVideo.UpdateExistingApp(app);
-                            }
-                        }
-                    }
-                }
+                VlcUtilities.VerifyYoutubeAddon();
+                _log.Info("Verified the Youtube addon for VLC.");
+
+                var gameVideoUtility = new GameVideoUtilities();
+                gameVideoUtility.ValidateVideosForAllGames();
             }
         }
     }

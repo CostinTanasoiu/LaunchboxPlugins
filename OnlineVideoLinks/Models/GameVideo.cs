@@ -18,8 +18,10 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+using OnlineVideoLinks.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,13 +33,17 @@ namespace OnlineVideoLinks.Models
     {
         #region Private members
 
-        private static string[] _commonVlcArguments = new string[] { "-f", "--play-and-exit" };
+        private static string[] _commonVlcArguments = new string[] { "-f", "-I dummy --dummy-quiet --video-on-top", "--no-embedded-video", "--play-and-exit" };
+
+        private Process _playingProcess;
 
         #endregion
 
         #region Public properties
 
         public const string TitlePrefix = "Video: ";
+        public const string GamesDbVideoTitleWithPrefix = "Video: Playthrough";
+        public const string GamesDbVideoTitleNoPrefix = "Playthrough";
 
         public string Title { get; set; }
 
@@ -103,6 +109,24 @@ namespace OnlineVideoLinks.Models
 
             cmdArgs += " " + VideoPath;
             return cmdArgs;
+        }
+
+        /// <summary>
+        /// Plays this video.
+        /// </summary>
+        public void Play()
+        {
+            var vlcExecutable = VlcUtilities.GetVlcExecutablePath();
+            var cmdArgs = GetVlcCmdArguments();
+            _playingProcess = Process.Start(vlcExecutable, cmdArgs);
+        }
+
+        public void StopPlaying()
+        {
+            if(_playingProcess != null)
+            {
+                _playingProcess.Kill();
+            }
         }
 
         /// <summary>

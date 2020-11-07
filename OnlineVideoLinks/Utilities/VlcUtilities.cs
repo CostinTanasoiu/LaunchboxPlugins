@@ -27,7 +27,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace OnlineVideoLinks
+namespace OnlineVideoLinks.Utilities
 {
     public class VlcUtilities
     {
@@ -91,7 +91,7 @@ namespace OnlineVideoLinks
         {
             // Look for Launchbox's VLC distro
             var vlcEnvironment = Environment.Is64BitOperatingSystem ? "x64" : "x86";
-            var vlcAddonsFolder = VlcUtilities.GetVlcAddonsFolderPath();
+            var vlcAddonsFolder = GetVlcAddonsFolderPath();
 
             var youtubeAddonPath = "";
 

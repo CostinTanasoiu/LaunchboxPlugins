@@ -26,6 +26,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Unbroken.LaunchBox.Plugins;
+using Unbroken.LaunchBox.Plugins.Data;
 
 namespace FormsTestProject
 {
@@ -41,14 +42,35 @@ namespace FormsTestProject
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            RunCustomFieldEditor();
-            //RunOnlineVideoLinksForm();
+            //RunCustomFieldEditor();
+            RunOnlineVideoLinksForm();
         }
 
         static void RunOnlineVideoLinksForm()
         {
-            OnlineVideoLinks.VlcUtilities.VerifyYoutubeAddon();
-            var form = new OnlineVideoLinks.VideoManagerForm();
+            //OnlineVideoLinks.VlcUtilities.VerifyYoutubeAddon();
+            //var form = new OnlineVideoLinks.VideoManagerForm();
+            var form = new OnlineVideoLinks.VideoSelectorForm(new GameMock
+            {
+                Title = "Death and Return of Superman, The",
+                Genres = new BlockingCollection<string> { "Beat' Em Up" },
+                PlayModes = new string[] { "Single Player" },
+                AdditionalApplications = new List<IAdditionalApplication>()
+                {
+                    new AdditionalApplicationMock
+                    {
+                        Name = "Video: Longplay",
+                        ApplicationPath = @"C:\Programs\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = "https://youtu.be/yka30n1D6L0"
+                    },
+                    new AdditionalApplicationMock
+                    {
+                        Name = "Video: Is Death and Return of Superman Worth Playing Today?",
+                        ApplicationPath = @"C:\Programs\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = "https://youtu.be/7hfYthWLJsA"
+                    }
+                }
+            });
             Application.Run(form);
         }
 
