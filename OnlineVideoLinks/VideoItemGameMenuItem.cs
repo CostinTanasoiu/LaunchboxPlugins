@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
+using YoutubeGameVideos;
 
 namespace OnlineVideoLinks
 {
@@ -17,23 +18,24 @@ namespace OnlineVideoLinks
 
         public Image IconImage => Resources.Video;
 
-        public bool ShowInLaunchBox => false;
+        public bool ShowInLaunchBox => true;
 
         public bool ShowInBigBox => true;
 
         public bool GetIsValidForGame(IGame selectedGame)
         {
-            return GameVideoUtilities.DoesGameHaveVideos(selectedGame);
+            return GameVideoUtility.DoesGameHaveVideos(selectedGame) && !PluginStartup.StartupFailed;
         }
 
         public bool GetIsValidForGames(IGame[] selectedGames)
         {
-            return false;
+            return !PluginStartup.StartupFailed;
         }
 
         public void OnSelected(IGame selectedGame)
         {
-            var form = new VideoSelectorForm(selectedGame);
+            var form = new VideoSelectorForm(selectedGame, 
+                new GameVideoUtility(), new GamepadXinputProvider());
             form.ShowDialog();
         }
 

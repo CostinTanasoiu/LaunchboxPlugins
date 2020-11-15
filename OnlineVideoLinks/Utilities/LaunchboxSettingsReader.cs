@@ -19,17 +19,39 @@ namespace OnlineVideoLinks.Utilities
             {
                 if(_controllerSettings == null)
                 {
-                    var xml = GetSettingsDocument();
                     _controllerSettings = new ControllerSettings();
 
-                    _controllerSettings.ControllerSelectButton =
-                        GetNodeIntValue(xml, "LaunchBox/Settings/ControllerSelectButton");
+                    var xml = GetSettingsDocument();
+                    if (xml != null)
+                    {
+                        _controllerSettings.ControllerSelectButton =
+                            GetNodeIntValue(xml, "LaunchBox/Settings/ControllerSelectButton");
 
-                    _controllerSettings.ControllerBackButton =
-                        GetNodeIntValue(xml, "LaunchBox/Settings/ControllerBackButton");
+                        _controllerSettings.ControllerBackButton =
+                            GetNodeIntValue(xml, "LaunchBox/Settings/ControllerBackButton");
+                    }
                 }
 
                 return _controllerSettings;
+            }
+        }
+
+        private static string _steamApiKey;
+        public static string SteamApiKey
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_steamApiKey))
+                {
+                    var xml = GetSettingsDocument();
+                    if (xml != null)
+                    {
+                        var node = xml.SelectSingleNode("LaunchBox/Settings/ControllerSelectButton");
+                        if (node != null)
+                            _steamApiKey = node.Value;
+                    }
+                }
+                return _steamApiKey;
             }
         }
 
@@ -37,11 +59,16 @@ namespace OnlineVideoLinks.Utilities
         {
             var doc = new XmlDocument();
 
-            var filename = PluginHelper.StateManager.IsBigBox
+            var filename = PluginHelper.StateManager != null && PluginHelper.StateManager.IsBigBox
                 ? "Data/BigBoxSettings.xml"
                 : "Data/Settings.xml";
-            doc.Load(filename);
-            return doc;
+            
+            if (File.Exists(filename))
+            {
+                doc.Load(filename);
+                return doc;
+            }
+            return null;
         }
 
         private static int GetNodeIntValue(XmlDocument xml, string xpath)

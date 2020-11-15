@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Unbroken.LaunchBox.Plugins.Data;
 
@@ -33,9 +34,7 @@ namespace OnlineVideoLinks.Models
     {
         #region Private members
 
-        private static string[] _commonVlcArguments = new string[] { "-f", "-I dummy --dummy-quiet --video-on-top", "--no-embedded-video", "--play-and-exit" };
-
-        private Process _playingProcess;
+        private static string[] _commonVlcArguments = new string[] { "-f", "--qt-start-minimized --qt-notification=0", "--play-and-exit" };
 
         #endregion
 
@@ -109,24 +108,6 @@ namespace OnlineVideoLinks.Models
 
             cmdArgs += " " + VideoPath;
             return cmdArgs;
-        }
-
-        /// <summary>
-        /// Plays this video.
-        /// </summary>
-        public void Play()
-        {
-            var vlcExecutable = VlcUtilities.GetVlcExecutablePath();
-            var cmdArgs = GetVlcCmdArguments();
-            _playingProcess = Process.Start(vlcExecutable, cmdArgs);
-        }
-
-        public void StopPlaying()
-        {
-            if(_playingProcess != null)
-            {
-                _playingProcess.Kill();
-            }
         }
 
         /// <summary>

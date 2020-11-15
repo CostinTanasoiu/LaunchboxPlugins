@@ -10,7 +10,17 @@ using System.Threading.Tasks;
 
 namespace OnlineVideoLinks.Utilities
 {
-    public class GamepadXinputProvider
+    public interface IGamepadXinputProvider
+    {
+        bool IsGamepadConnected { get; }
+
+        event EventHandler<XInputEventArgs> ButtonPressed;
+
+        void StartListening();
+        void StopListening();
+    }
+
+    public class GamepadXinputProvider : IGamepadXinputProvider
     {
         ILog _log = LogManager.GetLogger(nameof(GamepadXinputProvider));
         Controller[] _controllers;
@@ -19,21 +29,38 @@ namespace OnlineVideoLinks.Utilities
 
         public event EventHandler<XInputEventArgs> ButtonPressed;
 
+        public bool IsGamepadConnected
+        {
+            get
+            {
+                return _controllers.Any(x => x.IsConnected);
+            }
+        }
+
         public GamepadXinputProvider()
         {
             // Initialize XInput
-            _controllers = new[] { 
-                new Controller(UserIndex.One), 
-                new Controller(UserIndex.Two), 
-                new Controller(UserIndex.Three), 
+            _controllers = new[] {
+                new Controller(UserIndex.One),
+                new Controller(UserIndex.Two),
+                new Controller(UserIndex.Three),
                 new Controller(UserIndex.Four) };
 
             _log.Info($"Found {_controllers.Count(x => x.IsConnected)} XInput controllers.");
+        }
 
+        /// <summary>
+        /// Starts listening to gamepad events.
+        /// </summary>
+        public void StartListening()
+        {
             timer = new Timer(new TimerCallback(TimerTick), null, 0, 100);
         }
 
-        public void TurnOff()
+        /// <summary>
+        /// Stops listening to gamepad events.
+        /// </summary>
+        public void StopListening()
         {
             timer.Dispose();
         }
@@ -55,7 +82,7 @@ namespace OnlineVideoLinks.Utilities
                                 var btnValue = (int)state.Gamepad.Buttons;
                                 _log.Info($"XInput pressed button '{state.Gamepad.Buttons}'");
 
-                                ButtonPressed?.Invoke(this, new XInputEventArgs { ButtonPressed = state.Gamepad.Buttons });
+                                ButtonPressed?.Invoke(this, new XInputEventArgs(state.Gamepad.Buttons));
                             }
                         }
 

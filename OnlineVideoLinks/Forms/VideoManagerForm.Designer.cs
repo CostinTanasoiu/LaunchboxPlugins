@@ -81,14 +81,14 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.groupBox1.Size = new System.Drawing.Size(772, 192);
+            this.groupBox1.Size = new System.Drawing.Size(773, 192);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Add new video";
             // 
             // txtStopTime
             // 
-            this.txtStopTime.Location = new System.Drawing.Point(700, 88);
+            this.txtStopTime.Location = new System.Drawing.Point(699, 88);
             this.txtStopTime.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtStopTime.Name = "txtStopTime";
             this.txtStopTime.Size = new System.Drawing.Size(66, 27);
@@ -97,7 +97,7 @@
             // 
             // txtStartTime
             // 
-            this.txtStartTime.Location = new System.Drawing.Point(700, 51);
+            this.txtStartTime.Location = new System.Drawing.Point(699, 51);
             this.txtStartTime.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtStartTime.Name = "txtStartTime";
             this.txtStartTime.Size = new System.Drawing.Size(66, 27);
@@ -107,7 +107,7 @@
             // linkMoreInfo
             // 
             this.linkMoreInfo.AutoSize = true;
-            this.linkMoreInfo.Location = new System.Drawing.Point(350, 155);
+            this.linkMoreInfo.Location = new System.Drawing.Point(367, 155);
             this.linkMoreInfo.Name = "linkMoreInfo";
             this.linkMoreInfo.Size = new System.Drawing.Size(74, 20);
             this.linkMoreInfo.TabIndex = 12;
@@ -127,13 +127,15 @@
             // btnTestNewVideo
             // 
             this.btnTestNewVideo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnTestNewVideo.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.btnTestNewVideo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTestNewVideo.Location = new System.Drawing.Point(536, 140);
             this.btnTestNewVideo.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnTestNewVideo.Name = "btnTestNewVideo";
             this.btnTestNewVideo.Size = new System.Drawing.Size(112, 36);
             this.btnTestNewVideo.TabIndex = 4;
             this.btnTestNewVideo.Text = "Test";
-            this.btnTestNewVideo.UseVisualStyleBackColor = true;
+            this.btnTestNewVideo.UseVisualStyleBackColor = false;
             this.btnTestNewVideo.Click += new System.EventHandler(this.btnTestNewVideo_Click);
             // 
             // label6
@@ -151,7 +153,7 @@
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label5.Location = new System.Drawing.Point(503, 26);
+            this.label5.Location = new System.Drawing.Point(503, 27);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(127, 16);
             this.label5.TabIndex = 6;
@@ -294,7 +296,7 @@
             // btnSaveAll
             // 
             this.btnSaveAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnSaveAll.Location = new System.Drawing.Point(12, 492);
+            this.btnSaveAll.Location = new System.Drawing.Point(11, 492);
             this.btnSaveAll.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnSaveAll.Name = "btnSaveAll";
             this.btnSaveAll.Size = new System.Drawing.Size(112, 36);
@@ -316,14 +318,6 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // VideoManagerForm
-            // 
-            this.AcceptButton = this.btnSaveAll;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(797, 544);
-            // 
             // gridVideos
             // 
             this.gridVideos.AllowUserToAddRows = false;
@@ -339,15 +333,23 @@
             this.StopTime,
             this.Delete,
             this.Play});
-            this.gridVideos.Location = new System.Drawing.Point(13, 254);
+            this.gridVideos.Location = new System.Drawing.Point(13, 253);
             this.gridVideos.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.gridVideos.Name = "gridVideos";
             this.gridVideos.RowHeadersWidth = 51;
-            this.gridVideos.Size = new System.Drawing.Size(772, 224);
+            this.gridVideos.Size = new System.Drawing.Size(773, 224);
             this.gridVideos.TabIndex = 100;
             this.gridVideos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridVideos_CellContentClick);
             this.gridVideos.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.gridVideos_CellValidating);
             this.gridVideos.RowValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridVideos_RowValidated);
+            // 
+            // VideoManagerForm
+            // 
+            this.AcceptButton = this.btnSaveAll;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnCancel;
+            this.ClientSize = new System.Drawing.Size(799, 552);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSaveAll);
             this.Controls.Add(this.lblGridError);
@@ -359,7 +361,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(815, 591);
+            this.MinimumSize = new System.Drawing.Size(815, 588);
             this.Name = "VideoManagerForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "GameVideoManagerForm";

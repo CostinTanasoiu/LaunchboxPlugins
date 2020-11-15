@@ -22,6 +22,7 @@ using log4net;
 using OnlineVideoLinks.Utilities;
 using System;
 using System.IO;
+using System.Reflection;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
 
@@ -31,28 +32,49 @@ namespace YoutubeGameVideos
     {
         ILog _log;
 
+        public static bool StartupFailed { get; set; }
+
         public PluginStartup()
         {
-            var logFilePath = Path.Combine(Environment.CurrentDirectory, @"Plugins\OnlineVideoLinks\Log4Net.config");
-            var file = new FileInfo(logFilePath);
+            var log4NetConfigPath = Path.Combine(GeneralUtilities.PluginDirectory, "Log4Net.config");
+            var file = new FileInfo(log4NetConfigPath);
+
+            log4net.GlobalContext.Properties["PluginDirectory"] = GeneralUtilities.PluginDirectory;
             log4net.Config.XmlConfigurator.Configure(file);
 
             _log = LogManager.GetLogger(nameof(PluginStartup));
+
+            if (!VlcUtilities.IsVlcInstalled())
+            {
+                _log.Error("VLC was not found. Turning off plugin.");
+                StartupFailed = true;
+            }
         }
 
         public void OnEventRaised(string eventType)
         {
+            if (StartupFailed)
+                return;
+
             // On startup, we want to check if Launchbox's VLC distribution has the latest YouTube addon.
             if (eventType == SystemEventTypes.LaunchBoxStartupCompleted
                 || eventType == SystemEventTypes.BigBoxStartupCompleted)
             {
                 _log.Info("Event raised: " + eventType.ToString());
 
-                VlcUtilities.VerifyYoutubeAddon();
-                _log.Info("Verified the Youtube addon for VLC.");
+                try
+                {
+                    VlcUtilities.VerifyYoutubeAddon();
+                    _log.Info("Verified the Youtube addon for VLC.");
 
-                var gameVideoUtility = new GameVideoUtilities();
-                gameVideoUtility.ValidateVideosForAllGames();
+                    var gameVideoUtility = new GameVideoUtility();
+                    gameVideoUtility.ValidateVideosForAllGames();
+                }
+                catch (Exception ex)
+                {
+                    _log.Error("Startup failed. Turning off plugin.", ex);
+                    StartupFailed = true;
+                }
             }
         }
     }
