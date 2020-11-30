@@ -1,22 +1,27 @@
 ﻿using log4net;
 using OnlineVideoLinks.Models;
 using OnlineVideoLinks.Utilities;
-using SharpDX.DirectInput;
 using SharpDX.XInput;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Windows.Forms;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
 
-namespace OnlineVideoLinks
+namespace OnlineVideoLinks.WPF
 {
-    public partial class VideoSelectorForm : Form
+    /// <summary>
+    /// Interaction logic for VideoSelectorWindow.xaml
+    /// </summary>
+    public partial class VideoSelectorWindow : Window
     {
         ILog _log = LogManager.GetLogger(nameof(VideoSelectorForm));
         IGame _game;
@@ -25,8 +30,8 @@ namespace OnlineVideoLinks
         //GamepadDinputProvider _gamepadDinputProvider;
         IGamepadXinputProvider _gamepadXinputProvider;
 
-        public VideoSelectorForm(IGame game, 
-            IGameVideoUtility gameVideoUtilities, 
+        public VideoSelectorWindow(IGame game,
+            IGameVideoUtility gameVideoUtilities,
             IGamepadXinputProvider gamepadXinputProvider)
         {
             InitializeComponent();
@@ -36,28 +41,47 @@ namespace OnlineVideoLinks
             _gamepadXinputProvider = gamepadXinputProvider;
 
             var customVideos = _gameVideoUtilities.GetGameVideos(_game);
-            listBoxVideos.DataSource = customVideos;
-            listBoxVideos.DisplayMember = "Title";
+            listBoxVideos.ItemsSource = customVideos;
             listBoxVideos.SelectedIndex = 0;
+            listBoxVideos.Focus();
+
+            listBoxVideos.SelectionChanged += (s, e) =>
+                listBoxVideos.ScrollIntoView(listBoxVideos.SelectedItem);
 
             _gamepadXinputProvider.ButtonPressed += _gamepadXinputProvider_ButtonPressed;
             _gamepadXinputProvider.StartListening();
+
+            if (PluginHelper.StateManager?.IsBigBox == true)
+                Cursor = Cursors.None;
         }
 
-        private void VideoSelectorForm_Load(object sender, EventArgs e)
+        private void Window_ContentRendered(object sender, EventArgs e)
         {
-            if(PluginHelper.StateManager?.IsBigBox == true)
-                Cursor.Hide();
+            listBoxVideos.Height = GetItemHeight(listBoxVideos) * 3;
+        }
+
+        private double GetItemHeight(ListBox myListBox)
+        {
+            double itemHeight = 0.0;
+
+            if (myListBox.ItemContainerGenerator != null)
+            {
+                ListBoxItem item = myListBox.ItemContainerGenerator.ContainerFromIndex(0) as ListBoxItem;
+                if (item != null)
+                {
+                    itemHeight = item.ActualHeight + item.Margin.Top + item.Margin.Bottom;
+                }
+            }
+
+            return itemHeight;
         }
 
         private void _gamepadXinputProvider_ButtonPressed(object sender, Models.XInputEventArgs e)
         {
-            if (this.IsHandleCreated)
-                Invoke(new Action(() =>
-                {
-                    HandleXInput_ButtonPressed(e.ButtonPressed);
-                }));
-            else HandleXInput_ButtonPressed(e.ButtonPressed);
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                HandleXInput_ButtonPressed(e.ButtonPressed);
+            }));
         }
 
         private void HandleXInput_ButtonPressed(GamepadButtonFlags buttonPressed)
@@ -87,26 +111,33 @@ namespace OnlineVideoLinks
                     if (!_gameVideoUtilities.IsPlaying() && listBoxVideos.SelectedIndex > 0)
                         listBoxVideos.SelectedIndex--;
                     break;
+                case GamepadButtonFlags.DPadLeft:
+                    if(_gameVideoUtilities.IsPlaying())
+                    {
+
+                    }
+                    break;
+                case GamepadButtonFlags.DPadRight:
+                    break;
             }
         }
 
         private void listBoxVideos_KeyUp(object sender, KeyEventArgs e)
         {
             // Translating keys to gamepad buttons.
-            if (e.KeyCode == Keys.Enter)
+            if (e.Key == Key.Enter)
                 HandleXInput_ButtonPressed(GamepadButtonFlags.A);
-            else if (e.KeyCode == Keys.Escape)
+            else if (e.Key == Key.Escape)
                 HandleXInput_ButtonPressed(GamepadButtonFlags.B);
         }
 
-        private void VideoSelectorForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (PluginHelper.StateManager?.IsBigBox == true)
-                Cursor.Show();
+                Cursor = Cursors.Arrow;
 
             //_gamepadDinputProvider.TurnOff();
             _gamepadXinputProvider.StopListening();
-            _log.Info("Video Selector Form closing. Gamepad provider turned off.");
         }
     }
 }

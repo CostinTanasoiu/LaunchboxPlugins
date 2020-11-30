@@ -3,14 +3,29 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Enter_Alt_Key_Light.png" />
+    <None Remove="Resources\Esc_Key_Light.png" />
+    <None Remove="Resources\HelpDocument.rtf" />
+    <None Remove="Resources\icons8-add-48.png" />
+    <None Remove="Resources\Video.png" />
+    <None Remove="Resources\XboxOne_A.png" />
+    <None Remove="Resources\XboxOne_B.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.27" />
+    <PackageReference Include="LibVLCSharp" Version="3.4.9" />
+    <PackageReference Include="LibVLCSharp.WPF" Version="3.4.9" />
     <PackageReference Include="log4net" Version="2.0.12" />
+    <PackageReference Include="MaterialDesignThemes" Version="3.2.0" />
     <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />
     <PackageReference Include="SharpDX.XInput" Version="4.2.0" />
     <PackageReference Include="SteamWebAPI2" Version="4.2.6" />
+    <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.11" />
     <PackageReference Include="YoutubeExplode" Version="5.1.8" />
   </ItemGroup>
 
@@ -18,6 +33,16 @@
     <Reference Include="Unbroken.LaunchBox.Plugins">
       <HintPath>..\_Dependencies\Unbroken.LaunchBox.Plugins.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Enter_Alt_Key_Light.png" />
+    <Resource Include="Resources\Esc_Key_Light.png" />
+    <Resource Include="Resources\HelpDocument.rtf" />
+    <Resource Include="Resources\icons8-add-48.png" />
+    <Resource Include="Resources\Video.png" />
+    <Resource Include="Resources\XboxOne_A.png" />
+    <Resource Include="Resources\XboxOne_B.png" />
   </ItemGroup>
 
   <ItemGroup>

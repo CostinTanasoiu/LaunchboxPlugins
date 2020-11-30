@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MaterialDesignThemes" Version="3.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LaunchboxPluginsTests\LaunchboxPluginsTests.csproj" />
+    <ProjectReference Include="..\OnlineVideoLinks\OnlineVideoLinks.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Unbroken.LaunchBox.Plugins">
+      <HintPath>..\_Dependencies\Unbroken.LaunchBox.Plugins.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

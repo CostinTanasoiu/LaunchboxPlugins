@@ -1,5 +1,6 @@
 ﻿using log4net;
 using OnlineVideoLinks.Models;
+using OnlineVideoLinks.WPF;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,6 +27,7 @@ namespace OnlineVideoLinks.Utilities
         ILog _log = LogManager.GetLogger(nameof(GameVideoUtility));
 
         private Process _playingProcess;
+        private VideoPlayerWindow _player;
 
         public GameVideo CurrentlyPlayingVideo { get; set; }
 
@@ -78,13 +80,16 @@ namespace OnlineVideoLinks.Utilities
         {
             var vlcExecutable = VlcUtilities.GetVlcExecutablePath();
             var cmdArgs = video.GetVlcCmdArguments();
-            _playingProcess = Process.Start(new ProcessStartInfo
-            {
-                FileName = vlcExecutable,
-                Arguments = cmdArgs,
-                UseShellExecute = false,
-                RedirectStandardInput = true
-            });
+            //_playingProcess = Process.Start(new ProcessStartInfo
+            //{
+            //    FileName = vlcExecutable,
+            //    Arguments = cmdArgs,
+            //    UseShellExecute = false,
+            //    RedirectStandardInput = true
+            //});
+
+            _player = new VideoPlayerWindow();
+            _player.ShowDialog();
 
             CurrentlyPlayingVideo = video;
 
@@ -97,15 +102,22 @@ namespace OnlineVideoLinks.Utilities
         /// </summary>
         public void StopPlaying()
         {
-            if (_playingProcess != null)
+            if (_player != null)
             {
                 //_playingProcess.Kill();
-                _playingProcess.CloseMainWindow();
-                _playingProcess.Close();
-                _playingProcess = null;
+                //_playingProcess.CloseMainWindow();
+                //_playingProcess.Close();
+                //_playingProcess = null;
+                _player.Close();
+                _player = null;
 
                 CurrentlyPlayingVideo = null;
             }
+        }
+
+        public void SendKeystroke(char keyCharacter)
+        {
+            _playingProcess.StandardInput.Write(keyCharacter);
         }
 
         /// <summary>
@@ -113,7 +125,7 @@ namespace OnlineVideoLinks.Utilities
         /// </summary>
         public bool IsPlaying()
         {
-            return _playingProcess != null && !_playingProcess.HasExited;
+            return _player != null;
         }
 
         #region Private Methods

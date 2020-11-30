@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineVideoLinks", "OnlineV
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{1ECABEDC-9DF9-4E18-921D-907BA150A091}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfTestProject", "WpfTestProject\WpfTestProject.csproj", "{53C14080-C406-4548-A35E-1529061374EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{18EB8079-C8D5-4063-A935-588BD80CB338}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18EB8079-C8D5-4063-A935-588BD80CB338}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18EB8079-C8D5-4063-A935-588BD80CB338}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53C14080-C406-4548-A35E-1529061374EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53C14080-C406-4548-A35E-1529061374EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53C14080-C406-4548-A35E-1529061374EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53C14080-C406-4548-A35E-1529061374EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

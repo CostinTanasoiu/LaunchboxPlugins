@@ -1,5 +1,6 @@
 ﻿using OnlineVideoLinks.Models;
 using OnlineVideoLinks.Utilities;
+using OnlineVideoLinks.WPF;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -34,9 +35,13 @@ namespace OnlineVideoLinks
 
         public void OnSelected(IGame selectedGame)
         {
-            var form = new VideoSelectorForm(selectedGame, 
+            //var form = new VideoSelectorForm(selectedGame, 
+            //    new GameVideoUtility(), new GamepadXinputProvider());
+            //form.ShowDialog();
+
+            var window = new VideoSelectorWindow(selectedGame,
                 new GameVideoUtility(), new GamepadXinputProvider());
-            form.ShowDialog();
+            window.ShowDialog();
         }
 
         public void OnSelected(IGame[] selectedGames)
