@@ -114,10 +114,14 @@ namespace OnlineVideoLinks.WPF
                 case GamepadButtonFlags.DPadLeft:
                     if(_gameVideoUtilities.IsPlaying())
                     {
-
+                        _gameVideoUtilities.SkipBackward();
                     }
                     break;
                 case GamepadButtonFlags.DPadRight:
+                    if (_gameVideoUtilities.IsPlaying())
+                    {
+                        _gameVideoUtilities.SkipForward();
+                    }
                     break;
             }
         }

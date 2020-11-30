@@ -18,6 +18,9 @@ namespace OnlineVideoLinks.Utilities
         GameVideo[] GetGameVideos(IGame game);
         bool IsPlaying();
         void Play(GameVideo video);
+        void PlayPause();
+        void SkipBackward();
+        void SkipForward();
         void StopPlaying();
         void ValidateVideosForAllGames();
     }
@@ -26,7 +29,6 @@ namespace OnlineVideoLinks.Utilities
     {
         ILog _log = LogManager.GetLogger(nameof(GameVideoUtility));
 
-        private Process _playingProcess;
         private VideoPlayerWindow _player;
 
         public GameVideo CurrentlyPlayingVideo { get; set; }
@@ -78,23 +80,13 @@ namespace OnlineVideoLinks.Utilities
         /// </summary>
         public void Play(GameVideo video)
         {
-            var vlcExecutable = VlcUtilities.GetVlcExecutablePath();
-            var cmdArgs = video.GetVlcCmdArguments();
-            //_playingProcess = Process.Start(new ProcessStartInfo
-            //{
-            //    FileName = vlcExecutable,
-            //    Arguments = cmdArgs,
-            //    UseShellExecute = false,
-            //    RedirectStandardInput = true
-            //});
+            StopPlaying();
 
-            _player = new VideoPlayerWindow();
+            _player = new VideoPlayerWindow(video);
+            _player.Closed += _player_Closed;
             _player.ShowDialog();
 
             CurrentlyPlayingVideo = video;
-
-            //Thread.Sleep(5000);
-            //_playingProcess.StandardInput.Write(" ");
         }
 
         /// <summary>
@@ -104,20 +96,11 @@ namespace OnlineVideoLinks.Utilities
         {
             if (_player != null)
             {
-                //_playingProcess.Kill();
-                //_playingProcess.CloseMainWindow();
-                //_playingProcess.Close();
-                //_playingProcess = null;
                 _player.Close();
                 _player = null;
 
                 CurrentlyPlayingVideo = null;
             }
-        }
-
-        public void SendKeystroke(char keyCharacter)
-        {
-            _playingProcess.StandardInput.Write(keyCharacter);
         }
 
         /// <summary>
@@ -126,6 +109,30 @@ namespace OnlineVideoLinks.Utilities
         public bool IsPlaying()
         {
             return _player != null;
+        }
+
+        /// <summary>
+        /// Skips 10 seconds forward.
+        /// </summary>
+        public void SkipForward()
+        {
+            _player.SkipForward();
+        }
+
+        /// <summary>
+        /// Skips 10 seconds backward.
+        /// </summary>
+        public void SkipBackward()
+        {
+            _player.SkipBackward();
+        }
+
+        /// <summary>
+        /// Toggles the play/pause function.
+        /// </summary>
+        public void PlayPause()
+        {
+            _player.PlayPause();
         }
 
         #region Private Methods
@@ -193,6 +200,12 @@ namespace OnlineVideoLinks.Utilities
                     gameVideo.AddVideoToGame(game);
                 }
             }
+        }
+
+        private void _player_Closed(object sender, EventArgs e)
+        {
+            _player = null;
+            CurrentlyPlayingVideo = null;
         }
 
         #endregion

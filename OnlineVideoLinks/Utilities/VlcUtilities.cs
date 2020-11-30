@@ -115,14 +115,21 @@ namespace OnlineVideoLinks.Utilities
             // If we don't have the YouTube addon OR the file is more than a month old, then let's download it.
             // This is because YouTube transmission protocols change over time, and VLC developers are quite
             // keep up by updating their YouTube add-on file.
-            if (youtubeAddonPath == ""
-                || (DateTime.Now - File.GetLastWriteTime(youtubeAddonPath)).TotalDays > 30)
+            //if (youtubeAddonPath == ""
+            //    || (DateTime.Now - File.GetLastWriteTime(youtubeAddonPath)).TotalDays > 30)
             {
                 using (var client = new WebClient())
                 {
                     try
                     {
                         client.DownloadFile(YoutubeVlcAddonUrl, vlcAddonsFolder + "\\youtube.luac");
+
+                        // Copying it over to the 'libvlc' folder.
+                        File.Copy(vlcAddonsFolder + "\\youtube.luac",
+                            Path.Combine(Application.StartupPath, @"libvlc\win-x64\lua\playlist\youtube.luac"), true);
+
+                        File.Copy(vlcAddonsFolder + "\\youtube.luac",
+                            Path.Combine(Application.StartupPath, @"libvlc\win-x86\lua\playlist\youtube.luac"), true);
                     }
                     catch(Exception ex)
                     {
