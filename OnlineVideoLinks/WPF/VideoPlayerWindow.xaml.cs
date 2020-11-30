@@ -58,5 +58,25 @@ namespace OnlineVideoLinks.WPF
             _mediaPlayer.Dispose();
             _libVLC.Dispose();
         }
+
+        private void btnPlay_Click(object sender, RoutedEventArgs e)
+        {
+            _mediaPlayer.Pause();
+        }
+
+        private void btnStop_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnSkipBack_Click(object sender, RoutedEventArgs e)
+        {
+            SkipBackward();
+        }
+
+        private void btnSkipFwd_Click(object sender, RoutedEventArgs e)
+        {
+            SkipForward();
+        }
     }
 }
