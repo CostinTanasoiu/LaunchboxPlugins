@@ -28,7 +28,7 @@
         </Button>
         <materialDesign:PackIcon Name="iconBadge" 
                                  Kind="AlphabetACircle" Foreground="ForestGreen"
-                                 Width="22" Height="22"
+                                 Width="24" Height="24"
                                  Canvas.Right="-5" Canvas.Top="-5"/>
     </Canvas>
 </UserControl>
