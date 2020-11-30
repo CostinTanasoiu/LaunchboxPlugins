@@ -9,12 +9,15 @@
         xmlns:uc="clr-namespace:OnlineVideoLinks.WPF.UserControls"
         
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14"
         Title="VideoPlayerWindow" Height="450" Width="800"
         WindowState="Maximized" WindowStyle="None"
         ContentRendered="Window_ContentRendered"
-        Closing="Window_Closing">
+        Closing="Window_Closing"
+        KeyUp="Window_KeyUp">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -25,79 +28,40 @@
     </Window.Resources>
 
     <DockPanel>
-        <!--<StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Background="Black">
-            <uc:KeyButtonInstruction 
-                    Text="Skip 10s"
-                    KeyImageSource="/OnlineVideoLinks;component/Resources/Arrow_Left_Key_Light.png"
-                    GamepadButtonImageSource="/OnlineVideoLinks;component/Resources/Arrow_Right_Key_Light.png"/>
-            <uc:KeyButtonInstruction 
-                    Text="Pause/Play"
-                    KeyImageSource="/OnlineVideoLinks;component/Resources/Space_Key_Light.png"
-                    GamepadButtonImageSource="/OnlineVideoLinks;component/Resources/XboxOne_A.png"/>
-            <uc:KeyButtonInstruction 
-                    Text="Close"
-                    KeyImageSource="/OnlineVideoLinks;component/Resources/Esc_Key_Light.png"
-                    GamepadButtonImageSource="/OnlineVideoLinks;component/Resources/XboxOne_B.png"/>
-        </StackPanel>-->
         <Grid DockPanel.Dock="Bottom" Background="Black">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <Button Name="btnSkipBack"
+            <StackPanel Orientation="Horizontal" Margin="0,0,10,0">
+                <materialDesign:PackIcon Kind="GamepadVariant" Foreground="LightGray"
+                    Width="58" Height="58" Margin="10,0,0,0" />
+                <uc:PlayerButtonWithBadge 
+                    MainIcon="SkipBackward" BadgeIcon="GamepadRoundLeft" BadgeColor="DarkGray"
                     ToolTip="Skip 10s backward"
                     Margin="10,0,0,0"
-                    Style="{StaticResource MaterialDesignIconButton}"
-                    Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
-                    Click="btnSkipBack_Click">
-                    <materialDesign:PackIcon Kind="SkipBackward" />
-                </Button>
-
-                <Button Name="btnPlay"
+                    Click="btnSkipBack_Click" />
+                <uc:PlayerButtonWithBadge 
+                    MainIcon="PlayPause" BadgeIcon="AlphabetACircle" BadgeColor="ForestGreen"
                     ToolTip="Play / Pause"
                     Margin="10,0,0,0"
-                    Style="{StaticResource MaterialDesignIconButton}"
-                    Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
-                    Click="btnPlay_Click">
-                    <materialDesign:PackIcon Kind="PlayPause" />
-                </Button>
-
-                <Button Name="btnStop"
+                    Click="btnPlay_Click" />
+                <uc:PlayerButtonWithBadge 
+                    MainIcon="Stop" BadgeIcon="AlphabetBCircle" BadgeColor="IndianRed"
                     ToolTip="Stop"
                     Margin="10,0,0,0"
-                    Style="{StaticResource MaterialDesignIconButton}"
-                    Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
-                    Click="btnStop_Click">
-                    <materialDesign:PackIcon Kind="Stop" />
-                </Button>
-
-                <Button Name="btnSkipFwd"
+                    Click="btnStop_Click" />
+                <uc:PlayerButtonWithBadge 
+                    MainIcon="SkipForward" BadgeIcon="GamepadRoundRight" BadgeColor="DarkGray"
                     ToolTip="Skip 10s forward"
                     Margin="10,0,0,0"
-                    Style="{StaticResource MaterialDesignIconButton}"
-                    Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
-                    Click="btnSkipFwd_Click">
-                    <materialDesign:PackIcon Kind="SkipForward" />
-                </Button>
+                    Click="btnSkipFwd_Click" />
             </StackPanel>
-
-            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center"
-                        HorizontalAlignment="Right" Margin="0,0,10,0">
-                <materialDesign:PackIcon Kind="GamepadVariant" 
-                                         Width="58" Height="58" Foreground="LightGray" />
-                <materialDesign:PackIcon Kind="GamepadLeft" 
-                                         Width="28" Height="28" Margin="5,0,0,0"
-                                         VerticalAlignment="Center" Foreground="DarkGray" />
-                <materialDesign:PackIcon Kind="AlphabetACircle" 
-                                         Width="28" Height="28" Margin="5,0,0,0"
-                                         VerticalAlignment="Center" Foreground="ForestGreen" />
-                <materialDesign:PackIcon Kind="AlphabetBCircle" 
-                                         Width="28" Height="28" Margin="5,0,0,0"
-                                         VerticalAlignment="Center" Foreground="IndianRed" />
-                <materialDesign:PackIcon Kind="GamepadRight" 
-                                         Width="28" Height="28" Margin="5,0,0,0"
-                                         VerticalAlignment="Center" Foreground="DarkGray" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
+                <TextBlock Name="txtProgress" FontSize="24" 
+                           VerticalAlignment="Center" Margin="0,0,10,0">
+                    --:-- / --:--
+                </TextBlock>
             </StackPanel>
         </Grid>
         <vlc:VideoView Name="vlcView" Background="Black" />
