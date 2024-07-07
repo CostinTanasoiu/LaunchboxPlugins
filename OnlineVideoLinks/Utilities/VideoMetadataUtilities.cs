@@ -86,8 +86,8 @@ namespace OnlineVideoLinks.Utilities
                 {
                     Title = meta.Title,
                     Url = meta.Url,
-                    Duration = meta.Duration,
-                    Thumbnail = meta.Thumbnails?.StandardResUrl,
+                    Duration = meta.Duration.GetValueOrDefault(),
+                    Thumbnail = meta.Thumbnails.FirstOrDefault().Url,
                     StartTime = queryStrings["t"] != null && int.TryParse(queryStrings["t"], out var time)
                                 ? time 
                                 : 0

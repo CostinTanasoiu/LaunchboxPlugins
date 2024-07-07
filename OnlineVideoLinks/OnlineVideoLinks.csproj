@@ -18,15 +18,15 @@
 
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.11.27" />
-    <PackageReference Include="LibVLCSharp" Version="3.4.9" />
-    <PackageReference Include="LibVLCSharp.WPF" Version="3.4.9" />
+    <PackageReference Include="LibVLCSharp" Version="3.8.5" />
+    <PackageReference Include="LibVLCSharp.WPF" Version="3.8.5" />
     <PackageReference Include="log4net" Version="2.0.12" />
     <PackageReference Include="MaterialDesignThemes" Version="3.2.0" />
     <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />
     <PackageReference Include="SharpDX.XInput" Version="4.2.0" />
-    <PackageReference Include="SteamWebAPI2" Version="4.2.6" />
-    <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.11" />
-    <PackageReference Include="YoutubeExplode" Version="5.1.8" />
+    <PackageReference Include="SteamWebAPI2" Version="4.4.1" />
+    <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.20" />
+    <PackageReference Include="YoutubeExplode" Version="6.3.16" />
   </ItemGroup>
 
   <ItemGroup>
