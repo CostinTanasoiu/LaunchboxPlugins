@@ -71,37 +71,37 @@ namespace FormsTestProject
                     new AdditionalApplicationMock
                     {
                         Name = "Video: Longplay",
-                        ApplicationPath = @"C:\Programs\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
                         CommandLine = "https://youtu.be/yka30n1D6L0"
                     },
                     new AdditionalApplicationMock
                     {
                         Name = "Video: Is Death and Return of Superman Worth Playing Today?",
-                        ApplicationPath = @"C:\Programs\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
                         CommandLine = "https://youtu.be/7hfYthWLJsA"
                     },
                     new AdditionalApplicationMock
                     {
                         Name = "Video: Longplay",
-                        ApplicationPath = @"C:\Programs\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
                         CommandLine = "https://youtu.be/yka30n1D6L0"
                     },
                     new AdditionalApplicationMock
                     {
                         Name = "Video: Is Death and Return of Superman Worth Playing Today?",
-                        ApplicationPath = @"C:\Programs\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
                         CommandLine = "https://youtu.be/7hfYthWLJsA"
                     },
                     new AdditionalApplicationMock
                     {
                         Name = "Video: Longplay",
-                        ApplicationPath = @"C:\Programs\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
                         CommandLine = "https://youtu.be/yka30n1D6L0"
                     },
                     new AdditionalApplicationMock
                     {
                         Name = "Video: Is Death and Return of Superman Worth Playing Today?",
-                        ApplicationPath = @"C:\Programs\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
                         CommandLine = "https://youtu.be/7hfYthWLJsA"
                     }
                 }
