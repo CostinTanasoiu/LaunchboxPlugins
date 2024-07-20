@@ -30,12 +30,14 @@ using Unbroken.LaunchBox.Plugins.Data;
 using Xunit;
 using OnlineVideoLinks;
 using OnlineVideoLinks.Models;
+using OnlineVideoLinks.Utilities;
 
 namespace LaunchboxPluginsTests.OnlineVideoLinks
 {
     public class VideoManagerFormTests
     {
         private Fixture _fixture = new Fixture();
+        IGameVideoUtility _gameVideoUtilitiesMock = Substitute.For<IGameVideoUtility>();
 
         /// <summary>
         /// This tests that the Video Manager form can load a game with existing videos and properly parse them.
@@ -71,7 +73,7 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
             var gameMock = Substitute.For<IGame>();
             gameMock.GetAllAdditionalApplications().Returns(dummyAdditionalApps);
 
-            var form = new VideoManagerForm(gameMock);
+            var form = new VideoManagerForm(gameMock, _gameVideoUtilitiesMock);
 
             Assert.Equal(4, form.GameVideos.Count);
             Assert.Equal("Gameplay teaser", form.GameVideos[0].Title);

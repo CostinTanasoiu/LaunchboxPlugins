@@ -6,6 +6,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.27" />
+    <PackageReference Include="log4net" Version="2.0.12" />
+    <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />
+    <PackageReference Include="SharpDX.XInput" Version="4.2.0" />
+    <PackageReference Include="SteamWebAPI2" Version="4.2.6" />
+    <PackageReference Include="YoutubeExplode" Version="5.1.8" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Unbroken.LaunchBox.Plugins">
       <HintPath>..\_Dependencies\Unbroken.LaunchBox.Plugins.dll</HintPath>
     </Reference>
@@ -24,6 +33,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Log4Net.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
