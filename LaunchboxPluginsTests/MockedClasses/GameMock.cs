@@ -134,6 +134,7 @@ namespace LaunchboxPluginsTests.MockedClasses
 
         public List<IAdditionalApplication> AdditionalApplications { get; set; }
         public bool? Installed { get; set; }
+        public int PlayTime { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public IAdditionalApplication AddNewAdditionalApplication()
         {
@@ -285,6 +286,21 @@ namespace LaunchboxPluginsTests.MockedClasses
         }
 
         public string GetNextVideoFilePath(string videoType, string extension)
+        {
+            throw new NotImplementedException();
+        }
+
+        public KeyValuePair<IGameController, int?>[] GetControllerSupport()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool AddControllerSupport(string controllerName, string controllerCategory, int? supportLevel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateTitleAndMigrateMedia(string newTitle)
         {
             throw new NotImplementedException();
         }
