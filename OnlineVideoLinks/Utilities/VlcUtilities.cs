@@ -38,7 +38,7 @@ namespace OnlineVideoLinks.Utilities
         /// <summary>
         /// This is a link to the youtube.luac file from the development branch of VLC.
         /// </summary>
-        private const string YoutubeVlcAddonUrl = "http://git.videolan.org/?p=vlc.git;a=blob_plain;f=share/lua/playlist/youtube.lua;hb=HEAD";
+        private const string YoutubeVlcAddonUrl = "https://raw.githubusercontent.com/videolan/vlc/master/share/lua/playlist/youtube.lua";
 
         /// <summary>
         /// Retrieves the VLC folder path.
