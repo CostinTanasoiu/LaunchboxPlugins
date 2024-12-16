@@ -1,0 +1,1983 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Unbroken.LaunchBox.Plugins</name>
+    </assembly>
+    <members>
+        <member name="T:Unbroken.LaunchBox.Plugins.Data.FilterType">
+            <summary>
+            This enum describes which field is being used to filter games in Big Box.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.FilterType.Genre">
+            <summary>
+            Filtering games based on Genre.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.FilterType.PlatformOrCategoryOrPlaylist">
+            <summary>
+            Filtering games based on Platform, Platform Category, or Playlist.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.FilterType.Developer">
+            <summary>
+            Filtering games based on Developer.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.FilterType.Publisher">
+            <summary>
+            Filtering games based on Publisher.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.FilterType.Rating">
+            <summary>
+            Filtering games based on Rating.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.FilterType.PlayMode">
+            <summary>
+            Filtering games based on Play Mode.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.FilterType.Region">
+            <summary>
+            Filtering games based on Region.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.FilterType.Series">
+            <summary>
+            Filtering games based on Series.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.FilterType.Status">
+            <summary>
+            Filtering games based on Status.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.FilterType.Source">
+            <summary>
+            Filtering games based on Source.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.FilterType.MaxPlayers">
+            <summary>
+            Filtering games based on Max Players.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.FilterType.RecentlyPlayed">
+            <summary>
+            Filtering to recently played games.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.FilterType.Favorites">
+            <summary>
+            Filtering to favorited games.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.FilterType.None">
+            <summary>
+            No filter is applied (most likely viewing all games).
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication">
+            <summary>
+            This interface represents an Additional Application that is associated with an <see cref="T:Unbroken.LaunchBox.Plugins.Data.IGame" /> in LaunchBox/Big Box.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.Id">
+            <summary>
+            Gets the ID of the Additional Application. This ID is automatically generated when a new Additional Application is created.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.GameId">
+            <summary>
+            Gets the ID of the game that is associated with this Additional Application. Maps up directly to the game's <see cref="P:Unbroken.LaunchBox.Plugins.Data.IGame.Id" /> property.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.PlayCount">
+            <summary>
+            Gets or sets the number of times this Additional Application has been played.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.PlayTime">
+            <summary>
+            Gets or sets the amount of time this Additional Application has been played (in seconds).
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.ApplicationPath">
+            <summary>
+            Gets or sets the application path associated with this Additional Application.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.AutoRunAfter">
+            <summary>
+            Gets or sets a value specifying whether or not to automatically run this Additional Application after running the main game.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.AutoRunBefore">
+            <summary>
+            Gets or sets a value specifying whether or not to automatically run this Additional Application before running the main game.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.CommandLine">
+            <summary>
+            Gets or sets the command line parameters used when launching this Additional Application.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.Name">
+            <summary>
+            Gets or sets the Name of this Additional Application.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.UseDosBox">
+            <summary>
+            Gets or sets a value specifying whether this Additional Application should use DOSBox or not when launching.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.UseEmulator">
+            <summary>
+            Gets or sets a value specifying whether this Additional Application should use an emulator or not when launching.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.WaitForExit">
+            <summary>
+            Gets or sets a value specifying whether this Additional Application should wait for exit before launching the game.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.ReleaseDate">
+            <summary>
+            Gets or sets a value specifying the Release Date of the Additional Application.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.Developer">
+            <summary>
+            Gets or sets a value specifying the Developer of the Additional Application.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.Publisher">
+            <summary>
+            Gets or sets a value specifying the Publisher of the Additional Application.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.Region">
+            <summary>
+            Gets or sets a value specifying the Region of the Additional Application.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.Version">
+            <summary>
+            Gets or sets a value specifying the Version of the Additional Application.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.Status">
+            <summary>
+            Gets or sets a value specifying the Status of the Additional Application.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.LastPlayed">
+            <summary>
+            Gets or sets a value specifying when the Additional Application was last played.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.Disc">
+            <summary>
+            Gets or sets a value specifying the disc number of the Additional Application.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.EmulatorId">
+            <summary>
+            Gets or sets a value specifying the ID of the emulator used for the Additional Application. Maps up directly to the emulator's <see cref="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.Id" /> property.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.SideA">
+            <summary>
+            Gets or sets a value specifying whether this Additional Application represents Side A or not.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.SideB">
+            <summary>
+            Gets or sets a value specifying whether this Additional Application represents Side B or not.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.Priority">
+            <summary>
+            Gets or sets a value specifying the Priority of this Additional Application. Priority is used for sorting additional applications.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.Installed">
+            <summary>
+            Gets or sets a value specifying the installation state of this Addition Application.
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.GetIconImage(Unbroken.LaunchBox.Plugins.Data.IGame)">
+            <summary>
+            Gets the image that should be used as an icon when displaying the Additional Application.
+            </summary>
+            <param name="game">The game that is associated with the Additional Application. Used to determine the correct image.</param>
+            <returns>The image to use for the icon.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.Launch(Unbroken.LaunchBox.Plugins.Data.IGame)">
+            <summary>
+            Launches the Additional Application.
+            </summary>
+            <param name="game">The game that is associated with the Additional Application. Used in order to launch the Additional Application correctly.</param>
+            <returns>A value specifying whether the Additional Application was successfully launched. If launched successfully, NULL will be returned. Otherwise, an error message will be returned that can be shown to the user.</returns>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.Data.IAlternateName">
+            <summary>
+            This interface represents an alternate name that is associated with an <see cref="T:Unbroken.LaunchBox.Plugins.Data.IGame" /> in LaunchBox/Big Box.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAlternateName.GameId">
+            <summary>
+            Gets or sets the ID of the game that is associated with this Alternate Name. Maps up directly to the game's <see cref="P:Unbroken.LaunchBox.Plugins.Data.IGame.Id" /> property.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAlternateName.Name">
+            <summary>
+            Gets or sets the Name of this Alternate Name.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IAlternateName.Region">
+            <summary>
+            Gets or sets the Region of this Alternate Name.
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.Data.IBigBoxMainViewModel">
+            <summary>
+            Provides plugin access to the Big Box interface.
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IBigBoxMainViewModel.PlayGame(Unbroken.LaunchBox.Plugins.Data.IGame,Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication,Unbroken.LaunchBox.Plugins.Data.IEmulator,System.String)">
+            <summary>
+            Launches the specified game or additional application with the specified settings; uses the full game startup process including the startup screen if enabled.
+            </summary>
+            <param name="game">The game to launch.</param>
+            <param name="app">The game's additional application to launch. Leave null to launch the main game.</param>
+            <param name="emulator">The specific emulator to use. Leave null to use the game's default emulator or no emulator at all.</param>
+            <param name="overrideCommandLine">The overridden commandline parameters to use. Should be left null in most cases.</param>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IBigBoxMainViewModel.Search(System.String)">
+            <summary>
+            Performs a Big Box search and displays the games found.
+            </summary>
+            <param name="query">The string you are searching for</param>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.Data.ICustomField">
+            <summary>
+            This interface represents a custom field that is associated with an <see cref="T:Unbroken.LaunchBox.Plugins.Data.IGame" /> in LaunchBox/Big Box.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.ICustomField.GameId">
+            <summary>
+            Gets or sets the ID of the game that is associated with this Custom Field. Maps up directly to the game's <see cref="P:Unbroken.LaunchBox.Plugins.Data.IGame.Id" /> property.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.ICustomField.Name">
+            <summary>
+            Gets or sets the Name of this Custom Field.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.ICustomField.Value">
+            <summary>
+            Gets or sets the Value of this Custom Field.
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.Data.IDataManager">
+            <summary>
+            This interface provides access to all data in LaunchBox/Big Box. Use the <see cref="T:Unbroken.LaunchBox.Plugins.PluginHelper" />'s static <see cref="P:Unbroken.LaunchBox.Plugins.PluginHelper.DataManager" /> property to access the instance methods and read and write LaunchBox data.
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.GetAllGames">
+            <summary>
+            Gets all Games in the user's collection.
+            </summary>
+            <returns>An array of Games.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.GetGameById(System.String)">
+            <summary>
+            Gets a Game via the Game's ID.
+            </summary>
+            <param name="id">The ID of the Game to retrieve. Maps up directly to the Game's <see cref="P:Unbroken.LaunchBox.Plugins.Data.IGame.Id" /> property.</param>
+            <returns>The Game with the specified ID, or NULL if not found.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.AddNewGame(System.String)">
+            <summary>
+            Adds a new Game to the user's collection.
+            </summary>
+            <param name="title">The Title to use for the new Game.</param>
+            <returns>The new Game.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.TryRemoveGame(Unbroken.LaunchBox.Plugins.Data.IGame)">
+            <summary>
+            Attempts to remove a Game from the user's collection.
+            </summary>
+            <param name="game">The Game to remove.</param>
+            <returns>A value specifying whether or not the Game was successfully removed. If false is returned, most likely the Game was not found in the user's collection.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.GetAllEmulators">
+            <summary>
+            Gets all Emulators in the user's collection.
+            </summary>
+            <returns>An array of Emulators.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.GetAllParents">
+            <summary>
+            Gets all Parents in the user's collection.
+            </summary>
+            <returns>An array of Parents.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.GetEmulatorById(System.String)">
+            <summary>
+            Get an Emulator by the Emulator's ID.
+            </summary>
+            <param name="id">The ID of the Emulator to retrieve. Maps up directly to the Emulator's <see cref="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.Id" /> property.</param>
+            <returns>The Emulator with the specified ID, or NULL if not found.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.AddNewEmulator">
+            <summary>
+            Adds a new Emulator to the user's collection.
+            </summary>
+            <returns>The new Emulator.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.TryRemoveEmulator(Unbroken.LaunchBox.Plugins.Data.IEmulator)">
+            <summary>
+            Attempts to remove an Emulator from the user's collection.
+            </summary>
+            <param name="emulator">The Emulator to remove.</param>
+            <returns>A value specifying whether or not the Emulator was successfully removed. If false is returned, most likely the Emulator was not found in the user's collection.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.GetAllPlatforms">
+            <summary>
+            Gets all Platforms in the user's collection.
+            </summary>
+            <returns>An array of Platforms.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.GetPlatformByName(System.String)">
+            <summary>
+            Gets a Platform via the Platform's Name.
+            </summary>
+            <param name="name">The Name of the Platform to retrieve. Maps up directly to the Platform's <see cref="P:Unbroken.LaunchBox.Plugins.Data.IPlatform.Name" /> property.</param>
+            <returns>The Platform with the associated Name, or NULL if not found.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.AddNewPlatform(System.String)">
+            <summary>
+            Adds a new Platform to the user's collection.
+            </summary>
+            <param name="name">The Name of the Platform to add.</param>
+            <returns>The new Platform.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.TryRemovePlatform(Unbroken.LaunchBox.Plugins.Data.IPlatform)">
+            <summary>
+            Attempts to remove a Platform from the user's collection.
+            </summary>
+            <param name="platform">The Platform to remove.</param>
+            <returns>A value specifying whether or not the Platform was successfully removed. If false is returned, most likely the Platform was not found in the user's collection.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.GetAllPlaylists">
+            <summary>
+            Gets all Playlists in the user's collection.
+            </summary>
+            <returns>An array of Playlists.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.GetPlaylistById(System.String)">
+            <summary>
+            Gets a Playlist via the Playlist's ID.
+            </summary>
+            <param name="id">The ID of the Playlist to retrieve. Maps up directly to the Playlist's <see cref="P:Unbroken.LaunchBox.Plugins.Data.IPlaylist.PlaylistId" /> property.</param>
+            <returns>The Playlist with the associated ID, or NULL if not found.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.AddNewPlaylist(System.String)">
+            <summary>
+            Adds a new Playlist to the user's collection.
+            </summary>
+            <param name="name">The Name of the Playlist to add.</param>
+            <returns>The new Playlist.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.TryRemovePlaylist(Unbroken.LaunchBox.Plugins.Data.IPlaylist)">
+            <summary>
+            Attempts to remove a Playlist from the user's collection.
+            </summary>
+            <param name="playlist">The Playlist to remove.</param>
+            <returns>A value specifying whether or not the Playlist was successfully removed. If false is returned, most likely the Playlist was not found in the user's collection.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.GetAllPlatformCategories">
+            <summary>
+            Gets all Platform Categories in the user's collection.
+            </summary>
+            <returns>An array of Platform Categories.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.GetPlatformCategoryByName(System.String)">
+            <summary>
+            Gets a Platform Category via the Platform Category's Name.
+            </summary>
+            <param name="name">The Name of the Platform Category to retrieve. Maps up directly to the Platform Category's <see cref="P:Unbroken.LaunchBox.Plugins.Data.IPlatformCategory.Name" /> property.</param>
+            <returns>The Platform Category with the associated Name, or NULL if not found.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.AddNewPlatformCategory(System.String)">
+            <summary>
+            Adds a new Platform Category to the user's collection.
+            </summary>
+            <param name="name">The Name of the Platform Category to add.</param>
+            <returns>The new Platform Category</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.TryRemovePlatformCategory(Unbroken.LaunchBox.Plugins.Data.IPlatformCategory)">
+            <summary>
+            Attempts to remove a Platform Category from the user's collection.
+            </summary>
+            <param name="platformCategory">The Platform Category to remove.</param>
+            <returns>A value specifying whether or not the Platform Category was successfully removed. If false is returned, most likely the Platform Category was not found in the user's collection.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.ForceReload">
+            <summary>
+            Forces all data to be reloaded from XML files. This method should only ever be necessary to call when significant changes are made to the XML files by something other than the LaunchBox or Big Box applications.
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.ReloadIfNeeded">
+            <summary>
+            Reloads any changed XML files from disk. Should be called before loading up data to change and save.
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.Save(System.Boolean)">
+            <summary>
+            Saves all changes to LaunchBox or Big Box data to disk. Will only save XML files that were changed.
+            </summary>
+            <param name="wait">A value specifying whether or not to wait for the operation to complete. If false is specified, then the save operation will be performed in the background and the method will immediately return.</param>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.BackgroundReloadSave(System.Action)">
+            <summary>
+            Recommended instead of other Reload and Save methods when quickly saving a single or small amount of values in the data. Completely avoids Dropbox, Google Drive, etc. sync issues by making sure that all changed data is loaded from disk before making the specified changes.
+            </summary>
+            <param name="changes">The specified changes to make to the data. A method or an inline expression may be provided here that changes the data as needed after reloading any necessary data from disk, and before saving the new values to disk.</param>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.GetRootPlatformsCategoriesPlaylists">
+            <summary>
+            Gets the list of root platforms, platform categories, and playlists, which can then be used to parse through children as well.
+            </summary>
+            <returns>A list of root platforms, platform categories, and playlists.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.GetGameControllers">
+            <summary>
+            Gets the list of game controllers
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IDataManager.AddGameController(System.String,System.String,System.String[])">
+            <summary>
+            Adds a controller
+            </summary>
+            <param name="controllerName">The name of the controller</param>
+            <param name="controllerCategory">The category of the controller</param>
+            <param name="associatedPlatforms">The platforms associated to this controller (optional)</param>
+            <returns>The ID string the controller is registered to</returns>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.Data.IEmulator">
+            <summary>
+            This interface represents an Emulator that is used in LaunchBox/Big Box.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.ApplicationPath">
+            <summary>
+            Gets or sets the Application Path to use when launching the Emulator.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.CommandLine">
+            <summary>
+            Gets or sets the command line parameters to use when launching the Emulator.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.DefaultPlatform">
+            <summary>
+            Gets or sets the default platform for the Emulator.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.Id">
+            <summary>
+            Gets or the ID of the Emulator. The ID is automatically assigned when creating a new Emulator.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.Title">
+            <summary>
+            Gets or sets the Title of the Emulator.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.NoQuotes">
+            <summary>
+            Gets or sets a value specifying whether or not quotes should be used when sending the ROM file name to the Emulator.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.NoSpace">
+            <summary>
+            Gets or sets a value specifying whether or not to add a space before the the ROM file name when launching the Emulator.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.HideConsole">
+            <summary>
+            Gets or sets a value specifying whether or not to attempt to hide the console when launching the Emulator.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.FileNameWithoutExtensionAndPath">
+            <summary>
+            Gets or sets a value specifying whether or not to use the ROM file name without the extension and path when launching the Emulator.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.AutoHotkeyScript">
+            <summary>
+            Gets or sets the AutoHotkey Script to use when launching the Emulator.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.PauseAutoHotkeyScript">
+            <summary>
+            Gets or sets the AutoHotKey Script to use when opening the pause screen.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.ResumeAutoHotkeyScript">
+            <summary>
+            Gets or sets the AutoHotKey Script to use when closing the pause screen.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.ResetAutoHotkeyScript">
+            <summary>
+            Gets or sets the AutoHotKey Script that causes the emulator to restart the ROM being played.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.SaveStateAutoHotkeyScript">
+            <summary>
+            Gets or sets the AutoHotKey Script that causes the emulator to save it's current save state slot.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.LoadStateAutoHotkeyScript">
+            <summary>
+            Gets or sets the AutoHotKey Script that causes the emulator to save it's current save state slot.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.SwapDiscsAutoHotkeyScript">
+            <summary>
+            Gets or sets the AutoHotKey Script that causes the emulator to change discs.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.ExitAutoHotkeyScript">
+            <summary>
+            Gets or sets the AutoHotKey Script that closes the emulator
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.AutoExtract">
+            <summary>
+            Gets or sets a value specifying whether or not to extract ROM archives before launching the Emulator.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.UseStartupScreen">
+            <summary>
+            Gets or sets a value specifying whether or not to use the LaunchBox startup screen for this Emulator. Added in LaunchBox and Big Box 9.2-beta-3.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.HideAllNonExclusiveFullscreenWindows">
+            <summary>
+            Gets or sets a value specifying whether or not to hide all non-exclusive fullscreen windows when using the LaunchBox startup screen for this Emulator. Added in LaunchBox and Big Box 9.2-beta-3.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.StartupLoadDelay">
+            <summary>
+            Gets or sets a value specifying the startup delay in milliseconds when using the LaunchBox startup screen for this Emulator. Added in LaunchBox and Big Box 9.2-beta-3.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.HideMouseCursorInGame">
+            <summary>
+            Gets or sets a value specifying whether or not to hide the mouse cursor in-game when using the LaunchBox startup screen for this Emulator. Added in LaunchBox and Big Box 9.2-beta-3.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.DisableShutdownScreen">
+            <summary>
+            Gets or sets a value specifying whether or not to disable the shutdown screen for this Emulator. Added in LaunchBox and Big Box 9.2.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.AggressiveWindowHiding">
+            <summary>
+            Gets or sets a value specifying whether or not to use aggressive strategies for hiding startup windows, which could be problematic for some emulators. Added in LaunchBox and Big Box 9.2.
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IEmulator.GetAllEmulatorPlatforms">
+            <summary>
+            Gets all of the platforms associated with this Emulator.
+            </summary>
+            <returns>An array of Emulator Platforms associated with this Emulator.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IEmulator.AddNewEmulatorPlatform">
+            <summary>
+            Adds a new Emulator Platform to this Emulator.
+            </summary>
+            <returns>The new Emulator Platform.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IEmulator.TryRemoveEmulatorPlatform(Unbroken.LaunchBox.Plugins.Data.IEmulatorPlatform)">
+            <summary>
+            Attempts to remove an Emulator Platform from this Emulator.
+            </summary>
+            <param name="emulatorPlatform">The Emulator Platform to remove.</param>
+            <returns>A value specifying whether or not the Emulator Platform was successfully removed. If this method returns false, most likely the Emulator Platform was not found on the Emulator.</returns>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.Data.IEmulatorPlatform">
+            <summary>
+            This interface represents an Emulator Platform that is associated with an <see cref="T:Unbroken.LaunchBox.Plugins.Data.IEmulator" /> in LaunchBox/Big Box.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulatorPlatform.AutoExtract">
+            <summary>
+            Gets or sets a value specifying whether or not to extract ROM archives before launching the Emulator. If null, use the Emulator's  <see cref="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.AutoExtract" /> setting
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulatorPlatform.EmulatorId">
+            <summary>
+            Gets the ID of the Emulator that is associated with this Emulator Platform. Maps up directly to the Emulator's <see cref="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.Id" /> property.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulatorPlatform.Platform">
+            <summary>
+            Gets or sets the name of the Platform that is associated with this Emulator Platform. Maps up directly to the Platform's <see cref="P:Unbroken.LaunchBox.Plugins.Data.IPlatform.Name" /> property.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulatorPlatform.CommandLine">
+            <summary>
+            Gets or sets the command line parameters that are used when launching the associated Emulator using this Emulator Platform.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulatorPlatform.IsDefault">
+            <summary>
+            Gets or set a value specifying whether or not the associated Emulator is the default Emulator for this Emulator Platform.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulatorPlatform.M3uDiscLoadEnabled">
+            <summary>
+            Gets or set a value specifying whether or not the associated Emulator supports M3U disc playlist loading for multi-disc games.
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.Data.IGame">
+            <summary>
+            This interface represents a Game that is used in LaunchBox/Big Box.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IGame.StarRating">
+            <summary>
+            Gets or sets the star rating as an <see cref="T:System.Int32">Integer</see> value. Deprecated; please use StarRatingFloat instead.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IGame.CommunityOrLocalStarRating">
+            <summary>
+            Gets the star rating or community star rating depending on the user's community star rating settings and whether or not this game has a star rating set.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IGame.StarRatingFloat">
+            <summary>
+            Gets or sets the star rating as a <see cref="T:System.Single">Float</see> value. Should be used instead of the original StarRating property.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IGame.CommunityStarRating">
+            <summary>
+            Gets or sets the community star rating value.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IGame.CommunityStarRatingTotalVotes">
+            <summary>
+            Gets or sets the number of community star rating votes.
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IGame.Play">
+            <summary>
+            Launches the game. Does not use the startup screen or any other part of the launching process other than simply launching the game. If you're looking to use the whole process with startup screens, please use PluginHelper.LaunchBoxMainViewModel.PlayGame or PluginHelper.BigBoxMainViewModel.PlayGame instead.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IGame.GetAllImagesWithDetails">
+            <summary>
+            Gets details on all images that are associated with this Game in the user's collection, including image path, image type, and region information.
+            </summary>
+            <returns>An array of <see cref="T:Unbroken.LaunchBox.Plugins.Data.ImageDetails" /> objects that represent all of the game's images.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IGame.GetAllImagesWithDetails(System.String)">
+            <summary>
+            Gets details on all images of a particular image type that are associated with this Game in the user's collection, including image path, image type, and region information.
+            </summary>
+            <param name="imageType">The type of images to retrieve. Maps up to one of the constant values in the <see cref="T:Unbroken.LaunchBox.Plugins.Data.ImageTypes" /> class.</param>
+            <returns>An array of <see cref="T:Unbroken.LaunchBox.Plugins.Data.ImageDetails" /> objects that represent all of the game's images of the specified type.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IGame.GetControllerSupport">
+            <summary>
+            Gets all the controller support records for this game
+            </summary>
+            <returns>An array of GameControllers and their support levels associated to this game</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IGame.AddControllerSupport(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Add a controller support record to this game
+            </summary>
+            <param name="controllerName">The name of the controller</param>
+            <param name="controllerCategory">The category of the controller. This will not be used if the user already has a controller by this name</param>
+            <param name="supportLevel">The support level of this controller.</param>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IGame.UpdateTitleAndMigrateMedia(System.String)">
+            <summary>
+            This will allow you to rename the game as well as all associated media
+            </summary>
+            <param name="newTitle">The title you are changing the game to</param>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.Data.IGameBadge">
+            <summary>
+            Represents a badge that can be displayed on games; can be implemented as a plugin and will be automatically added to LaunchBox
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IGameBadge.Name">
+            <summary>
+            The user-friendly (and hopefully translated) name of the badge (displays with a tooltip)
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IGameBadge.UniqueId">
+            <summary>
+            The unique ID/never-changing name of the badge; used for XML settings saving and image file lookups
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IGameBadge.DefaultIcon">
+            <summary>
+            The default image icon to display for the badge; can be overridden by the user in the file system
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IGameBadge.Index">
+            <summary>
+            The index of where to display the badge in the list
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IGameBadge.GetAppliesToGame(Unbroken.LaunchBox.Plugins.Data.IGame)">
+            <summary>
+            Gets a value specifying whether or not this badge applies to the specified game
+            </summary>
+            <param name="game">The game to check</param>
+            <returns>A boolean value specifying whether or not this badge applies to the game specified</returns>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.Data.IGameMenuItem">
+            <summary>
+            This interface is used to create menu items by the IGameMultiMenuItemPlugin interface
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IGameMenuItem.Caption">
+            <summary>
+            The string displayed on the menu item
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IGameMenuItem.Children">
+            <summary>
+            Menu items under this one (not used in Big Box)
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IGameMenuItem.Enabled">
+            <summary>
+            Is the menu item enabled
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IGameMenuItem.Icon">
+            <summary>
+            The icon for the item (not used in Big Box)
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IGameMenuItem.OnSelect(Unbroken.LaunchBox.Plugins.Data.IGame[])">
+            <summary>
+            Fired when your menu item has been selected by the user. Not used if the item has any children.
+            </summary>
+            <param name="games">The games that were selected when activating your menu item. Will not be null</param>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.Data.ILaunchBoxMainViewModel">
+            <summary>
+            Provides plugin access to the LaunchBox interface. Added in LaunchBox and Big Box 9.2-beta-3.
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.ILaunchBoxMainViewModel.PlayGame(Unbroken.LaunchBox.Plugins.Data.IGame,Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication,Unbroken.LaunchBox.Plugins.Data.IEmulator,System.String)">
+            <summary>
+            Launches the specified game or additional application with the specified settings; uses the full game startup process including the startup screen if enabled.
+            </summary>
+            <param name="game">The game to launch.</param>
+            <param name="app">The game's additional application to launch. Leave null to launch the main game.</param>
+            <param name="emulator">The specific emulator to use. Leave null to use the game's default emulator or no emulator at all.</param>
+            <param name="overrideCommandLine">The overridden commandline parameters to use. Should be left null in most cases.</param>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.ILaunchBoxMainViewModel.Close">
+            <summary>
+            Exits LaunchBox.
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.ILaunchBoxMainViewModel.Minimize">
+            <summary>
+            Minimizes the LaunchBox window.
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.ILaunchBoxMainViewModel.Maximize">
+            <summary>
+            Maximizes the LaunchBox window.
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.ILaunchBoxMainViewModel.Restore">
+            <summary>
+            Restores the LaunchBox window if it has been maximized or minimized.
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.ILaunchBoxMainViewModel.RefreshData">
+            <summary>
+            Refreshes and repopulates all data displayed in LaunchBox.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.ILaunchBoxMainViewModel.ListView">
+            <summary>
+            Gets a value specifying whether or not the list view is active in LaunchBox.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.ILaunchBoxMainViewModel.BoxSize">
+            <summary>
+            Gets or sets the current box size in the LaunchBox boxes view.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.ILaunchBoxMainViewModel.ArrangeBy">
+            <summary>
+            Gets or sets the current arrange by value for the LaunchBox side bar.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.ILaunchBoxMainViewModel.ImageGroup">
+            <summary>
+            Gets the current active image group that is in use in the LaunchBox boxes view.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.ILaunchBoxMainViewModel.GameDetailsView">
+            <summary>
+            Gets the current game details UI element.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.ILaunchBoxMainViewModel.ContentBackgroundView">
+            <summary>
+            Gets the current content background UI element.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.ILaunchBoxMainViewModel.ContentView">
+            <summary>
+            Gets the current content UI element.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.ILaunchBoxMainViewModel.GameDetailsWidth">
+            <summary>
+            Gets or sets the width of the game details.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.ILaunchBoxMainViewModel.SideBarWidth">
+            <summary>
+            Gets or sets the width of the side bar.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.ILaunchBoxMainViewModel.ControlsBarHeight">
+            <summary>
+            Gets or sets the height of the controls bar.
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.ILaunchBoxMainViewModel.EnterImagesView">
+            <summary>
+            Sets the view to Images View if it isn't already.
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.ILaunchBoxMainViewModel.EnterListView">
+            <summary>
+            Sets the view to List View if it isn't already.
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.Data.ImageTypes">
+            <summary>
+            This class contains constant values for all of the various game image types that are used in LaunchBox/Big Box.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.BoxFront">
+            <summary>
+            Represents Box Front game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.BoxFrontReconstructed">
+            <summary>
+            Represents Reconstructed Box Front game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.BoxBack">
+            <summary>
+            Represents Box Back game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.BoxBackReconstructed">
+            <summary>
+            Represents Reconstructed Box Back game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.Box3D">
+            <summary>
+            Represents 3D Box game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.BoxSpine">
+            <summary>
+            Represents Box spine images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.BoxFull">
+            <summary>
+            Represents full box images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.AdvertisementFlyerFront">
+            <summary>
+            Represents Advertisement Flyer Front game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.AdvertisementFlyerBack">
+            <summary>
+            Represents Advertisement Flyer Back game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.ArcadeCabinet">
+            <summary>
+            Represents Arcade Cabinet game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.ArcadeCircuitBoard">
+            <summary>
+            Represents Arcade Circuit Board game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.ArcadeControlPanel">
+            <summary>
+            Represents Arcade Control Panel game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.ArcadeControlsInformation">
+            <summary>
+            Represents Arcade Controls Information game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.ArcadeMarquee">
+            <summary>
+            Represents Arcade Marquee game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.Banner">
+            <summary>
+            Represents Banner game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.CartFront">
+            <summary>
+            Represents Cart Front game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.CartBack">
+            <summary>
+            Represents Cart Back game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.Cart3D">
+            <summary>
+            Represents 3D Cart game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.ClearLogo">
+            <summary>
+            Represents Clear Logo game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.Disc">
+            <summary>
+            Represents Disc game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.FanartBoxFront">
+            <summary>
+            Represents Fanart Box Front game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.FanartBoxBack">
+            <summary>
+            Represents Fanart Box Back game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.FanartCartFront">
+            <summary>
+            Represents Fanart Cart Front game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.FanartCartBack">
+            <summary>
+            Represents Fanart Cart Back game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.FanartBackground">
+            <summary>
+            Represents Fanart Background game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.FanartDisc">
+            <summary>
+            Represents Fanart Disc game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.ScreenshotGameplay">
+            <summary>
+            Represents Gameplay Screenshot game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.ScreenshotGameTitle">
+            <summary>
+            Represents Game Title Screenshot images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.ScreenshotGameSelect">
+            <summary>
+            Represents Game Select Screenshot images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.ScreenshotGameOver">
+            <summary>
+            Represents Game Over Screenshot images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.ScreenshotHighScores">
+            <summary>
+            Represents game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.SteamBanner">
+            <summary>
+            Represents Steam Banner game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.SteamPoster">
+            <summary>
+            Represents Steam Poster game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.SteamScreenshot">
+            <summary>
+            Represents Steam Screenshot game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.GogScreenshot">
+            <summary>
+            Represents GOG Screenshot game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.GogPoster">
+            <summary>
+            Represents GOG Poster game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.EpicGamesPoster">
+            <summary>
+            Represents Epic Games Poster game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.EpicGamesBackground">
+            <summary>
+            Represents Epic Games Background game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.EpicGamesScreenshot">
+            <summary>
+            Represents Epic Games Screenshot game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.OriginPoster">
+            <summary>
+            Represents Origin Poster game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.OriginBackground">
+            <summary>
+            Represents Origin Background game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.OriginScreenshot">
+            <summary>
+            Represents Epic Games Screenshot game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.UplayBackground">
+            <summary>
+            Represents Uplay Background game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.UplayThumbnail">
+            <summary>
+            Represents Uplay Thumbnail game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.AmazonBackground">
+            <summary>
+            Represents Amazon Background game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.AmazonScreenshot">
+            <summary>
+            Represents Amazon Screenshot game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.AmazonPoster">
+            <summary>
+            Represents Amazon Poster game images.
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.ImageTypes.GetList">
+            <summary>
+            This method gets a list of all the various game image types that are used in LaunchBox/Big Box.
+            </summary>
+            <returns>A list of strings representing all possible game image types.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.ImageTypes.IntegrationImageTypes">
+            <summary>
+            This method gets a HashSet of all the various game image types that are used in LaunchBox/Big Box and provided by Third Party integrations.
+            </summary>
+            <returns>A HashSet of strings representing all game image types provided by integrations.</returns>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.Data.IMount">
+            <summary>
+            This interface represents a DOSBox Drive Mount that is is associated with an <see cref="T:Unbroken.LaunchBox.Plugins.Data.IGame" /> in LaunchBox/Big Box.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IMount.GameId">
+            <summary>
+            Gets the ID of the game that is associated with this Mount. Maps up directly to the game's <see cref="P:Unbroken.LaunchBox.Plugins.Data.IGame.Id" /> property.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IMount.DriveLetter">
+            <summary>
+            Gets or sets the Drive Letter that should be used when loading this Mount in DOSBox.
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.Data.IParent">
+            <summary>
+            This interface represents a relationship between an <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlatform" />, <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlaylist" />, or <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlatformCategory" />, to a parent <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlatform" />, <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlaylist" />, or <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlatformCategory" />.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IParent.PlatformName">
+            <summary>
+            Gets or sets the name of the <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlatform" /> that is the child. Will be null or empty if the child is an <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlaylist" /> or an <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlatformCategory" />.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IParent.PlaylistId">
+            <summary>
+            Gets or sets the ID of the <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlaylist" /> that is the child. Will be null or empty if the child is an <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlatform" /> or an <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlatformCategory" />.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IParent.PlatformCategoryName">
+            <summary>
+            Gets or sets the name of the <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlatformCategory" /> that is the child. Will be null or empty if the child is an <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlatform" /> or an <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlaylist" />.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IParent.ParentPlatformName">
+            <summary>
+            Gets or sets the name of the <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlatform" /> that is the parent. Will be null or empty if the parent is an <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlaylist" /> or an <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlatformCategory" />, or if the associated <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlatform" /> should be displayed in the root.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IParent.ParentPlaylistId">
+            <summary>
+            Gets or sets the ID of the <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlaylist" /> that is the parent. Will be null or empty if the parent is an <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlatform" /> or an <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlatformCategory" />, or if the associated <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlaylist" /> should be displayed in the root.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IParent.ParentPlatformCategoryName">
+            <summary>
+            Gets or sets the name of the <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlatformCategory" /> that is the parent. Will be null or empty if the parent is an <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlatform" /> or an <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlaylist" />, or if the associated <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlatformCategory" /> should be displayed in the root.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IParent.PlatformOrCategoryOrPlaylist">
+            <summary>
+             Gets the associated <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlatform" />, <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlatformCategory" />, or <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlaylist" /> object that represents the child.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IParent.ParentPlatformOrCategoryOrPlaylist">
+            <summary>
+             Gets the associated <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlatform" />, <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlatformCategory" />, or <see cref="T:Unbroken.LaunchBox.Plugins.Data.IPlaylist" /> object that represents the parent.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IParent.Id">
+            <summary>
+            Gets the automatically generated ID for this Parent. Two Parent objects with the same ID are guaranteed to be identical.
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.Data.IStateManager">
+            <summary>
+            This interface provides access to various information about the current state of LaunchBox and Big Box.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IStateManager.IsBigBoxLocked">
+            <summary>
+            Gets a value specifying whether Big Box is currently locked.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IStateManager.IsBigBoxInAttractMode">
+            <summary>
+            Gets a value specifying whether Big Box is in attract mode or not.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IStateManager.IsBigBox">
+            <summary>
+            Gets a value specifying whether the running application is Big Box (true) or LaunchBox (false).
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IStateManager.IsPremium">
+            <summary>
+            Gets a value specifying whether the current user is licensed for LaunchBox Premium.
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IStateManager.GetAllSelectedGames">
+            <summary>
+            Gets an array of all of the currently selected games in LaunchBox or Big Box.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IStateManager.BigBoxCurrentTheme">
+            <summary>
+            Gets a value specifying the currently in use theme for Big Box.
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IStateManager.GetSelectedPlatform">
+            <summary>
+            Gets the currently selected platform in LaunchBox or Big Box.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.Data.NamespaceDoc">
+            <summary>
+            This namespace contains the data objects and utility classes used to work with data in LaunchBox and Big Box.
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.Data.SystemEventTypes">
+            <summary>
+            This class provides all of the event types that are fired in the ISystemEventsPlugin's <see cref="M:Unbroken.LaunchBox.Plugins.ISystemEventsPlugin.OnEventRaised(System.String)" /> method.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.SystemEventTypes.LaunchBoxStartupCompleted">
+            <summary>
+            This event type is raised once LaunchBox has completely finished loading and the main window is shown.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.SystemEventTypes.LaunchBoxShutdownBeginning">
+            <summary>
+            This event type is raised when LaunchBox begins to shut down/exit.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.SystemEventTypes.PluginInitialized">
+            <summary>
+            This event type is raised immediately after this specific plugin is loaded.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.SystemEventTypes.BigBoxStartupCompleted">
+            <summary>
+            This event type is raised once Big Box has completely finished loading and the interface is shown.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.SystemEventTypes.BigBoxShutdownBeginning">
+            <summary>
+            This event type is raised when Big Box begins to shut down/exit.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.SystemEventTypes.BigBoxThemeChanged">
+            <summary>
+            This event type is raised when the Big Box active theme is changed.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.SystemEventTypes.BigBoxLocked">
+            <summary>
+            This event type is raised when Big Box is locked.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.SystemEventTypes.BigBoxUnlocked">
+            <summary>
+            This event type is raised when Big Box is unlocked.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.SystemEventTypes.GameStarting">
+            <summary>
+            This event type is raised when a game is started. More details are available in the new IGameLaunchingPlugin interface, so that is recommended instead if needed.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.SystemEventTypes.GameExited">
+            <summary>
+            This event type is raised when a game is exited.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.SystemEventTypes.SelectionChanged">
+            <summary>
+            This event type is raised when the game selection changes in LaunchBox or Big Box.
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.Data.VideoTypes">
+            <summary>
+            This class contains constant values for all of the various game video types that are used in LaunchBox/Big Box.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.VideoTypes.VideoSnap">
+            <summary>
+            Represents Video snap videos. These are the traditional video's used in LaunchBox version 10.15 and prior.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.VideoTypes.Trailer">
+            <summary>
+            Represents trailer videos.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.VideoTypes.ThemeVideo">
+            <summary>
+            Represents theme videos. These represents videos by the same name in LaunchBox version 10.15 and prior.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.VideoTypes.Recording">
+            <summary>
+            Represents recordings captured by the screen recording feature implemented in LaunchBox 10.16.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.VideoTypes.Marquee">
+            <summary>
+            Represents videos that are to be played in a marquee.
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.VideoTypes.GetList">
+            <summary>
+            This method gets a list of all the various game video types that are used in LaunchBox/Big Box.
+            </summary>
+            <returns>A list of strings representing all possible game video types.</returns>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.EmulatorPlugin">
+            <summary>
+            Interface used to controlling emulator specific actions
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.EmulatorPlugin.EmulatorName">
+            <summary>
+            Display name of the emulator this controller is for
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.EmulatorPlugin.FireEmulatorImportAction(Unbroken.LaunchBox.Plugins.ImportActionArgs)">
+            <summary>
+            Runs logic for user selected import action
+            </summary>
+            <param name="args">Arguments containing details on which action to fire and against the list of imported games</param>
+            <returns>The response in whether or not the action was successfully ran</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.EmulatorPlugin.GetApplicableEmulators(System.Collections.Generic.IEnumerable{Unbroken.LaunchBox.Plugins.Data.IEmulator})">
+            <summary>
+            Determine which emulators can be associated to this controller
+            </summary>
+            <param name="emulators">The users existing emulators</param>
+            <returns>A collection of emulators that this controller can operate against</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.EmulatorPlugin.GetBiosFilesForPlatform(System.String)">
+            <summary>
+            Returns information on what BIOS files can or should be used with this emulator/platform combination
+            </summary>
+            <param name="platform">The platform for which the BIOS file would be used for</param>
+            <returns>A collection of BIOS files that are associated to this emulator/platform combination</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.EmulatorPlugin.GetBiosFilesForPlatform(System.String,System.String,System.String)">
+            <summary>
+            Returns information on what BIOS files can or should be used with this emulator/platform combination
+            </summary>
+            <param name="emulatorApplicationPath">The application path of the emulator asking for BIOS information</param>
+            <param name="platform">The platform for which the BIOS file would be used for</param>
+            <param name="commandLine">The current platform specific commandline being used by the emulator</param>
+            <returns></returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.EmulatorPlugin.GetCurrentVersion(System.String)">
+            <summary>
+            Gets the current version of the installed emulator
+            </summary>
+            <param name="applicationPath">Path to the emulator executable</param>
+            <returns>If version can get determined the version number, else null</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.EmulatorPlugin.GetInstallableVersions">
+            <summary>
+            Gets a list of installable versions of the emulator
+            </summary>
+            <returns>A collection of installable versions of this emulator</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.EmulatorPlugin.GetImportActions">
+            <summary>
+            Gets a list of options to be displayed in the ROM import wizard when this emulator is selected to be used
+            </summary>
+            <returns>A collection of actions to be listed. LaunchBox will call FireImportAction after the import for any option the user selects</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.EmulatorPlugin.InstallEmulator(Unbroken.LaunchBox.Plugins.InstallEmulatorArgs)">
+            <summary>
+            Install the emulator
+            </summary>
+            <param name="args">Context regarding the install of the emulator</param>
+            <returns>Appropriate response for the request</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.EmulatorPlugin.IsPlatformSupported(System.String)">
+            <summary>
+            Does this emulator support this platform?
+            </summary>
+            <param name="platform">The platform in question</param>
+            <returns>Response that indicates if the platform is supported, and if this emulator is recommended for it</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.EmulatorPlugin.IsUpdateAvailable(Unbroken.LaunchBox.Plugins.Data.IEmulator,Unbroken.LaunchBox.Plugins.EmulatorControllerVersion@)">
+            <summary>
+            Checks whether an existing installation can be updated to a newer one.
+            </summary>
+            <param name="emulator">The emulator in question</param>
+            <param name="version">The name of the version to be used in a message box explaining an update was found</param>
+            <returns>True if this emulator can be updated, otherwise false</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.EmulatorPlugin.IsUpdateAvailable(System.String,Unbroken.LaunchBox.Plugins.EmulatorControllerVersion@)">
+            <summary>
+            Checks whether an existing installation can be updated to a newer one.
+            </summary>
+            <param name="emulatorAppPath">The application path of the emulator in question</param>
+            <param name="version">The name of the version to be used in a message box explaining an update was found</param>
+            <returns>True if this emulator can be updated, otherwise false</returns>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.EmulatorActionArgs">
+            <summary>
+            Interface used for passing additional information to action related functionality
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.EmulatorActionArgs.Game">
+            <summary>
+            The game the action should be taken against
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.EmulatorActionArgs.Identifier">
+            <summary>
+            The name of the action that should be fired
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.EmulatorActionArgs.Platform">
+            <summary>
+            The name of the platform this action should be taken against
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.EmulatorControllerAction">
+            <summary>
+            An action this controller can take
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.EmulatorControllerAction.Description">
+            <summary>
+            UI string used to describe what this action does
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.EmulatorControllerAction.Identifier">
+            <summary>
+            Unique identifier for this action
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.EmulatorControllerAction.Label">
+            <summary>
+            UI Label for this action
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.EmulatorControllerOption">
+            <summary>
+            An option this emulator can have set
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.EmulatorControllerOption.CurrentValue">
+            <summary>
+            The current value of this option
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.EmulatorControllerOption.DefaultValue">
+            <summary>
+            The default value of this option
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.EmulatorControllerOption.Description">
+            <summary>
+            UI string describing this option
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.EmulatorControllerOption.Identifier">
+            <summary>
+            Unique identifier for this option
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.EmulatorControllerOption.Label">
+            <summary>
+            UI Label for this option
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.EmulatorControllerOption.OptionType">
+            <summary>
+            Type of data this option utilizes
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.EmulatorControllerOption.PossibleValues">
+            <summary>
+            A collection of possible values for this option
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.EmulatorOptionArgs">
+            <summary>
+            Interface used for passing additional information to options related functionality
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.EmulatorOptionArgs.Game">
+            <summary>
+            The game the option should be set for
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.EmulatorOptionArgs.Identifier">
+            <summary>
+            The name of the option that should be fired
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.EmulatorOptionArgs.Platform">
+            <summary>
+            The name of the platform this option should be set for
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.EmulatorBiosFile">
+            <summary>
+            BIOS file information for a given emulator
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.EmulatorBiosFile.ApplicableGroup">
+            <summary>
+            The EmulatorBiosGroup this emulator is a part of
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.EmulatorBiosFile.Description">
+            <summary>
+            UI description of what this BIOS file is
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.EmulatorBiosFile.FileName">
+            <summary>
+            The filename of the BIOS file
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.EmulatorBiosFile.Location">
+            <summary>
+            Where this BIOS file should be located relative to the emulators root folder
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.EmulatorBiosFile.Required">
+            <summary>
+            Is this BIOS file required to run the emulator
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.EmulatorControllerVersion">
+            <summary>
+            Version of the emulator. Typically used to determine which versions can be installed
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.EmulatorControllerVersion.Description">
+            <summary>
+            Description of this version
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.EmulatorControllerVersion.Identifier">
+            <summary>
+            Unique identifier of the version
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.EmulatorControllerVersion.Label">
+            <summary>
+            UI facing string for this version
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.InstallEmulatorArgs">
+            <summary>
+            Arguments passed to provide context to the installation request
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.InstallEmulatorArgs.ExistingEmulator">
+            <summary>
+            The emulator record that needs reinstalled
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.InstallEmulatorArgs.Platform">
+            <summary>
+            The platform this installation request is for
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.InstallEmulatorArgs.ReportProgressAction">
+            <summary>
+            Action to call when updating progress
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.InstallEmulatorArgs.ShouldCancelFunc">
+            <summary>
+            Function to call to determine if the installation should be cancelled or not
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.InstallEmulatorArgs.ShouldCreateEmulator">
+            <summary>
+            Should the install process create a LaunchBox emulator record?
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.InstallEmulatorArgs.Version">
+            <summary>
+            The version of the emulator that should be installed. If null use the latest version of the emulator
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.IBigBoxThemeElementPlugin">
+            <summary>
+            Implement this interface in order to add an element/control to a Big Box theme, access the data, and accept user input.
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.IBigBoxThemeElementPlugin.OnSelectionChanged(Unbroken.LaunchBox.Plugins.Data.FilterType,System.String,Unbroken.LaunchBox.Plugins.Data.IPlatform,Unbroken.LaunchBox.Plugins.Data.IPlatformCategory,Unbroken.LaunchBox.Plugins.Data.IPlaylist,Unbroken.LaunchBox.Plugins.Data.IGame)">
+            <summary>
+            Called whenever a new platform, platform category, playlist, or game is selected in the Big Box interface.
+            </summary>
+            <param name="filterType">The current filter type.</param>
+            <param name="filterValue">The current filter value. May be null if no filter value is selected.</param>
+            <param name="platform">The currently selected platform. May be null if no platform is selected.</param>
+            <param name="category">The currently selected platform category. May be null if no platform category is selected.</param>
+            <param name="playlist">The currently selected playlist. May be null if no playlist is selected.</param>
+            <param name="game">The currently selected game. May be null if no game is selected.</param>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.IBigBoxThemeElementPlugin.OnEnter">
+            <summary>
+            Called whenever Enter is pressed via the keyboard or controller.
+            </summary>
+            <returns>A value specifying whether input was handled or not. If true is returned, the input will not be sent back to Big Box.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.IBigBoxThemeElementPlugin.OnEscape">
+            <summary>
+            Called whenever Escape is pressed via the keyboard or controller.
+            </summary>
+            <returns>A value specifying whether input was handled or not. If true is returned, the input will not be sent back to Big Box.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.IBigBoxThemeElementPlugin.OnUp(System.Boolean)">
+            <summary>
+            Called whenever Up is pressed via the keyboard or controller.
+            </summary>
+            <param name="held">A value specifying whether the key or button was held down or not.</param>
+            <returns>A value specifying whether input was handled or not. If true is returned, the input will not be sent back to Big Box.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.IBigBoxThemeElementPlugin.OnDown(System.Boolean)">
+            <summary>
+            Called whenever Down is pressed via the keyboard or controller.
+            </summary>
+            <param name="held">A value specifying whether the key or button was held down or not.</param>
+            <returns>A value specifying whether input was handled or not. If true is returned, the input will not be sent back to Big Box.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.IBigBoxThemeElementPlugin.OnLeft(System.Boolean)">
+            <summary>
+            Called whenever Left is pressed via the keyboard or controller.
+            </summary>
+            <param name="held">A value specifying whether the key or button was held down or not.</param>
+            <returns>A value specifying whether input was handled or not. If true is returned, the input will not be sent back to Big Box.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.IBigBoxThemeElementPlugin.OnRight(System.Boolean)">
+            <summary>
+            Called whenever Right is pressed via the keyboard or controller.
+            </summary>
+            <param name="held">A value specifying whether the key or button was held down or not.</param>
+            <returns>A value specifying whether input was handled or not. If true is returned, the input will not be sent back to Big Box.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.IBigBoxThemeElementPlugin.OnPageDown">
+            <summary>
+            Called whenever Page Down is pressed via the keyboard or controller.
+            </summary>
+            <returns>A value specifying whether input was handled or not. If true is returned, the input will not be sent back to Big Box.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.IBigBoxThemeElementPlugin.OnPageUp">
+            <summary>
+            Called whenever Page Up is pressed via the keyboard or controller.
+            </summary>
+            <returns>A value specifying whether input was handled or not. If true is returned, the input will not be sent back to Big Box.</returns>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.IGameConfiguringPlugin">
+            <summary>
+            Implement this interface in order to handle specific game configuration events in LaunchBox and Big Box. Added in LaunchBox and Big Box 11.0-beta-3.
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.IGameConfiguringPlugin.OnBeforeGameConfigurationOpens(Unbroken.LaunchBox.Plugins.Data.IGame)">
+            <summary>
+            Called immediately before a particular game begins running the configuration. At this point the application is not guaranteed to launch successfully if the file does not exist or some other anomaly is encountered.
+            </summary>
+            <param name="game">The game that is launching it's configuration application.</param>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.IGameConfiguringPlugin.OnAfterGameConfigurationOpens(Unbroken.LaunchBox.Plugins.Data.IGame)">
+            <summary>
+            Called immediately after a particular game has opened it's configuration. At this point the application was successfully launched and should be running.
+            </summary>
+            <param name="game">The game that opened it's configuration application.</param>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.IGameConfiguringPlugin.OnGameConfigurationExited(Unbroken.LaunchBox.Plugins.Data.IGame)">
+            <summary>
+            Called immediately after the game's configuration application exits.
+            </summary>
+            /// <param name="game">The game that launched the configuration application that just closed.</param>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.IGameLaunchingPlugin">
+            <summary>
+            Implement this interface in order to handle specific game launching events in LaunchBox and Big Box. Added in LaunchBox and Big Box 9.2-beta-3.
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.IGameLaunchingPlugin.OnBeforeGameLaunching(Unbroken.LaunchBox.Plugins.Data.IGame,Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication,Unbroken.LaunchBox.Plugins.Data.IEmulator)">
+            <summary>
+            Called immediately before a particular game or additional app begins launching. At this point the game is not guaranteed to launch successfully if the startup file does not exist or some other anomaly is encountered.
+            </summary>
+            <param name="game">The game that is launching.</param>
+            <param name="app">The additional application that is launching. Will be null if the game is launching without a specific additional application.</param>
+            <param name="emulator">The emulator that is launching. Will be null if the game is launching without an emulator.</param>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.IGameLaunchingPlugin.OnAfterGameLaunched(Unbroken.LaunchBox.Plugins.Data.IGame,Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication,Unbroken.LaunchBox.Plugins.Data.IEmulator)">
+            <summary>
+            Called immediately after a particular game or additional app has launched. At this point the game was successfully launched and should be running.
+            </summary>
+            <param name="game">The game that was launched.</param>
+            <param name="app">The additional application that was launched. Will be null if the game was launched without a specific additional application.</param>
+            <param name="emulator">The emulator that was launched. Will be null if the game was launched without an emulator.</param>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.IGameLaunchingPlugin.OnGameExited">
+            <summary>
+            Called immediately after the game or additional app exits. Please note that in some cases this event may fire immediately after launching the game (such as if the game is a Steam game). This happens when the game's launched process exits immediately instead of continuing running.
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.IGameMenuItemPlugin">
+            <summary>
+            Implement this interface in order to add a game-specific menu item to the right-click menu in LaunchBox and/or the game details menu in Big Box.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.IGameMenuItemPlugin.SupportsMultipleGames">
+            <summary>
+            Gets a value specifying whether or not the menu item should be accessible when multiple games are selected at once.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.IGameMenuItemPlugin.Caption">
+            <summary>
+            Gets a value specifying the text to show on the menu item.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.IGameMenuItemPlugin.IconImage">
+            <summary>
+            Gets a value specifying the icon image to use for the menu item in LaunchBox. This property is not used in Big Box.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.IGameMenuItemPlugin.ShowInLaunchBox">
+            <summary>
+            Gets a value specifying whether or not to show the menu item in the LaunchBox right-click menu.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.IGameMenuItemPlugin.ShowInBigBox">
+            <summary>
+            Gets a value specifying whether or not to show the menu item in the Big Box game details menu.
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.IGameMenuItemPlugin.GetIsValidForGame(Unbroken.LaunchBox.Plugins.Data.IGame)">
+            <summary>
+            Used to determine whether the menu item is valid for the selected game. If not valid, the menu item will be disabled in LaunchBox or hidden in Big Box.
+            </summary>
+            <param name="selectedGame">The game that is currently selected.</param>
+            <returns>A value specifying whether the menu item is valid for the selected game.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.IGameMenuItemPlugin.GetIsValidForGames(Unbroken.LaunchBox.Plugins.Data.IGame[])">
+            <summary>
+            Used to determine whether the menu item is valid for the selected games when multiple games are selected. If not valid, the menu item will be disabled in LaunchBox. Multiple selections are currently not used in Big Box.
+            </summary>
+            <param name="selectedGames">An array of games that represent all of the currently selected games.</param>
+            <returns>A value specifying whether the menu item is valid for the selected games.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.IGameMenuItemPlugin.OnSelected(Unbroken.LaunchBox.Plugins.Data.IGame)">
+            <summary>
+            Called when the menu item is clicked or selected for a particular game.
+            </summary>
+            <param name="selectedGame">The currently-selected game that the menu item was called for.</param>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.IGameMenuItemPlugin.OnSelected(Unbroken.LaunchBox.Plugins.Data.IGame[])">
+            <summary>
+            Called when the menu item is clicked or selected for multiple games.
+            </summary>
+            <param name="selectedGames">An array of games that represent the currently-selected games that the menu item was called for.</param>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.IGameMultiMenuItemPlugin">
+            <summary>
+            This plugin is similar to IGameMenuItemPlugin. The primary exceptions being that this interface allows you to create multiple menu items, and supports menu nesting
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.ISystemEventsPlugin">
+            <summary>
+            Implement this interface in order to handle system-wide events in LaunchBox and Big Box.
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.ISystemEventsPlugin.OnEventRaised(System.String)">
+            <summary>
+            Called when any particular system event occurs in LaunchBox or Big Box.
+            </summary>
+            <param name="eventType">The type of event that has occurred. Maps up directly to a particular constant value in the <see cref="T:Unbroken.LaunchBox.Plugins.Data.SystemEventTypes" /> class.</param>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.ISystemMenuItemPlugin">
+            <summary>
+            Implement this interface in order to add a non-game-specific menu item to the Tools menu in LaunchBox and/or the System menu in Big Box.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.ISystemMenuItemPlugin.Caption">
+            <summary>
+            Gets a value specifying the text to show on the menu item.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.ISystemMenuItemPlugin.IconImage">
+            <summary>
+            Gets a value specifying the icon image to use for the menu item in LaunchBox. This property is not used in Big Box.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.ISystemMenuItemPlugin.ShowInLaunchBox">
+            <summary>
+            Gets a value specifying whether or not to show the menu item in the LaunchBox Tools menu.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.ISystemMenuItemPlugin.ShowInBigBox">
+            <summary>
+            Gets a value specifying whether or not to show the menu item in the Big Box System menu.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.ISystemMenuItemPlugin.AllowInBigBoxWhenLocked">
+            <summary>
+            Gets a value specifying whether or not to allow showing this menu item in Big Box when Big Box is Locked.
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.ISystemMenuItemPlugin.OnSelected">
+            <summary>
+            Called when the menu item is clicked or selected.
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.NamespaceDoc">
+            <summary>
+            The interfaces in this namespace all represent a particular plugin type that can be built for LaunchBox/Big Box.<para />
+            <para />
+            Pick the interface that best matches what you're trying to achieve, and create a class that inherits from that interface. Then simply build your DLL, put it in the LaunchBox\Plugins folder (or the subsequent Plugins folder inside of a Big Box theme), and test it out!<para />
+            <para />
+            The <see cref="T:Unbroken.LaunchBox.Plugins.PluginHelper" /> static class can be used to get access to LaunchBox data from within any plugin.
+            <para />
+            Also, please note that the <see cref="T:Unbroken.LaunchBox.Plugins.Data.IGameBadge">Unbroken.LaunchBox.Plugins.Data.IGameBadge</see> interface can be implemented as a plugin as well to add custom badges to the LaunchBox interface.
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.NamespaceGroupDoc">
+            <summary>
+            This documentation contains everything you need to develop plugins for LaunchBox and Big Box using any .NET language, such as C# or Visual Basic.<para />
+            <para />
+            To get started, simply create a new Class Library project in Visual Studio, and then add a reference to Unbroken.LaunchBox.Plugins.dll which is located in the LaunchBox\Metadata folder.<para />
+            <para />
+            Next, open the <see cref="N:Unbroken.LaunchBox.Plugins" /> namespace and pick out the plugin Interface that best matches what you're trying to achieve. Create a class that inherits from that interface, build your DLL, put it in the LaunchBox\Plugins folder (or the subsequent Plugins folder inside of a Big Box theme), and test it out!<para />
+            <para />
+            The <see cref="T:Unbroken.LaunchBox.Plugins.PluginHelper" /> static class can be used to get access to LaunchBox data from within any plugin.
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.PluginHelper">
+            <summary>
+            Used to provide logic, state information, and data to LaunchBox and Big Box plugins.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.PluginHelper.DataManager">
+            <summary>
+            Gets or sets the Data Manager object used to access all data in LaunchBox and Big Box. This property is automatically set by LaunchBox and Big Box and should not be set by any plugins.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.PluginHelper.StateManager">
+            <summary>
+            Gets or sets the State Manager object used to access current state information for LaunchBox and Big Box. This property is automatically set by LaunchBox and Big Box and should not be set by any plugins.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.PluginHelper.BigBoxMainViewModel">
+            <summary>
+            Gets or sets the Big Box main view model that is used to navigate around in Big Box. Will be null when in LaunchBox. This property is automatically set by Big Box and should not be set by any plugins.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.PluginHelper.LaunchBoxMainViewModel">
+            <summary>
+            Gets or sets the LaunchBox main view model that is used to navigate around in LaunchBox. Will be null when in Big Box. This property is automatically set by LaunchBox and should not be set by any plugins. Added in LaunchBox and Big Box 9.2-beta-3.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.PluginHelper.RetroAchievementsApi">
+            <summary>
+            Gets or sets the Retro Achievements API. This property is automatically set by LaunchBox and Big Box and should not be set by any plugins.
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.PluginResponse">
+            <summary>
+            Response class used to give feedback on plugin functionality
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.PluginResponse.Message">
+            <summary>
+            Message that will be potentially be displayed to the user to provide context to the success or failure of the requested action
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.PluginResponse.WasSuccess">
+            <summary>
+            Was the task successful?
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.RetroAchievements.IRetroAchievementsApi">
+            <summary>
+            This interface provides access to the retroachievements.org API. Use the <see cref="T:Unbroken.LaunchBox.Plugins.PluginHelper">PluginHelper</see>'s static <see cref="P:Unbroken.LaunchBox.Plugins.PluginHelper.RetroAchievementsApi" /> property to access the instance methods of the API.
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.RetroAchievements.IRetroAchievementsApi.GetHasCredentials">
+            <summary>
+            Gets a <see cref="T:System.Boolean">Boolean</see> value specifying whether or not LaunchBox has been configured with credentials for retroachievements.org. Does not guarantee working credentials.
+            </summary>
+            <returns>A boolean value specifying whether or not credentials have been entered by the user for retroachievements.org. Does not guarantee that they are valid credentials.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.RetroAchievements.IRetroAchievementsApi.GetGameInfoWithProgress(Unbroken.LaunchBox.Plugins.Data.IGame)">
+            <summary>
+            Gets game and related user progress information for the specified game.
+            </summary>
+            <param name="game">The <see cref="T:Unbroken.LaunchBox.Plugins.Data.IGame">IGame</see> to retrieve information for.</param>
+            <returns>A <see cref="T:Unbroken.LaunchBox.Plugins.RetroAchievements.GameInfoWithProgress">GameInfoWithProgress</see> object with all relevant information. May be null if credentials have not been configured or the game is not found.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.RetroAchievements.IRetroAchievementsApi.GetRecentlyPlayedGames(System.Int32,System.Int32)">
+            <summary>
+            Gets an enumeration of games that have been recently played by the user.
+            </summary>
+            <param name="count">The number of games to retrieve.</param>
+            <param name="offset">The number of games to skip (for paging).</param>
+            <returns>An enumeration of <see cref="T:Unbroken.LaunchBox.Plugins.RetroAchievements.RecentlyPlayedGame">RecentlyPlayedGame</see> objects that represent the recently played games. May be null if credentials have not been configured.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.RetroAchievements.IRetroAchievementsApi.GetUserRankAndScore">
+            <summary>
+            Gets the current user's rank and score.
+            </summary>
+            <returns>A <see cref="T:Unbroken.LaunchBox.Plugins.RetroAchievements.UserRankAndScore">UserRankAndScore</see> object with all relevant information. May be null if credentials have not been configured.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.RetroAchievements.IRetroAchievementsApi.GetGameInfoWithProgress(System.String)">
+            <summary>
+            Gets game and related user progress information for the specified retroachievements.org game ID.
+            </summary>
+            <param name="gameId">The retroachievements.org game ID to retrieve information for.</param>
+            <returns>A <see cref="T:Unbroken.LaunchBox.Plugins.RetroAchievements.GameInfoWithProgress">GameInfoWithProgress</see> object with all relevant information. May be null if credentials have not been configured.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.RetroAchievements.IRetroAchievementsApi.GetGameInfo(System.String)">
+            <summary>
+            Gets game information for the specified retroachievements.org game ID.
+            </summary>
+            <param name="gameId">The retroachievements.org game ID to retrieve information for.</param>
+            <returns>A <see cref="T:Unbroken.LaunchBox.Plugins.RetroAchievements.GameInfo">GameInfo</see> object with all relevant information. May be null if credentials have not been configured.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.RetroAchievements.IRetroAchievementsApi.GetGamesForConsole(System.String)">
+            <summary>
+            Gets an enumeration of all games with achievements that are available for the specified console ID.
+            </summary>
+            <param name="consoleId">The retroachievements.org console ID to retrieve the list of games for.</param>
+            <returns>An enumeration of <see cref="T:Unbroken.LaunchBox.Plugins.RetroAchievements.Game">Game</see> objects that represent the games available for the specified console ID. May be null if credentials have not been configured.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.RetroAchievements.IRetroAchievementsApi.GetConsoles">
+            <summary>
+            Gets an enumeration of all consoles that are available from retroachievements.org.
+            </summary>
+            <returns>An enumeration of <see cref="T:Unbroken.LaunchBox.Plugins.RetroAchievements.Console">Console</see> objects that represent the consoles available. May be null if credentials have not been configured.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.RetroAchievements.IRetroAchievementsApi.GetUserSummary(System.Int32,System.Int32)">
+            <summary>
+            Gets the users summary from retroachievements.org.
+            </summary>
+            <param name="recentGamesCount">The last number of games recently played.</param>
+            <param name="recentAchievementCount">The last number of achievements earned.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.RetroAchievements.IRetroAchievementsApi.GetAllUserCompletionProgress">
+            <summary>
+            Gets a list of all games the user has any achievement progress for
+            </summary>
+            <returns>Returns null if the user has no credentials entered, otherwise returns a list of games the user has any achievement progress on</returns>
+        </member>
+    </members>
+</doc>

@@ -18,6 +18,9 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+using log4net;
+using log4net.Appender;
+using OnlineVideoLinks.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,26 +36,20 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
     public class PluginStartupTests
     {
         [Fact]
-        public void Can_Download_VLC_Addon_At_Startup()
+        public void Should_Validate_Log4Net_LogFileLocation()
         {
-            var vlcEnvironment = Environment.Is64BitOperatingSystem ? "x64" : "x86";
-
-            // Create the VLC root folder and dummy executable in our test project working folder
-            var path = Path.Combine(Environment.CurrentDirectory, $"ThirdParty\\VLC\\{vlcEnvironment}");
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
-            if (!File.Exists(Path.Combine(path, "vlc.exe")))
-                File.Create(Path.Combine(path, "vlc.exe"));
-
-            // Check that VLC plugin doesn't already exist in the working folder
-            var addonFilePath = $"ThirdParty\\VLC\\{vlcEnvironment}\\lua\\playlist\\youtube.luac";
-            if(File.Exists(addonFilePath))
-                File.Delete(addonFilePath);
+            var expectedFile =
+                Path.Combine(GeneralUtilities.PluginDirectory, "Logs\\OnlineVideoLinks.Plugin.log");
 
             var pluginStartup = new PluginStartup();
-            pluginStartup.OnEventRaised(SystemEventTypes.LaunchBoxStartupCompleted);
 
-            Assert.True(File.Exists(addonFilePath));
+            var fileAppender = LogManager.GetRepository()
+                                .GetAppenders()
+                                .FirstOrDefault(appender => appender is RollingFileAppender) 
+                                as RollingFileAppender;
+
+            Assert.NotNull(fileAppender);
+            Assert.Equal(expectedFile, fileAppender.File);
         }
     }
 }

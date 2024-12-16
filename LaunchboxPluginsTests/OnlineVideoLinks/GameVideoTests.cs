@@ -20,8 +20,8 @@
 
 using LaunchboxPluginsTests.MockedClasses;
 using NSubstitute;
-using OnlineVideoLinks;
 using OnlineVideoLinks.Models;
+using OnlineVideoLinks.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,16 +53,16 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
 
             Assert.Equal(additionalAppDummy.ApplicationPath, exportedApp.ApplicationPath);
             Assert.Equal(additionalAppDummy.Name, exportedApp.Name);
-            Assert.Equal("-f --play-and-exit --start-time=337 --stop-time=387 https://youtu.be/q_7KUC6CY6Q",
+            Assert.Equal("-f --qt-start-minimized --qt-notification=0 --play-and-exit --start-time=337 --stop-time=387 https://youtu.be/q_7KUC6CY6Q",
                 exportedApp.CommandLine);
         }
 
         [Theory]
-        [InlineData("ThirdParty\\VLC\\x64\\vlc.exe", "-f --play-and-exit http://vidurl.test", true)]
-        [InlineData("ThirdParty\\VLC\\x64\\vlc.exe", "-f --play-and-exit --start-time=337 --stop-time=387 http://vidurl.test", true)]
-        [InlineData("C:\\Program Files\\VLC\\x64\\vlc.exe", "-f --play-and-exit http://vidurl.test", false)]
-        [InlineData("ThirdParty\\VLC\\x64\\vlc.exe", "--play-and-exit http://vidurl.test", false)]
-        [InlineData("ThirdParty\\VLC\\x64\\vlc.exe", "-f http://vidurl.test", false)]
+        [InlineData("\"ThirdParty\\VLC\\x64\\vlc.exe\"", "-f --qt-start-minimized --qt-notification=0 --play-and-exit http://vidurl.test", true)]
+        [InlineData("\"ThirdParty\\VLC\\x64\\vlc.exe\"", "-f --qt-start-minimized --qt-notification=0 --play-and-exit --start-time=337 --stop-time=387 http://vidurl.test", true)]
+        [InlineData(@"C:\Program Files\VLC\x64\vlc.exe", "-f --qt-start-minimized --qt-notification=0 --play-and-exit http://vidurl.test", false)]
+        [InlineData("\"ThirdParty\\VLC\\x64\\vlc.exe\"", "--play-and-exit http://vidurl.test", false)]
+        [InlineData("\"ThirdParty\\VLC\\x64\\vlc.exe\"", "-f http://vidurl.test", false)]
         public void CanValidateApps(string appPath, string appCmd, bool expectedResult)
         {
             var app = new AdditionalApplicationMock { ApplicationPath = appPath, CommandLine = appCmd };

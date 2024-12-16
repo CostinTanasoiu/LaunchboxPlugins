@@ -18,10 +18,13 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+using OnlineVideoLinks.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Unbroken.LaunchBox.Plugins.Data;
 
@@ -31,13 +34,15 @@ namespace OnlineVideoLinks.Models
     {
         #region Private members
 
-        private static string[] _commonVlcArguments = new string[] { "-f", "--play-and-exit" };
+        private static string[] _commonVlcArguments = new string[] { "-f", "--qt-start-minimized --qt-notification=0", "--play-and-exit" };
 
         #endregion
 
         #region Public properties
 
         public const string TitlePrefix = "Video: ";
+        public const string GamesDbVideoTitleWithPrefix = "Video: Playthrough";
+        public const string GamesDbVideoTitleNoPrefix = "Playthrough";
 
         public string Title { get; set; }
 

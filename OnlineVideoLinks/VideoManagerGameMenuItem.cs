@@ -18,6 +18,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+using OnlineVideoLinks.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,7 +56,7 @@ namespace OnlineVideoLinks
 
         public void OnSelected(IGame selectedGame)
         {
-            var form = new VideoManagerForm(selectedGame);
+            var form = new VideoManagerForm(selectedGame, new GameVideoUtility());
             form.ShowDialog();
             form.Dispose();
         }

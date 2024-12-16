@@ -31,12 +31,15 @@ using System.Windows.Forms;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
 using OnlineVideoLinks.Models;
+using OnlineVideoLinks.Utilities;
+using OnlineVideoLinks.Forms;
 
 namespace OnlineVideoLinks
 {
     public partial class VideoManagerForm : Form
     {
         private IGame _game;
+        private IGameVideoUtility _gameVideoUtility;
         private HelpForm _helpForm = new HelpForm();
 
         private BindingList<GameVideo> _gameVideos = new BindingList<GameVideo>();
@@ -51,10 +54,11 @@ namespace OnlineVideoLinks
             InitializeComponent();
         }
 
-        public VideoManagerForm(IGame game)
+        public VideoManagerForm(IGame game, IGameVideoUtility gameVideoUtility)
         {
             InitializeComponent();
             _game = game;
+            _gameVideoUtility = gameVideoUtility;
 
             this.Text = "Manage videos for: " + game.Title;
 
@@ -115,10 +119,7 @@ namespace OnlineVideoLinks
 
         private void PlayVideo(GameVideo gameVideo)
         {
-            var vlcExecutable = VlcUtilities.GetVlcExecutablePath();
-            var cmdArgs = gameVideo.GetVlcCmdArguments();
-            Process.Start(vlcExecutable, cmdArgs);
-        }
+            _gameVideoUtility.Play(gameVideo);        }
 
         private void ResetNewVideoFields()
         {

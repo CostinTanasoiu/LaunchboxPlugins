@@ -19,6 +19,7 @@
 */
 
 using LaunchboxPluginsTests.MockedClasses;
+using OnlineVideoLinks.Utilities;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -26,6 +27,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Unbroken.LaunchBox.Plugins;
+using Unbroken.LaunchBox.Plugins.Data;
+using YoutubeGameVideos;
 
 namespace FormsTestProject
 {
@@ -41,14 +44,68 @@ namespace FormsTestProject
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            RunCustomFieldEditor();
-            //RunOnlineVideoLinksForm();
+            //RunCustomFieldEditor();
+            RunVideoManagerForm();
+            //RunVideoSelectorForm();
         }
 
-        static void RunOnlineVideoLinksForm()
+        static void RunVideoManagerForm()
         {
-            OnlineVideoLinks.VlcUtilities.VerifyYoutubeAddon();
-            var form = new OnlineVideoLinks.VideoManagerForm();
+            new PluginStartup();
+            OnlineVideoLinks.Utilities.VlcUtilities.VerifyYoutubeAddon();
+            var form = new OnlineVideoLinks.Forms.NewVideoManagerForm();
+            Application.Run(form);
+        }
+
+        static void RunVideoSelectorForm()
+        {
+            new PluginStartup();
+            OnlineVideoLinks.Utilities.VlcUtilities.VerifyYoutubeAddon();
+            var form = new OnlineVideoLinks.VideoSelectorForm(new GameMock
+            {
+                Title = "Death and Return of Superman, The",
+                Genres = new BlockingCollection<string> { "Beat' Em Up" },
+                PlayModes = new string[] { "Single Player" },
+                AdditionalApplications = new List<IAdditionalApplication>()
+                {
+                    new AdditionalApplicationMock
+                    {
+                        Name = "Video: Longplay",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = "https://youtu.be/yka30n1D6L0"
+                    },
+                    new AdditionalApplicationMock
+                    {
+                        Name = "Video: Is Death and Return of Superman Worth Playing Today?",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = "https://youtu.be/7hfYthWLJsA"
+                    },
+                    new AdditionalApplicationMock
+                    {
+                        Name = "Video: Longplay",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = "https://youtu.be/yka30n1D6L0"
+                    },
+                    new AdditionalApplicationMock
+                    {
+                        Name = "Video: Is Death and Return of Superman Worth Playing Today?",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = "https://youtu.be/7hfYthWLJsA"
+                    },
+                    new AdditionalApplicationMock
+                    {
+                        Name = "Video: Longplay",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = "https://youtu.be/yka30n1D6L0"
+                    },
+                    new AdditionalApplicationMock
+                    {
+                        Name = "Video: Is Death and Return of Superman Worth Playing Today?",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = "https://youtu.be/7hfYthWLJsA"
+                    }
+                }
+            }, new GameVideoUtility(), new GamepadXinputProvider());
             Application.Run(form);
         }
 

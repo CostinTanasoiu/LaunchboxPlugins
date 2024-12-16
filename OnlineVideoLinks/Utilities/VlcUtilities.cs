@@ -18,6 +18,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,7 +28,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace OnlineVideoLinks
+namespace OnlineVideoLinks.Utilities
 {
     public class VlcUtilities
     {
@@ -37,7 +38,7 @@ namespace OnlineVideoLinks
         /// <summary>
         /// This is a link to the youtube.luac file from the development branch of VLC.
         /// </summary>
-        private const string YoutubeVlcAddonUrl = "http://git.videolan.org/?p=vlc.git;a=blob_plain;f=share/lua/playlist/youtube.lua;hb=HEAD";
+        private const string YoutubeVlcAddonUrl = "https://raw.githubusercontent.com/videolan/vlc/master/share/lua/playlist/youtube.lua";
 
         /// <summary>
         /// Retrieves the VLC folder path.
@@ -58,12 +59,7 @@ namespace OnlineVideoLinks
             if (File.Exists(fullPath + "\\vlc.exe"))
                 return relativePath;
 
-            // Otherwise check whether VLC is installed in Program Files and return that.
-
-            if (Environment.Is64BitOperatingSystem)
-                return $"C:\\Program Files\\VideoLAN\\VLC";
-            else
-                return $"C:\\Program Files (x86)\\VideoLAN\\VLC";
+            return null;
         }
 
         /// <summary>
@@ -72,7 +68,18 @@ namespace OnlineVideoLinks
         /// <returns></returns>
         public static string GetVlcExecutablePath()
         {
-            return GetVlcFolderPath() + "\\vlc.exe";
+            var folderPath = GetVlcFolderPath();
+            if (!string.IsNullOrEmpty(folderPath))
+                return $"\"{folderPath}\\vlc.exe\"";
+            return null;
+        }
+
+        /// <summary>
+        /// Checks whether VLC is installed.
+        /// </summary>
+        public static bool IsVlcInstalled()
+        {
+            return !string.IsNullOrEmpty(GetVlcExecutablePath());
         }
 
         /// <summary>
@@ -91,7 +98,7 @@ namespace OnlineVideoLinks
         {
             // Look for Launchbox's VLC distro
             var vlcEnvironment = Environment.Is64BitOperatingSystem ? "x64" : "x86";
-            var vlcAddonsFolder = VlcUtilities.GetVlcAddonsFolderPath();
+            var vlcAddonsFolder = GetVlcAddonsFolderPath();
 
             var youtubeAddonPath = "";
 
@@ -113,7 +120,16 @@ namespace OnlineVideoLinks
             {
                 using (var client = new WebClient())
                 {
-                    client.DownloadFile(YoutubeVlcAddonUrl, vlcAddonsFolder + "\\youtube.luac");
+                    try
+                    {
+                        client.DownloadFile(YoutubeVlcAddonUrl, vlcAddonsFolder + "\\youtube.luac");
+                    }
+                    catch(Exception ex)
+                    {
+                        var log = LogManager.GetLogger(nameof(VlcUtilities));
+                        log.Error("Could not download Youtube addon for VLC.", ex);
+                        throw;
+                    }
                 }
             }
 
