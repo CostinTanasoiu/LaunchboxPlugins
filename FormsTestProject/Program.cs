@@ -41,8 +41,8 @@ namespace FormsTestProject
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            RunCustomFieldEditor();
-            //RunOnlineVideoLinksForm();
+            //RunCustomFieldEditor();
+            RunOnlineVideoLinksForm();
         }
 
         static void RunOnlineVideoLinksForm()

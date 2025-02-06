@@ -37,7 +37,7 @@ namespace OnlineVideoLinks
         /// <summary>
         /// This is a link to the youtube.luac file from the development branch of VLC.
         /// </summary>
-        private const string YoutubeVlcAddonUrl = "http://git.videolan.org/?p=vlc.git;a=blob_plain;f=share/lua/playlist/youtube.lua;hb=HEAD";
+        private const string YoutubeVlcAddonUrl = "https://raw.githubusercontent.com/videolan/vlc/master/share/lua/playlist/youtube.lua";
 
         /// <summary>
         /// Retrieves the VLC folder path.
@@ -109,7 +109,7 @@ namespace OnlineVideoLinks
             // This is because YouTube transmission protocols change over time, and VLC developers are quite
             // keep up by updating their YouTube add-on file.
             if (youtubeAddonPath == ""
-                || (DateTime.Now - File.GetLastWriteTime(youtubeAddonPath)).TotalDays > 30)
+                || (DateTime.Now - File.GetLastWriteTime(youtubeAddonPath)).TotalDays > 1)
             {
                 using (var client = new WebClient())
                 {
