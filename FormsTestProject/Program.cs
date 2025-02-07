@@ -23,6 +23,7 @@ using OnlineVideoLinks.Utilities;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -45,8 +46,8 @@ namespace FormsTestProject
             Application.SetCompatibleTextRenderingDefault(false);
 
             //RunCustomFieldEditor();
-            RunVideoManagerForm();
-            //RunVideoSelectorForm();
+            //RunVideoManagerForm();
+            RunVideoSelectorForm();
         }
 
         static void RunVideoManagerForm()
@@ -68,6 +69,12 @@ namespace FormsTestProject
                 PlayModes = new string[] { "Single Player" },
                 AdditionalApplications = new List<IAdditionalApplication>()
                 {
+                    new AdditionalApplicationMock
+                    {
+                        Name = "Video: (local file) Jellyfish",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = Path.Combine(Environment.CurrentDirectory, @"OnlineVideoLinks\Assets\jellyfish.mp4")
+                    },
                     new AdditionalApplicationMock
                     {
                         Name = "Video: Longplay",
