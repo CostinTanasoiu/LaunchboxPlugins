@@ -45,23 +45,29 @@ namespace FormsTestProject
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            //RunCustomFieldEditor();
-            //RunVideoManagerForm();
-            RunVideoSelectorForm();
+            OnlineVideoLinks.Utilities.VlcUtilities.VerifyYoutubeAddon();
+
+            var form1 = RunCustomFieldEditor();
+            var form2 = RunVideoManagerForm();
+            var form3 = RunVideoSelectorForm();
+            
+            form1.Show();
+            form2.Show();
+            form3.Show();
+
+            Application.Run(new MainForm());
         }
 
-        static void RunVideoManagerForm()
+        static Form RunVideoManagerForm()
         {
             new PluginStartup();
-            OnlineVideoLinks.Utilities.VlcUtilities.VerifyYoutubeAddon();
             var form = new OnlineVideoLinks.Forms.NewVideoManagerForm();
-            Application.Run(form);
+            return form;
         }
 
-        static void RunVideoSelectorForm()
+        static Form RunVideoSelectorForm()
         {
             new PluginStartup();
-            OnlineVideoLinks.Utilities.VlcUtilities.VerifyYoutubeAddon();
             var form = new OnlineVideoLinks.VideoSelectorForm(new GameMock
             {
                 Title = "Death and Return of Superman, The",
@@ -119,10 +125,10 @@ namespace FormsTestProject
                     }
                 }
             }, new GameVideoUtility(), new GamepadXinputProvider());
-            Application.Run(form);
+            return form;
         }
 
-        static void RunCustomFieldEditor()
+        static Form RunCustomFieldEditor()
         {
             var dummyGames = new GameMock[]
             {
@@ -156,7 +162,7 @@ namespace FormsTestProject
                 dummyGames.First().Genres.Add($"Test {i:00}");
 
             var form = new BulkGenreEditor.FormGenreEditor(PluginHelper.DataManager, dummyGames);
-            Application.Run(form);
+            return form;
         }
     }
 }
