@@ -8,6 +8,8 @@ using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.IO;
+using LibVLCSharp.WPF;
+using System.Threading.Tasks;
 
 namespace OnlineVideoLinks.WPF
 {
@@ -26,15 +28,15 @@ namespace OnlineVideoLinks.WPF
 
             LibVLCSharp.Shared.Core.Initialize();
             _libVLC = new LibVLC(enableDebugLogs: true);
-            _libVLC.SetLogFile(Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Logs\\libvlc.log"));
+            _libVLC.SetLogFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs\\libvlc.log"));
+
+            _gameVideo = gameVideo;
 
             _mediaPlayer = new MediaPlayer(_libVLC);
-            vlcView.MediaPlayer = _mediaPlayer;
-
             _mediaPlayer.TimeChanged += _mediaPlayer_TimeChanged;
             _mediaPlayer.EndReached += _mediaPlayer_EndReached;
 
-            _gameVideo = gameVideo;
+            vlcView.MediaPlayer = _mediaPlayer;
         }
 
         /// <summary>
@@ -111,11 +113,12 @@ namespace OnlineVideoLinks.WPF
             }
         }
 
-        private async void Window_ContentRendered(object sender, EventArgs e)
+        private async void vlcView_Loaded(object sender, RoutedEventArgs e)
         {
             if (_gameVideo != null)
             {
-                var media = new Media(_libVLC, _gameVideo.VideoPath, FromType.FromLocation);
+                var media = new Media(_libVLC, new Uri(_gameVideo.VideoPath));
+
                 await media.Parse(MediaParseOptions.ParseNetwork);
                 var subitem = media.SubItems.FirstOrDefault();
 
@@ -124,6 +127,11 @@ namespace OnlineVideoLinks.WPF
                 else
                     vlcView.MediaPlayer.Play(media);
             }
+        }
+
+        private async void Window_ContentRendered(object sender, EventArgs e)
+        {
+
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

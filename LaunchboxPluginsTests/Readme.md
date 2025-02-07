@@ -6,5 +6,7 @@ a copy of the VLC folder to the test project's execution folder to the following
 - LaunchboxPluginsTests\bin\Release\ThirdParty\
 
 ## Sample file sources
+The following video files are sourced from https://pixabay.com/ and is subject to the [Pixabay Licence](https://pixabay.com/service/license/).
 
-- `OnlineVideoLinks/Assets/jellyfish.mp4` - sourced from https://pixabay.com/ and is subject to the [Pixabay Licence](https://pixabay.com/service/license/).
+- `OnlineVideoLinks/Assets/jellyfish_9s_.mp4`
+- `OnlineVideoLinks/Assets/turtle_960x540_30s.mp4`

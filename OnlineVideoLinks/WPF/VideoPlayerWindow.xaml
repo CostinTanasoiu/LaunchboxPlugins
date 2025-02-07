@@ -64,6 +64,6 @@
                 </TextBlock>
             </StackPanel>
         </Grid>
-        <vlc:VideoView Name="vlcView" Background="Black" />
+        <vlc:VideoView Name="vlcView" Background="Black" Loaded="vlcView_Loaded" />
     </DockPanel>
 </Window>

@@ -71,9 +71,15 @@ namespace FormsTestProject
                 {
                     new AdditionalApplicationMock
                     {
+                        Name = "Video: (local file) Turtle",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = Path.Combine(Environment.CurrentDirectory, @"OnlineVideoLinks\Assets\turtle_960x540_30s.mp4")
+                    },
+                    new AdditionalApplicationMock
+                    {
                         Name = "Video: (local file) Jellyfish",
                         ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
-                        CommandLine = Path.Combine(Environment.CurrentDirectory, @"OnlineVideoLinks\Assets\jellyfish.mp4")
+                        CommandLine = Path.Combine(Environment.CurrentDirectory, @"OnlineVideoLinks\Assets\jellyfish_9s.mp4")
                     },
                     new AdditionalApplicationMock
                     {
