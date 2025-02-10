@@ -1,15 +1,14 @@
 ﻿using LibVLCSharp.Shared;
 using OnlineVideoLinks.Models;
+using OnlineVideoLinks.Utilities;
 using SharpDX.XInput;
 using System;
+using System.IO;
 using System.Linq;
-using System.Collections.Generic;
-using System.Text;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.IO;
-using LibVLCSharp.WPF;
-using System.Threading.Tasks;
 
 namespace OnlineVideoLinks.WPF
 {
@@ -18,6 +17,11 @@ namespace OnlineVideoLinks.WPF
     /// </summary>
     public partial class VideoPlayerWindow : Window
     {
+        //[DllImport("libvlccore.dll")]
+        //private static extern void Initialize(string? libvlcDirectoryPath = null);
+
+        const string TempVideoPath = "temp_video.mp4";
+
         LibVLC _libVLC;
         MediaPlayer _mediaPlayer;
         GameVideo _gameVideo;
@@ -117,16 +121,38 @@ namespace OnlineVideoLinks.WPF
         {
             if (_gameVideo != null)
             {
-                var media = new Media(_libVLC, new Uri(_gameVideo.VideoPath));
+                progressBar.Visibility = Visibility.Visible;
 
-                await media.Parse(MediaParseOptions.ParseNetwork);
-                var subitem = media.SubItems.FirstOrDefault();
-
-                if (subitem != null)
-                    vlcView.MediaPlayer.Play(subitem);
+                if (VideoMetadataUtilities.IsYoutubeUrl(_gameVideo.VideoPath))
+                    await LoadYoutubeVideo();
                 else
-                    vlcView.MediaPlayer.Play(media);
+                    await LoadRegularVideo();
             }
+        }
+
+        private async Task LoadRegularVideo()
+        {
+            var media = new Media(_libVLC, new Uri(_gameVideo.VideoPath));
+
+            await media.Parse(MediaParseOptions.ParseNetwork);
+            var subitem = media.SubItems.FirstOrDefault();
+
+            progressBar.Visibility = Visibility.Collapsed;
+
+            if (subitem != null)
+                vlcView.MediaPlayer.Play(subitem);
+            else
+                vlcView.MediaPlayer.Play(media);
+        }
+
+        private async Task LoadYoutubeVideo()
+        {
+            await YoutubeDownloader.DownloadTimestampedVideoMP4(_gameVideo.VideoPath, TempVideoPath, _gameVideo.StartTime, _gameVideo.StopTime);
+
+            var media = new Media(_libVLC, TempVideoPath, FromType.FromPath);
+
+            progressBar.Visibility = Visibility.Collapsed;
+            vlcView.MediaPlayer.Play(media);
         }
 
         private async void Window_ContentRendered(object sender, EventArgs e)
@@ -137,10 +163,14 @@ namespace OnlineVideoLinks.WPF
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             _mediaPlayer.Stop();
+
+            _mediaPlayer.Media.Dispose();
             _mediaPlayer.Dispose();
 
             _libVLC.CloseLogFile();
             _libVLC.Dispose();
+
+            File.Delete(TempVideoPath);
         }
 
         private void btnPlay_Click(object sender, RoutedEventArgs e)

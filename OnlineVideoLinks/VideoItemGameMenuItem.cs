@@ -1,4 +1,5 @@
-﻿using OnlineVideoLinks.Models;
+﻿using OnlineVideoLinks.Gamepad;
+using OnlineVideoLinks.Models;
 using OnlineVideoLinks.Utilities;
 using OnlineVideoLinks.WPF;
 using System;

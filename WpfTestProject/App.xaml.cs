@@ -1,4 +1,5 @@
 ﻿using LaunchboxPluginsTests.MockedClasses;
+using OnlineVideoLinks.Gamepad;
 using OnlineVideoLinks.Utilities;
 using OnlineVideoLinks.WPF;
 using System;
@@ -78,6 +79,7 @@ namespace WpfTestProject
             var window = new VideoSelectorWindow(game,
                 new GameVideoUtility(),
                 new GamepadXinputProvider());
+
             window.Show();
         }
 	}

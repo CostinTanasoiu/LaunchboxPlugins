@@ -1,4 +1,5 @@
 ﻿using log4net;
+using OnlineVideoLinks.Gamepad;
 using OnlineVideoLinks.Models;
 using OnlineVideoLinks.Utilities;
 using SharpDX.DirectInput;

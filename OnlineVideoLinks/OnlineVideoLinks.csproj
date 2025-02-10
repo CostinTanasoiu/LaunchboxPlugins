@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FFmpeg.Static" Version="4.4.0.7" />
     <PackageReference Include="HtmlAgilityPack" Version="1.11.27" />
     <PackageReference Include="LibVLCSharp" Version="3.8.5" />
     <PackageReference Include="LibVLCSharp.WPF" Version="3.8.5" />
@@ -28,7 +29,8 @@
     <PackageReference Include="SteamWebAPI2" Version="4.4.1" />
     <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
     <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.20" />
-    <PackageReference Include="YoutubeExplode" Version="6.3.16" />
+    <PackageReference Include="YoutubeExplode" Version="6.5.3" />
+    <PackageReference Include="YoutubeExplode.Converter" Version="6.5.3" />
   </ItemGroup>
 
   <ItemGroup>

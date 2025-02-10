@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace OnlineVideoLinks.Utilities
+namespace OnlineVideoLinks.Gamepad
 {
     public class GamepadDinputProvider
     {
@@ -52,7 +52,7 @@ namespace OnlineVideoLinks.Utilities
 
             _acquiredJoysticks.Add(joystick);
 
-            
+
         }
 
         private void TimerTick(object timerState)
@@ -71,7 +71,7 @@ namespace OnlineVideoLinks.Utilities
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 timer.Dispose();
                 _log.Error("DInput tick error", ex);

@@ -64,6 +64,11 @@
                 </TextBlock>
             </StackPanel>
         </Grid>
-        <vlc:VideoView Name="vlcView" Background="Black" Loaded="vlcView_Loaded" />
+        <Grid>
+            <vlc:VideoView Name="vlcView" Background="Black" Loaded="vlcView_Loaded" />
+            <ProgressBar Name="progressBar" Width="200" Height="30" 
+                         VerticalAlignment="Center" HorizontalAlignment="Center" 
+                         IsIndeterminate="True" Visibility="Collapsed"/>
+        </Grid>
     </DockPanel>
 </Window>

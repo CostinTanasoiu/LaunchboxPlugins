@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FFmpeg.Static" Version="4.4.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BulkGenreEditor\BulkGenreEditor.csproj" />
     <ProjectReference Include="..\LaunchboxPluginsTests\LaunchboxPluginsTests.csproj" />
     <ProjectReference Include="..\OnlineVideoLinks\OnlineVideoLinks.csproj" />

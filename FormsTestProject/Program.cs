@@ -19,6 +19,7 @@
 */
 
 using LaunchboxPluginsTests.MockedClasses;
+using OnlineVideoLinks.Gamepad;
 using OnlineVideoLinks.Utilities;
 using System;
 using System.Collections.Concurrent;
@@ -89,39 +90,33 @@ namespace FormsTestProject
                     },
                     new AdditionalApplicationMock
                     {
-                        Name = "Video: Longplay",
-                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
-                        CommandLine = "https://youtu.be/yka30n1D6L0"
-                    },
-                    new AdditionalApplicationMock
-                    {
-                        Name = "Video: Is Death and Return of Superman Worth Playing Today?",
+                        Name = "Video: (youtube) Superman Worth Playing Today?",
                         ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
                         CommandLine = "https://youtu.be/7hfYthWLJsA"
                     },
                     new AdditionalApplicationMock
                     {
-                        Name = "Video: Longplay",
+                        Name = "Video: (youtube) Sea of Stars timestamped",
                         ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
-                        CommandLine = "https://youtu.be/yka30n1D6L0"
+                        CommandLine = "--start-time=1840 --stop-time=1886 https://youtu.be/lETECcvmjlY"
                     },
                     new AdditionalApplicationMock
                     {
-                        Name = "Video: Is Death and Return of Superman Worth Playing Today?",
+                        Name = "Video: (youtube) Pizza Possum Trailer",
                         ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
-                        CommandLine = "https://youtu.be/7hfYthWLJsA"
+                        CommandLine = "https://www.youtube.com/watch?v=0GeWLeDWjng"
                     },
                     new AdditionalApplicationMock
                     {
-                        Name = "Video: Longplay",
+                        Name = "Video: (youtube) Piza Possum Review (Co-Op Bros)",
                         ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
-                        CommandLine = "https://youtu.be/yka30n1D6L0"
+                        CommandLine = "https://www.youtube.com/watch?v=xg_O7Fc57CY"
                     },
                     new AdditionalApplicationMock
                     {
-                        Name = "Video: Is Death and Return of Superman Worth Playing Today?",
+                        Name = "Video: (steam) Pizza Possum Co-Op Trailer",
                         ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
-                        CommandLine = "https://youtu.be/7hfYthWLJsA"
+                        CommandLine = "https://video.fastly.steamstatic.com/store_trailers/256951885/movie_max_vp9.webm?t=1686321338"
                     }
                 }
             }, new GameVideoUtility(), new GamepadXinputProvider());

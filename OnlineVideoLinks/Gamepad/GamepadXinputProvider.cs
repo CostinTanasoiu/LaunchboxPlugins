@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace OnlineVideoLinks.Utilities
+namespace OnlineVideoLinks.Gamepad
 {
     public interface IGamepadXinputProvider
     {
