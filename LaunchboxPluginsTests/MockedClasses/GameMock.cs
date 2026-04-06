@@ -130,6 +130,8 @@ namespace LaunchboxPluginsTests.MockedClasses
 
         public string VideoUrl { get; set; }
 
+        public string Progress { get; set; }
+
         #region Additional Applications
 
         public List<IAdditionalApplication> AdditionalApplications { get; set; }
@@ -301,6 +303,11 @@ namespace LaunchboxPluginsTests.MockedClasses
         }
 
         public void UpdateTitleAndMigrateMedia(string newTitle)
+        {
+            throw new NotImplementedException();
+        }
+
+        string IGame.GetEffectiveCommandLine()
         {
             throw new NotImplementedException();
         }
