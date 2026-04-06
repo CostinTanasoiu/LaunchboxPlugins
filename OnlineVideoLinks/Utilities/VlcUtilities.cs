@@ -59,6 +59,12 @@ namespace OnlineVideoLinks.Utilities
             if (File.Exists(fullPath + "\\vlc.exe"))
                 return relativePath;
 
+            // Otherwise try the Program Files installation
+            var absolutePath = "C:\\Program Files\\VideoLAN\\VLC";
+            fullPath = Path.Combine(absolutePath, "vlc.exe");
+            if (File.Exists(fullPath))
+                return absolutePath;
+
             return null;
         }
 
