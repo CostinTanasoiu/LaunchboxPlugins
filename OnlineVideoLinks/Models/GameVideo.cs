@@ -116,6 +116,9 @@ namespace OnlineVideoLinks.Models
                 cmdArgs += $" --input-slave=\"{audioUrl}\"";
             }
 
+            // Set a custom title to avoid showing the long URL in the VLC window
+            cmdArgs += $" --meta-title=\"{Title}\"";
+
             // Quote the video path to handle URLs with special characters (?, &, =, etc.)
             cmdArgs += " \"" + videoUrl + "\"";
             return cmdArgs;
