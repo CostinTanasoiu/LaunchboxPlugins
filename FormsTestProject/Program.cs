@@ -30,6 +30,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
+using VideoPlayer.Forms;
 using YoutubeGameVideos;
 
 namespace FormsTestProject
@@ -48,13 +49,14 @@ namespace FormsTestProject
 
             OnlineVideoLinks.Utilities.VlcUtilities.VerifyYoutubeAddon();
 
-            var form1 = RunCustomFieldEditor();
-            var form2 = RunVideoManagerForm();
-            var form3 = RunVideoSelectorForm();
-            
-            form1.Show();
-            form2.Show();
-            form3.Show();
+            var forms = new List<Form>();
+            //forms.Add(RunCustomFieldEditor());
+            forms.Add(RunVideoManagerForm());
+            //forms.Add(RunVideoSelectorForm());
+            //forms.Add(RunNewVideoSelectorForm());
+
+            foreach (var form in forms)
+                form.Show();
 
             Application.Run(new MainForm());
         }
@@ -90,6 +92,12 @@ namespace FormsTestProject
                     },
                     new AdditionalApplicationMock
                     {
+                        Name = "Video: (steam) Pizza Possum Co-Op Trailer",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = "https://video.fastly.steamstatic.com/store_trailers/256951885/movie_max_vp9.webm?t=1686321338"
+                    },
+                    new AdditionalApplicationMock
+                    {
                         Name = "Video: (youtube) Superman Worth Playing Today?",
                         ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
                         CommandLine = "https://youtu.be/7hfYthWLJsA"
@@ -111,15 +119,70 @@ namespace FormsTestProject
                         Name = "Video: (youtube) Piza Possum Review (Co-Op Bros)",
                         ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
                         CommandLine = "https://www.youtube.com/watch?v=xg_O7Fc57CY"
+                    }
+                }
+            }, new GameVideoUtility(), new GamepadXinputProvider());
+            return form;
+        }
+
+        static Form RunNewVideoSelectorForm()
+        {
+            new PluginStartup();
+            var form = new VideoPlayer.Forms.VideoSelectorForm(new GameMock
+            {
+                Title = "Death and Return of Superman, The",
+                Genres = new BlockingCollection<string> { "Beat' Em Up" },
+                PlayModes = new string[] { "Single Player" },
+                AdditionalApplications = new List<IAdditionalApplication>()
+                {
+                    new AdditionalApplicationMock
+                    {
+                        Name = "Video: (local file) Turtle",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = Path.Combine(Environment.CurrentDirectory, @"OnlineVideoLinks\Assets\turtle_960x540_30s.mp4")
+                    },
+                    new AdditionalApplicationMock
+                    {
+                        Name = "Video: (local file) Jellyfish",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = Path.Combine(Environment.CurrentDirectory, @"OnlineVideoLinks\Assets\jellyfish_9s.mp4")
                     },
                     new AdditionalApplicationMock
                     {
                         Name = "Video: (steam) Pizza Possum Co-Op Trailer",
                         ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
                         CommandLine = "https://video.fastly.steamstatic.com/store_trailers/256951885/movie_max_vp9.webm?t=1686321338"
+                    },
+                    new AdditionalApplicationMock
+                    {
+                        Name = "Video: (youtube) Superman Worth Playing Today?",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = "https://youtu.be/7hfYthWLJsA"
+                    },
+                    new AdditionalApplicationMock
+                    {
+                        Name = "Video: (youtube) Sea of Stars timestamped",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = "--start-time=1840 --stop-time=1886 https://youtu.be/lETECcvmjlY"
+                    },
+                    new AdditionalApplicationMock
+                    {
+                        Name = "Video: (youtube) Pizza Possum Trailer",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = "https://www.youtube.com/watch?v=0GeWLeDWjng"
+                    },
+                    new AdditionalApplicationMock
+                    {
+                        Name = "Video: (youtube) Piza Possum Review (Co-Op Bros)",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = "https://www.youtube.com/watch?v=xg_O7Fc57CY"
                     }
                 }
-            }, new GameVideoUtility(), new GamepadXinputProvider());
+            }, 
+            new VideoPlayer.Utilities.GameVideoUtility(),
+            new VideoPlayer.Forms.VideoPlayerForm(),
+            new VideoPlayer.Gamepad.GamepadXinputProvider()
+            );
             return form;
         }
 

@@ -19,16 +19,9 @@
 */
 
 using log4net;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
-namespace OnlineVideoLinks.Utilities
+namespace VideoPlayer.Utilities
 {
     public class VlcUtilities
     {
@@ -131,7 +124,7 @@ namespace OnlineVideoLinks.Utilities
                         File.Copy(vlcAddonsFolder + "\\youtube.luac",
                             Path.Combine(Application.StartupPath, @"libvlc\win-x86\lua\playlist\youtube.luac"), true);
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         var log = LogManager.GetLogger(nameof(VlcUtilities));
                         log.Error("Could not download Youtube addon for VLC.", ex);
