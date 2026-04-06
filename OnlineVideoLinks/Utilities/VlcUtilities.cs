@@ -91,41 +91,12 @@ namespace OnlineVideoLinks.Utilities
         }
 
         /// <summary>
-        /// Retrieves the VLC Addons folder path.
-        /// For portable/LaunchBox VLC installations, returns the lua\playlist folder within VLC's directory.
-        /// For Program Files installations, returns the user's AppData VLC lua folder (writable and checked by VLC).
-        /// </summary>
-        /// <returns></returns>
-        public static string GetVlcAddonsFolderPath()
-        {
-            var vlcFolder = GetVlcFolderPath();
-
-            // If VLC is installed in Program Files, use the user's AppData folder instead
-            // because Program Files requires admin rights to write and VLC checks AppData for user scripts
-            if (vlcFolder != null && vlcFolder.StartsWith("C:\\Program Files", StringComparison.OrdinalIgnoreCase))
-            {
-                var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-                return Path.Combine(appDataPath, "vlc", "lua", "playlist");
-            }
-
-            return vlcFolder + "\\lua\\playlist";
-        }
-
-        /// <summary>
         /// Gets the path to the yt-dlp executable in the plugin directory (Plugins\Costin.OnlineVideoLinks\Tools).
         /// </summary>
         public static string GetYtDlpPath()
         {
             var pluginDir = Path.Combine(Environment.CurrentDirectory, "Plugins", "Costin.OnlineVideoLinks", "Tools");
             return Path.Combine(pluginDir, "yt-dlp.exe");
-        }
-
-        /// <summary>
-        /// Checks whether yt-dlp is installed.
-        /// </summary>
-        public static bool IsYtDlpInstalled()
-        {
-            return File.Exists(GetYtDlpPath());
         }
 
         /// <summary>
