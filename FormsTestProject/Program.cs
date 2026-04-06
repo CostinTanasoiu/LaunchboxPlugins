@@ -50,10 +50,10 @@ namespace FormsTestProject
             OnlineVideoLinks.Utilities.VlcUtilities.VerifyYoutubeAddon();
 
             var forms = new List<Form>();
-            //forms.Add(RunCustomFieldEditor());
-            forms.Add(RunVideoManagerForm());
-            //forms.Add(RunVideoSelectorForm());
-            //forms.Add(RunNewVideoSelectorForm());
+            forms.Add(ConfigureCustomFieldEditor());
+            forms.Add(ConfigureVideoManagerForm());
+            forms.Add(ConfigureVideoSelectorForm());
+            forms.Add(ConfigureNewVideoSelectorForm());
 
             foreach (var form in forms)
                 form.Show();
@@ -61,14 +61,14 @@ namespace FormsTestProject
             Application.Run(new MainForm());
         }
 
-        static Form RunVideoManagerForm()
+        static Form ConfigureVideoManagerForm()
         {
             new PluginStartup();
             var form = new OnlineVideoLinks.Forms.NewVideoManagerForm();
             return form;
         }
 
-        static Form RunVideoSelectorForm()
+        static Form ConfigureVideoSelectorForm()
         {
             new PluginStartup();
             var form = new OnlineVideoLinks.VideoSelectorForm(new GameMock
@@ -125,7 +125,7 @@ namespace FormsTestProject
             return form;
         }
 
-        static Form RunNewVideoSelectorForm()
+        static Form ConfigureNewVideoSelectorForm()
         {
             new PluginStartup();
             var form = new VideoPlayer.Forms.VideoSelectorForm(new GameMock
@@ -186,7 +186,7 @@ namespace FormsTestProject
             return form;
         }
 
-        static Form RunCustomFieldEditor()
+        static Form ConfigureCustomFieldEditor()
         {
             var dummyGames = new GameMock[]
             {

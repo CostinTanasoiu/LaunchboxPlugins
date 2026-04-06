@@ -115,8 +115,8 @@ namespace OnlineVideoLinks.Utilities
             // If we don't have the YouTube addon OR the file is more than a month old, then let's download it.
             // This is because YouTube transmission protocols change over time, and VLC developers are quite
             // keep up by updating their YouTube add-on file.
-            //if (youtubeAddonPath == ""
-            //    || (DateTime.Now - File.GetLastWriteTime(youtubeAddonPath)).TotalDays > 30)
+            if (youtubeAddonPath == ""
+                || (DateTime.Now - File.GetLastWriteTime(youtubeAddonPath)).TotalDays > 1)
             {
                 using (var client = new WebClient())
                 {
