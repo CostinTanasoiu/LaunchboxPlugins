@@ -13,7 +13,7 @@ namespace VideoPlayer.Forms.UserControls
 {
     public partial class PlayerButtonWithBadge : UserControl
     {
-        Bitmap _canvas;
+        Bitmap? _canvas;
         Image? _imgMain;
         Image? _imgBadge;
 
@@ -21,13 +21,26 @@ namespace VideoPlayer.Forms.UserControls
         {
             InitializeComponent();
 
-            // Doing this to fix transparency issue
-            //pictureBoxMain.Controls.Add(pictureBoxBadge);
+            pictureBoxCanvas.Click += PictureBoxCanvas_Click;
+            this.Resize += PlayerButtonWithBadge_Resize;
 
+            RecreateCanvas();
+        }
+
+        private void PlayerButtonWithBadge_Resize(object? sender, EventArgs e)
+        {
+            RecreateCanvas();
+        }
+
+        private void RecreateCanvas()
+        {
+            if (this.Width <= 0 || this.Height <= 0)
+                return;
+
+            _canvas?.Dispose();
             _canvas = new Bitmap(this.Width, this.Height, PixelFormat.Format32bppPArgb);
             pictureBoxCanvas.Image = _canvas;
-
-            pictureBoxCanvas.Click += PictureBoxCanvas_Click;
+            DrawCanvas();
         }
 
         private void PictureBoxCanvas_Click(object? sender, EventArgs e)
@@ -37,18 +50,29 @@ namespace VideoPlayer.Forms.UserControls
 
         private void DrawCanvas()
         {
+            if (_canvas == null)
+                return;
+
+            // Calculate sizes proportionally based on the control's current size
+            // Main icon takes up ~84% of the control height, positioned at bottom-left
+            int mainIconSize = (int)(this.Height * 0.84);
+            // Badge icon takes up ~42% of the control height, positioned at top-right
+            int badgeIconSize = (int)(this.Height * 0.42);
+
             using (var gr = Graphics.FromImage(_canvas))
             {
-                gr.Clear(Color.Transparent); // Clear the graphic element to transparent, it was black.
+                gr.Clear(Color.Transparent);
+                gr.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                gr.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
                 if (_imgMain != null)
-                    // Resize and draw the main image to fit within a 64x64 area at the bottom left corner
-                    gr.DrawImage(_imgMain, new Rectangle(0, this.Height - 64, 64, 64));
+                    gr.DrawImage(_imgMain, new Rectangle(0, this.Height - mainIconSize, mainIconSize, mainIconSize));
 
                 if (_imgBadge != null)
-                    // Resize and draw the badge image to fit within a 32x32 area at the top-right corner
-                    gr.DrawImage(_imgBadge, new Rectangle(this.Width - 32, 0, 32, 32));
+                    gr.DrawImage(_imgBadge, new Rectangle(this.Width - badgeIconSize, 0, badgeIconSize, badgeIconSize));
             }
+
+            pictureBoxCanvas.Invalidate();
         }
 
         [Browsable(true)]

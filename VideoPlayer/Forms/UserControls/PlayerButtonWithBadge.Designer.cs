@@ -34,6 +34,7 @@
             // 
             // pictureBoxCanvas
             // 
+            pictureBoxCanvas.Dock = DockStyle.Fill;
             pictureBoxCanvas.Location = new Point(0, 0);
             pictureBoxCanvas.Margin = new Padding(0);
             pictureBoxCanvas.Name = "pictureBoxCanvas";
