@@ -97,6 +97,7 @@ namespace OnlineVideoLinks.Models
 
         /// <summary>
         /// Retrieves a string with all the command-line arguments required to play this video with VLC.
+        /// For YouTube URLs, uses yt-dlp to get the direct video URL.
         /// </summary>
         public string GetVlcCmdArguments()
         {
@@ -106,7 +107,17 @@ namespace OnlineVideoLinks.Models
             if (StopTime > 0)
                 cmdArgs += " --stop-time=" + StopTime.ToString();
 
-            cmdArgs += " " + VideoPath;
+            // For YouTube URLs, resolve to direct video/audio URLs using yt-dlp
+            var (videoUrl, audioUrl) = VlcUtilities.GetDirectVideoUrls(VideoPath);
+
+            // If we have a separate audio stream, tell VLC to use it as a slave input
+            if (!string.IsNullOrEmpty(audioUrl))
+            {
+                cmdArgs += $" --input-slave=\"{audioUrl}\"";
+            }
+
+            // Quote the video path to handle URLs with special characters (?, &, =, etc.)
+            cmdArgs += " \"" + videoUrl + "\"";
             return cmdArgs;
         }
 

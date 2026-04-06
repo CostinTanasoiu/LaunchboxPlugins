@@ -64,8 +64,8 @@ namespace YoutubeGameVideos
 
                 try
                 {
-                    VlcUtilities.VerifyYoutubeAddon();
-                    _log.Info("Verified the Youtube addon for VLC.");
+                    VlcUtilities.VerifyYtDlp();
+                    _log.Info("Verified yt-dlp for YouTube video support.");
 
                     var gameVideoUtility = new GameVideoUtility();
                     gameVideoUtility.ValidateVideosForAllGames();

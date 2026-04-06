@@ -45,7 +45,7 @@ namespace FormsTestProject
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            OnlineVideoLinks.Utilities.VlcUtilities.VerifyYoutubeAddon();
+            OnlineVideoLinks.Utilities.VlcUtilities.VerifyYtDlp();
 
             var form1 = ConfigureCustomFieldEditor();
             var form2 = ConfigureVideoManagerForm();
@@ -92,6 +92,12 @@ namespace FormsTestProject
                         Name = "Video: Is Death and Return of Superman Worth Playing Today?",
                         ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
                         CommandLine = "https://youtu.be/7hfYthWLJsA"
+                    },
+                    new AdditionalApplicationMock
+                    {
+                        Name = "Video: (steam) Pizza Possum Co-Op Trailer",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = "https://video.fastly.steamstatic.com/store_trailers/256951885/movie_max_vp9.webm?t=1686321338"
                     },
                     new AdditionalApplicationMock
                     {
