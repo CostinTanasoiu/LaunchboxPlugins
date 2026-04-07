@@ -52,7 +52,7 @@ namespace FormsTestProject
             form1.Show();
             form2.Show();
 
-            Application.Run(new MainForm());
+            Application.Run();
         }
 
         static Form ConfigureVideoManagerForm()
