@@ -8,7 +8,7 @@ using System.Drawing;
 using System.Text;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
-using YoutubeGameVideos;
+using OnlineVideoLinks;
 
 namespace OnlineVideoLinks
 {

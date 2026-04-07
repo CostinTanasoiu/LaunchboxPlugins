@@ -46,15 +46,12 @@ namespace VideoPlayer
 
                 try
                 {
-                    OnlineVideoLinks.Utilities.VlcUtilities.VerifyYoutubeAddon();
-                    _log.Info("Verified the Youtube addon for VLC.");
-
                     var gameVideoUtility = new GameVideoUtility();
                     gameVideoUtility.ValidateVideosForAllGames();
                 }
                 catch (Exception ex)
                 {
-                    _log.Error("Startup failed. Turning off plugin.", ex);
+                    _log.Error("Video validation failed. Turning off plugin.", ex);
                     StartupFailed = true;
                 }
             }

@@ -74,9 +74,74 @@
             Filtering to favorited games.
             </summary>
         </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.FilterType.Local">
+            <summary>
+            Filtering to local games.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.FilterType.Cloud">
+            <summary>
+            Filtering to cloud games.
+            </summary>
+        </member>
         <member name="F:Unbroken.LaunchBox.Plugins.Data.FilterType.None">
             <summary>
             No filter is applied (most likely viewing all games).
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.Data.GameSaveBase">
+            <summary>
+            Abstract base class for Game Saves and Game States
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.GameSaveBase.AdditionalApplicationId">
+            <summary>
+            The IAdditionalApplication.Id this save is for
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.GameSaveBase.EmulatorCore">
+            <summary>
+            The core this save file is for
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.GameSaveBase.EmulatorFileName">
+            <summary>
+            The emulator filename this save is for
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.GameSaveBase.FileLocation">
+            <summary>
+            The location of the game save
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.GameSaveBase.GameId">
+            <summary>
+            The IGame.Id this save is for
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.GameSaveBase.Title">
+            <summary>
+            String describing the save file
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.GameSaveBase.CreatedDateTime">
+            <summary>
+            The time the file was first created
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.GameSaveBase.LastModifiedDateTime">
+            <summary>
+            The time the file was last modified
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.Data.GameSaveGame">
+            <summary>
+            Class for a game save file. These are emulated saves from the games internal save system.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.GameSaveState.Slot">
+            <summary>
+            The save slot this state is in
             </summary>
         </member>
         <member name="T:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication">
@@ -222,6 +287,12 @@
             </summary>
             <param name="game">The game that is associated with the Additional Application. Used in order to launch the Additional Application correctly.</param>
             <returns>A value specifying whether the Additional Application was successfully launched. If launched successfully, NULL will be returned. Otherwise, an error message will be returned that can be shown to the user.</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IAdditionalApplication.GetEffectiveCommandLine">
+            <summary>
+            This will get the command line that is used when this app is launched. This is different than the standard CommandLine property in that this will grab the command line from the appropriate emulator as well if the app doesn't override it.
+            </summary>
+            <returns>The command line sent to the process that starts the app</returns>
         </member>
         <member name="T:Unbroken.LaunchBox.Plugins.Data.IAlternateName">
             <summary>
@@ -596,6 +667,11 @@
             Gets or sets a value specifying whether or not to use aggressive strategies for hiding startup windows, which could be problematic for some emulators. Added in LaunchBox and Big Box 9.2.
             </summary>
         </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IEmulator.EnableHardcoreAchievements">
+            <summary>
+            Should hardcore achievements be enabled for this emulator
+            </summary>
+        </member>
         <member name="M:Unbroken.LaunchBox.Plugins.Data.IEmulator.GetAllEmulatorPlatforms">
             <summary>
             Gets all of the platforms associated with this Emulator.
@@ -653,6 +729,11 @@
         <member name="T:Unbroken.LaunchBox.Plugins.Data.IGame">
             <summary>
             This interface represents a Game that is used in LaunchBox/Big Box.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.Data.IGame.Completed">
+            <summary>
+            Obsolete. Please use Progress instead.
             </summary>
         </member>
         <member name="P:Unbroken.LaunchBox.Plugins.Data.IGame.StarRating">
@@ -718,6 +799,12 @@
             This will allow you to rename the game as well as all associated media
             </summary>
             <param name="newTitle">The title you are changing the game to</param>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.Data.IGame.GetEffectiveCommandLine">
+            <summary>
+            This will get the command line that is used when this game is launched. This is different than the standard CommandLine property in that this will grab the command line from the appropriate emulator as well if the game doesn't override it.
+            </summary>
+            <returns>The command line sent to the process that starts the game</returns>
         </member>
         <member name="T:Unbroken.LaunchBox.Plugins.Data.IGameBadge">
             <summary>
@@ -1121,6 +1208,21 @@
             Represents Amazon Poster game images.
             </summary>
         </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.Icon">
+            <summary>
+            Represents game icons.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.Square">
+            <summary>
+            Represents square (1:1) game images.
+            </summary>
+        </member>
+        <member name="F:Unbroken.LaunchBox.Plugins.Data.ImageTypes.Poster">
+            <summary>
+            Represents poster (2:3) game images.
+            </summary>
+        </member>
         <member name="M:Unbroken.LaunchBox.Plugins.Data.ImageTypes.GetList">
             <summary>
             This method gets a list of all the various game image types that are used in LaunchBox/Big Box.
@@ -1307,7 +1409,7 @@
         </member>
         <member name="T:Unbroken.LaunchBox.Plugins.Data.VideoTypes">
             <summary>
-            This class contains constant values for all of the various game video types that are used in LaunchBox/Big Box.
+            This class contains constant values for all the various game video types that are used in LaunchBox/Big Box.
             </summary>
         </member>
         <member name="F:Unbroken.LaunchBox.Plugins.Data.VideoTypes.VideoSnap">
@@ -1322,7 +1424,7 @@
         </member>
         <member name="F:Unbroken.LaunchBox.Plugins.Data.VideoTypes.ThemeVideo">
             <summary>
-            Represents theme videos. These represents videos by the same name in LaunchBox version 10.15 and prior.
+            Represents theme videos. These represent videos by the same name in LaunchBox version 10.15 and prior.
             </summary>
         </member>
         <member name="F:Unbroken.LaunchBox.Plugins.Data.VideoTypes.Recording">
@@ -1400,6 +1502,26 @@
             </summary>
             <returns>A collection of actions to be listed. LaunchBox will call FireImportAction after the import for any option the user selects</returns>
         </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.EmulatorPlugin.GetPotentialSaveSlots">
+            <summary>
+            Get a list of save slots this emulator supports
+            </summary>
+            <returns>Should return a dictionary where the key is the slot number that will be past in the GameSaveBase model used elsewhere in the plugin. The value is the label string for that slot</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.EmulatorPlugin.GetSaves(Unbroken.LaunchBox.Plugins.GetSavesArgs)">
+            <summary>
+            Gets a list of saves for the emulator/game in question
+            </summary>
+            <param name="args">Argument containing information about the game or app this request is for, as well as the emulator it's using</param>
+            <returns>Response that indicates success or failure, with a list of found files on success</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.EmulatorPlugin.InjectRetroAchievementsCredentials(Unbroken.LaunchBox.Plugins.InjectRetroAchievementsCredentialsArgs)">
+            <summary>
+            Inject the RetroAchievements credentials from LaunchBox into the emulator
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
         <member name="M:Unbroken.LaunchBox.Plugins.EmulatorPlugin.InstallEmulator(Unbroken.LaunchBox.Plugins.InstallEmulatorArgs)">
             <summary>
             Install the emulator
@@ -1429,6 +1551,26 @@
             <param name="emulatorAppPath">The application path of the emulator in question</param>
             <param name="version">The name of the version to be used in a message box explaining an update was found</param>
             <returns>True if this emulator can be updated, otherwise false</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.EmulatorPlugin.PrepareEmulatorForLaunch(Unbroken.LaunchBox.Plugins.PrepareForLaunchArgs)">
+            <summary>
+            Called right before LaunchBox attempts to start the emulator to play the ROM in question. Used to ensure all configuration requirements are done before the game is launched.
+            </summary>
+            <param name="args">Details regarding what emulator and game/app is about to be launched</param>
+            <returns>Return success if we can launch the game</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.EmulatorPlugin.SupportsSaveManagement">
+            <summary>
+            Does this plugin allow the user to manage their game save files?
+            </summary>
+            <returns>True if this plugin supports save management features, false if not</returns>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.EmulatorPlugin.SupportsRetroAchievements(System.String)">
+            <summary>
+            Does this plugin support injecting LaunchBox RetroAchievements credentials into emulator
+            </summary>
+            <param name="emulatorApplicationPath">The application path of the emulator in question</param>
+            <returns>Response that tells LaunchBox if the plugin supports this functionality, as well as what the current values in the emulator are now</returns>
         </member>
         <member name="T:Unbroken.LaunchBox.Plugins.EmulatorActionArgs">
             <summary>
@@ -1613,6 +1755,16 @@
         <member name="P:Unbroken.LaunchBox.Plugins.InstallEmulatorArgs.Version">
             <summary>
             The version of the emulator that should be installed. If null use the latest version of the emulator
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.InjectRetroAchievementsCredentialsArgs.IsEnabled">
+            <summary>
+            Set whether achievements are enabled in the emulator. If null leave value as it's currently set (or default value)
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.InjectRetroAchievementsCredentialsArgs.HardcoreEnabled">
+            <summary>
+            Set whether hardcode mode is enabled in the emulator. If null leave value as it's currently set (or default value)
             </summary>
         </member>
         <member name="T:Unbroken.LaunchBox.Plugins.IBigBoxThemeElementPlugin">
@@ -1859,6 +2011,61 @@
             Next, open the <see cref="N:Unbroken.LaunchBox.Plugins" /> namespace and pick out the plugin Interface that best matches what you're trying to achieve. Create a class that inherits from that interface, build your DLL, put it in the LaunchBox\Plugins folder (or the subsequent Plugins folder inside of a Big Box theme), and test it out!<para />
             <para />
             The <see cref="T:Unbroken.LaunchBox.Plugins.PluginHelper" /> static class can be used to get access to LaunchBox data from within any plugin.
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.PlaylistProviderPlugin">
+            <summary>
+            Plugin that can create playlists for use in LaunchBox or Big Box
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.PlaylistProviderPlugin.ProvidePrioritizedPlaylists">
+            <summary>
+            Provides LaunchBox playlists that should be given higher priority in Discovery Center and displayed before the more random lists. LaunchBox will exhaust this response before using any provided via the random function
+            </summary>
+        </member>
+        <member name="M:Unbroken.LaunchBox.Plugins.PlaylistProviderPlugin.ProvideRandomPlaylists">
+            <summary>
+            Provides LaunchBox playlists at random, these will be displayed in the Discovery Center after any hard coded lists or lists provided via the ProvidePrioritizedPlaylist function.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.ProvideResponse.Enumerator">
+            <summary>
+            The enumerator used to gather playlists from the plugin. Will only grab as needed and only enumerate once. IEnumerator.Reset() will be called if the enumerator is no longer need.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.ProvideResponse.Message">
+            <summary>
+            Any message related to the response, typically used for errors on failure
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.ProvideResponse.Success">
+            <summary>
+            True if the plugin was able to provide a playlist, otherwise false
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.PlaylistBase.ListType">
+            <summary>
+            Generic string that can be used within the discovery center to theme this type of list uniquely (ie, BestOfDecade, WorstOfPublisher, AllOfYear, etc)
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.PlaylistBase.ArrangeBy">
+            <summary>
+            How the playlist is ordered. Set to null if wanting to use system default.
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.PlaylistBase.MinimumItems">
+            <summary>
+            The minimum number of displayable items that need to be in the list to display it, if left null will use default value
+            </summary>
+        </member>
+        <member name="P:Unbroken.LaunchBox.Plugins.PlaylistBase.MaximumItems">
+            <summary>
+            The most number of items that will displayed for this content list, if left null will use default value
+            </summary>
+        </member>
+        <member name="T:Unbroken.LaunchBox.Plugins.PlaylistItem">
+            <summary>
+            List of items manually placed in a playlist. Will attempt to match a game to the item in priority order of: LaunchBox Games Database Id, Platform/GameTitle, Filename
             </summary>
         </member>
         <member name="T:Unbroken.LaunchBox.Plugins.PluginHelper">

@@ -41,9 +41,14 @@ namespace OnlineVideoLinks.Models
         #region Public properties
 
         public const string TitlePrefix = "Video: ";
+
+        /// <summary>
+        /// This is the name that we would expect for this game's GamesDB video URL.
+        /// </summary>
         public const string GamesDbVideoTitleWithPrefix = "Video: Playthrough";
         public const string GamesDbVideoTitleNoPrefix = "Playthrough";
 
+        public string GameId { get; set; }
         public string Title { get; set; }
 
         /// <summary>
@@ -97,6 +102,7 @@ namespace OnlineVideoLinks.Models
 
         /// <summary>
         /// Retrieves a string with all the command-line arguments required to play this video with VLC.
+        /// For YouTube URLs, uses yt-dlp to get the direct video URL.
         /// </summary>
         public string GetVlcCmdArguments()
         {
@@ -106,7 +112,20 @@ namespace OnlineVideoLinks.Models
             if (StopTime > 0)
                 cmdArgs += " --stop-time=" + StopTime.ToString();
 
-            cmdArgs += " " + VideoPath;
+            // For YouTube URLs, resolve to direct video/audio URLs using yt-dlp
+            var (videoUrl, audioUrl) = VlcUtilities.GetDirectVideoUrls(VideoPath);
+
+            // If we have a separate audio stream, tell VLC to use it as a slave input
+            if (!string.IsNullOrEmpty(audioUrl))
+            {
+                cmdArgs += $" --input-slave=\"{audioUrl}\"";
+            }
+
+            // Set a custom title to avoid showing the long URL in the VLC window
+            cmdArgs += $" --meta-title=\"{Title}\"";
+
+            // Quote the video path to handle URLs with special characters (?, &, =, etc.)
+            cmdArgs += " \"" + videoUrl + "\"";
             return cmdArgs;
         }
 
@@ -141,11 +160,14 @@ namespace OnlineVideoLinks.Models
         /// <param name="app">The Additional App entry.</param>
         public static bool IsAppCorrectlySetup(IAdditionalApplication app)
         {
-            if (app.ApplicationPath != VlcUtilities.GetVlcExecutablePath())
+            // Check if the application path points to LaunchBox's bundled VLC executable
+            if (!app.ApplicationPath.Contains("ThirdParty", StringComparison.OrdinalIgnoreCase) ||
+                !app.ApplicationPath.Contains("VLC", StringComparison.OrdinalIgnoreCase) ||
+                !app.ApplicationPath.EndsWith("vlc.exe", StringComparison.OrdinalIgnoreCase))
                 return false;
 
             // Checking if the app's command line string is missing any of the VLC arguments expected by our plugin
-            foreach(var expectedArg in _commonVlcArguments)
+            foreach (var expectedArg in _commonVlcArguments)
             {
                 if (!app.CommandLine.Contains(expectedArg))
                     return false;

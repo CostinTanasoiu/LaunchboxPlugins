@@ -1,4 +1,5 @@
 ﻿using LaunchboxPluginsTests.MockedClasses;
+using OnlineVideoLinks;
 using OnlineVideoLinks.Gamepad;
 using OnlineVideoLinks.Utilities;
 using OnlineVideoLinks.WPF;
@@ -11,7 +12,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Unbroken.LaunchBox.Plugins.Data;
-using YoutubeGameVideos;
 
 namespace WpfTestProject
 {
@@ -28,7 +28,6 @@ namespace WpfTestProject
 		private void RunVideoSelectorWindow()
         {
 			new PluginStartup();
-			OnlineVideoLinks.Utilities.VlcUtilities.VerifyYoutubeAddon();
 
             var game = new GameMock
             {

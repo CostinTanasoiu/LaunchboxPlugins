@@ -21,15 +21,14 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
             if (!File.Exists(Path.Combine(path, "vlc.exe")))
                 File.Create(Path.Combine(path, "vlc.exe"));
 
-            // Check that VLC plugin doesn't already exist in the working folder
-            var addonFilePath = $"ThirdParty\\VLC\\{vlcEnvironment}\\lua\\playlist\\youtube.luac";
-            if (File.Exists(addonFilePath))
-                File.Delete(addonFilePath);
+            // Verify yt-dlp can be downloaded
+            var ytDlpPath = VlcUtilities.GetYtDlpPath();
+            if (File.Exists(ytDlpPath))
+                File.Delete(ytDlpPath);
 
+            VlcUtilities.VerifyYtDlp();
 
-            VlcUtilities.VerifyYoutubeAddon();
-
-            Assert.True(File.Exists(addonFilePath));
+            Assert.True(File.Exists(ytDlpPath));
         }
     }
 }

@@ -66,5 +66,10 @@ namespace LaunchboxPluginsTests.MockedClasses
         {
             throw new NotImplementedException();
         }
+
+        string IAdditionalApplication.GetEffectiveCommandLine()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

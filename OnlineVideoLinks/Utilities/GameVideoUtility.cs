@@ -158,7 +158,7 @@ namespace OnlineVideoLinks.Utilities
                     }
 
                     // TEMP
-                    if (app.Name == GameVideo.GamesDbVideoTitleWithPrefix)
+                    if (app.Name == GameVideo.GamesDbVideoTitleWithPrefix || app.Name == GameVideo.GamesDbVideoTitleNoPrefix)
                         game.TryRemoveAdditionalApplication(app);
                 }
             }

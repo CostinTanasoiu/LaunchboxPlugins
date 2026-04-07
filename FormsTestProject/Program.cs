@@ -31,7 +31,7 @@ using System.Windows.Forms;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
 using VideoPlayer.Forms;
-using YoutubeGameVideos;
+using OnlineVideoLinks;
 
 namespace FormsTestProject
 {
@@ -46,8 +46,6 @@ namespace FormsTestProject
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-            OnlineVideoLinks.Utilities.VlcUtilities.VerifyYoutubeAddon();
 
             var forms = new List<Form>();
             forms.Add(ConfigureCustomFieldEditor());
@@ -101,6 +99,12 @@ namespace FormsTestProject
                         Name = "Video: (youtube) Superman Worth Playing Today?",
                         ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
                         CommandLine = "https://youtu.be/7hfYthWLJsA"
+                    },
+                    new AdditionalApplicationMock
+                    {
+                        Name = "Video: (steam) Pizza Possum Co-Op Trailer",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = "https://video.fastly.steamstatic.com/store_trailers/256951885/movie_max_vp9.webm?t=1686321338"
                     },
                     new AdditionalApplicationMock
                     {
