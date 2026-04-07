@@ -19,13 +19,18 @@
 */
 
 using LaunchboxPluginsTests.MockedClasses;
+using OnlineVideoLinks.Utilities;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Unbroken.LaunchBox.Plugins;
+using Unbroken.LaunchBox.Plugins.Data;
+using OnlineVideoLinks;
+using OnlineVideoLinks.Models;
 
 namespace FormsTestProject
 {
@@ -41,18 +46,31 @@ namespace FormsTestProject
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            //RunCustomFieldEditor();
-            RunOnlineVideoLinksForm();
+            var form1 = ConfigureCustomFieldEditor();
+            var form2 = ConfigureVideoManagerForm();
+            
+            form1.Show();
+            form2.Show();
+
+            Application.Run();
         }
 
-        static void RunOnlineVideoLinksForm()
+        static Form ConfigureVideoManagerForm()
         {
-            OnlineVideoLinks.VlcUtilities.VerifyYoutubeAddon();
-            var form = new OnlineVideoLinks.VideoManagerForm();
-            Application.Run(form);
+            new PluginStartup();
+            var form = new OnlineVideoLinks.VideoManagerForm(
+                new GameMock
+                {
+                    Title = "Death and Return of Superman, The",
+                    Genres = new BlockingCollection<string> { "Beat' Em Up" },
+                    PlayModes = new string[] { "Single Player" }
+                },
+                new GameVideoUtility()
+            );
+            return form;
         }
 
-        static void RunCustomFieldEditor()
+        static Form ConfigureCustomFieldEditor()
         {
             var dummyGames = new GameMock[]
             {
@@ -86,7 +104,7 @@ namespace FormsTestProject
                 dummyGames.First().Genres.Add($"Test {i:00}");
 
             var form = new BulkGenreEditor.FormGenreEditor(PluginHelper.DataManager, dummyGames);
-            Application.Run(form);
+            return form;
         }
     }
 }

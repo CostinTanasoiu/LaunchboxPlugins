@@ -136,7 +136,7 @@ namespace LaunchboxPluginsTests.MockedClasses
 
         public List<IAdditionalApplication> AdditionalApplications { get; set; }
         public bool? Installed { get; set; }
-        public int PlayTime { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public int PlayTime { get; set; }
 
         public IAdditionalApplication AddNewAdditionalApplication()
         {

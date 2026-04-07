@@ -85,6 +85,14 @@ namespace OnlineVideoLinks
         }
 
         /// <summary>
+        /// Checks whether VLC is installed.
+        /// </summary>
+        public static bool IsVlcInstalled()
+        {
+            return !string.IsNullOrEmpty(GetVlcExecutablePath());
+        }
+
+        /// <summary>
         /// Installs the YouTube VLC addon if not already installed.
         /// </summary>
         public static void VerifyYoutubeAddon()
