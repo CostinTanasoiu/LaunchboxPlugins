@@ -64,6 +64,8 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
         public void ShouldLoadGameWithExistingVideos()
         {
             var gameId = "test-game-id";
+            var gameTitle = "Test Game";
+            var gamePlatform = "Test Platform";
             var gameMock = Substitute.For<IGame>();
             gameMock.Id.Returns(gameId);
 
@@ -94,7 +96,7 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
                     StopTime = 387
                 }
             };
-            GameVideoDb.Instance.SetVideosForGame(gameId, videos);
+            GameVideoDb.Instance.SetVideosForGame(gameId, gameTitle, gamePlatform, videos);
 
             var form = new VideoManagerForm(gameMock, _gameVideoUtilitiesMock);
 

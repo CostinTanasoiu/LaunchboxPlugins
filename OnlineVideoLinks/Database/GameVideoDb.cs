@@ -35,7 +35,7 @@ namespace OnlineVideoLinks.Database
     {
         private const string FileName = "GameVideos.json";
         private readonly string _filePath;
-        private Dictionary<string, List<GameVideoEntry>> _database;
+        private Dictionary<string, GameDataEntry> _database;
 
         private static readonly Lazy<GameVideoDb> _instance = new(() => new GameVideoDb());
 
@@ -72,15 +72,25 @@ namespace OnlineVideoLinks.Database
         }
 
         /// <summary>
+        /// Gets the game data for a specific game.
+        /// </summary>
+        /// <param name="gameId">The game identifier.</param>
+        /// <returns>The game data entry, or null if it doesn't exist.</returns>
+        public GameDataEntry GetGameData(string gameId)
+        {
+            return _database.TryGetValue(gameId, out var gameData) ? gameData : null;
+        }
+
+        /// <summary>
         /// Gets all videos for a specific game.
         /// </summary>
         /// <param name="gameId">The game identifier.</param>
         /// <returns>A list of video entries for the game, or an empty list if none exist.</returns>
         public List<GameVideoEntry> GetVideosForGame(string gameId)
         {
-            if (_database.TryGetValue(gameId, out var videos))
+            if (_database.TryGetValue(gameId, out var gameData))
             {
-                return videos;
+                return gameData.Videos;
             }
             return [];
         }
@@ -99,13 +109,20 @@ namespace OnlineVideoLinks.Database
         /// </summary>
         /// <param name="gameId">The game identifier.</param>
         /// <param name="video">The video entry to add.</param>
-        public void AddVideo(string gameId, GameVideoEntry video)
+        /// <param name="gameTitle">The game title (used when creating a new entry).</param>
+        /// <param name="platform">The platform (used when creating a new entry).</param>
+        public void AddVideo(string gameId, GameVideoEntry video, string gameTitle = null, string platform = null)
         {
             if (!_database.ContainsKey(gameId))
             {
-                _database[gameId] = [];
+                _database[gameId] = new GameDataEntry
+                {
+                    GameTitle = gameTitle ?? string.Empty,
+                    Platform = platform ?? string.Empty,
+                    Videos = []
+                };
             }
-            _database[gameId].Add(video);
+            _database[gameId].Videos.Add(video);
             Save();
         }
 
@@ -114,13 +131,20 @@ namespace OnlineVideoLinks.Database
         /// </summary>
         /// <param name="gameId">The game identifier.</param>
         /// <param name="videos">The video entries to add.</param>
-        public void AddVideos(string gameId, IEnumerable<GameVideoEntry> videos)
+        /// <param name="gameTitle">The game title (used when creating a new entry).</param>
+        /// <param name="platform">The platform (used when creating a new entry).</param>
+        public void AddVideos(string gameId, string gameTitle, string platform, IEnumerable<GameVideoEntry> videos)
         {
             if (!_database.ContainsKey(gameId))
             {
-                _database[gameId] = [];
+                _database[gameId] = new GameDataEntry
+                {
+                    GameTitle = gameTitle ?? string.Empty,
+                    Platform = platform ?? string.Empty,
+                    Videos = []
+                };
             }
-            _database[gameId].AddRange(videos);
+            _database[gameId].Videos.AddRange(videos);
             Save();
         }
 
@@ -133,9 +157,9 @@ namespace OnlineVideoLinks.Database
         /// <returns>True if the update was successful, false if the game or index doesn't exist.</returns>
         public bool UpdateVideo(string gameId, int index, GameVideoEntry video)
         {
-            if (_database.TryGetValue(gameId, out var videos) && index >= 0 && index < videos.Count)
+            if (_database.TryGetValue(gameId, out var gameData) && index >= 0 && index < gameData.Videos.Count)
             {
-                videos[index] = video;
+                gameData.Videos[index] = video;
                 Save();
                 return true;
             }
@@ -147,7 +171,9 @@ namespace OnlineVideoLinks.Database
         /// </summary>
         /// <param name="gameId">The game identifier.</param>
         /// <param name="videos">The new list of video entries.</param>
-        public void SetVideosForGame(string gameId, List<GameVideoEntry> videos)
+        /// <param name="gameTitle">The game title (used when creating a new entry).</param>
+        /// <param name="platform">The platform (used when creating a new entry).</param>
+        public void SetVideosForGame(string gameId, string gameTitle, string platform, List<GameVideoEntry> videos)
         {
             if (videos == null || videos.Count == 0)
             {
@@ -155,7 +181,21 @@ namespace OnlineVideoLinks.Database
             }
             else
             {
-                _database[gameId] = videos;
+                if (_database.TryGetValue(gameId, out var existingData))
+                {
+                    existingData.Videos = videos;
+                    if (gameTitle != null) existingData.GameTitle = gameTitle;
+                    if (platform != null) existingData.Platform = platform;
+                }
+                else
+                {
+                    _database[gameId] = new GameDataEntry
+                    {
+                        GameTitle = gameTitle ?? string.Empty,
+                        Platform = platform ?? string.Empty,
+                        Videos = videos
+                    };
+                }
             }
             Save();
         }
@@ -168,10 +208,10 @@ namespace OnlineVideoLinks.Database
         /// <returns>True if the removal was successful, false if the game or index doesn't exist.</returns>
         public bool RemoveVideo(string gameId, int index)
         {
-            if (_database.TryGetValue(gameId, out var videos) && index >= 0 && index < videos.Count)
+            if (_database.TryGetValue(gameId, out var gameData) && index >= 0 && index < gameData.Videos.Count)
             {
-                videos.RemoveAt(index);
-                if (videos.Count == 0)
+                gameData.Videos.RemoveAt(index);
+                if (gameData.Videos.Count == 0)
                 {
                     _database.Remove(gameId);
                 }
@@ -203,7 +243,7 @@ namespace OnlineVideoLinks.Database
         /// <returns>True if the game has videos, false otherwise.</returns>
         public bool HasVideos(string gameId)
         {
-            return _database.ContainsKey(gameId) && _database[gameId].Count > 0;
+            return _database.ContainsKey(gameId) && _database[gameId].Videos.Count > 0;
         }
 
         /// <summary>
@@ -213,7 +253,7 @@ namespace OnlineVideoLinks.Database
         /// <returns>The number of videos for the game.</returns>
         public int GetVideoCount(string gameId)
         {
-            return _database.TryGetValue(gameId, out var videos) ? videos.Count : 0;
+            return _database.TryGetValue(gameId, out var gameData) ? gameData.Videos.Count : 0;
         }
 
         /// <summary>
@@ -224,7 +264,7 @@ namespace OnlineVideoLinks.Database
             _database = Load();
         }
 
-        private Dictionary<string, List<GameVideoEntry>> Load()
+        private Dictionary<string, GameDataEntry> Load()
         {
             if (!File.Exists(_filePath))
             {
@@ -234,7 +274,7 @@ namespace OnlineVideoLinks.Database
             try
             {
                 var json = File.ReadAllText(_filePath);
-                return JsonSerializer.Deserialize<Dictionary<string, List<GameVideoEntry>>>(json, _jsonOptions) ?? [];
+                return JsonSerializer.Deserialize<Dictionary<string, GameDataEntry>>(json, _jsonOptions) ?? [];
             }
             catch (JsonException)
             {
@@ -253,6 +293,16 @@ namespace OnlineVideoLinks.Database
             var json = JsonSerializer.Serialize(_database, _jsonOptions);
             File.WriteAllText(_filePath, json);
         }
+    }
+
+    /// <summary>
+    /// Represents the data for a game stored in the database, including metadata and videos.
+    /// </summary>
+    public class GameDataEntry
+    {
+        public string GameTitle { get; set; } = string.Empty;
+        public string Platform { get; set; } = string.Empty;
+        public List<GameVideoEntry> Videos { get; set; } = [];
     }
 
     /// <summary>

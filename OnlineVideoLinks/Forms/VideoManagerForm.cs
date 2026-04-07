@@ -40,7 +40,6 @@ namespace OnlineVideoLinks
     {
         private IGame _game;
         private IGameVideoUtility _gameVideoUtility;
-        private GameVideoDb _gameVideoDb;
         private HelpForm _helpForm = new HelpForm();
 
         private BindingList<GameVideo> _gameVideos = new BindingList<GameVideo>();
@@ -64,7 +63,7 @@ namespace OnlineVideoLinks
             this.Text = "Manage videos for: " + game.Title;
 
             // Load videos from the database
-            var videoEntries = _gameVideoDb.GetVideosForGame(_game.Id);
+            var videoEntries = GameVideoDb.Instance.GetVideosForGame(_game.Id);
             foreach (var entry in videoEntries)
             {
                 _gameVideos.Add(entry.ToGameVideo(_game.Id));
@@ -184,7 +183,7 @@ namespace OnlineVideoLinks
             {
                 // Convert GameVideo list to GameVideoEntry list and save to database
                 var entries = _gameVideos.Select(GameVideoEntry.FromGameVideo).ToList();
-                _gameVideoDb.SetVideosForGame(_game.Id, entries);
+                GameVideoDb.Instance.SetVideosForGame(_game.Id, _game.Title, _game.Platform, entries);
             }
             this.Close();
         }
