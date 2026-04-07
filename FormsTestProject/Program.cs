@@ -71,60 +71,10 @@ namespace FormsTestProject
             new PluginStartup();
             var form = new OnlineVideoLinks.VideoSelectorForm(new GameMock
             {
+                Id = "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
                 Title = "Death and Return of Superman, The",
                 Genres = new BlockingCollection<string> { "Beat' Em Up" },
-                PlayModes = new string[] { "Single Player" },
-                AdditionalApplications = new List<IAdditionalApplication>()
-                {
-                    new AdditionalApplicationMock
-                    {
-                        Name = "Video: (local file) Turtle",
-                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
-                        CommandLine = Path.Combine(Environment.CurrentDirectory, @"OnlineVideoLinks\Assets\turtle_960x540_30s.mp4")
-                    },
-                    new AdditionalApplicationMock
-                    {
-                        Name = "Video: (local file) Jellyfish",
-                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
-                        CommandLine = Path.Combine(Environment.CurrentDirectory, @"OnlineVideoLinks\Assets\jellyfish_9s.mp4")
-                    },
-                    new AdditionalApplicationMock
-                    {
-                        Name = "Video: (steam) Pizza Possum Co-Op Trailer",
-                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
-                        CommandLine = "https://video.fastly.steamstatic.com/store_trailers/256951885/movie_max_vp9.webm?t=1686321338"
-                    },
-                    new AdditionalApplicationMock
-                    {
-                        Name = "Video: (youtube) Superman Worth Playing Today?",
-                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
-                        CommandLine = "https://youtu.be/7hfYthWLJsA"
-                    },
-                    new AdditionalApplicationMock
-                    {
-                        Name = "Video: (steam) Pizza Possum Co-Op Trailer",
-                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
-                        CommandLine = "https://video.fastly.steamstatic.com/store_trailers/256951885/movie_max_vp9.webm?t=1686321338"
-                    },
-                    new AdditionalApplicationMock
-                    {
-                        Name = "Video: (youtube) Sea of Stars timestamped",
-                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
-                        CommandLine = "--start-time=1840 --stop-time=1886 https://youtu.be/lETECcvmjlY"
-                    },
-                    new AdditionalApplicationMock
-                    {
-                        Name = "Video: (youtube) Pizza Possum Trailer",
-                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
-                        CommandLine = "https://www.youtube.com/watch?v=0GeWLeDWjng"
-                    },
-                    new AdditionalApplicationMock
-                    {
-                        Name = "Video: (youtube) Piza Possum Review (Co-Op Bros)",
-                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
-                        CommandLine = "https://www.youtube.com/watch?v=xg_O7Fc57CY"
-                    }
-                }
+                PlayModes = new string[] { "Single Player" }
             }, new GameVideoUtility(), new GamepadXinputProvider());
             return form;
         }
@@ -134,54 +84,10 @@ namespace FormsTestProject
             new PluginStartup();
             var form = new VideoPlayer.Forms.VideoSelectorForm(new GameMock
             {
+                Id = "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
                 Title = "Death and Return of Superman, The",
                 Genres = new BlockingCollection<string> { "Beat' Em Up" },
-                PlayModes = new string[] { "Single Player" },
-                AdditionalApplications = new List<IAdditionalApplication>()
-                {
-                    new AdditionalApplicationMock
-                    {
-                        Name = "Video: (local file) Turtle",
-                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
-                        CommandLine = Path.Combine(Environment.CurrentDirectory, @"OnlineVideoLinks\Assets\turtle_960x540_30s.mp4")
-                    },
-                    new AdditionalApplicationMock
-                    {
-                        Name = "Video: (local file) Jellyfish",
-                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
-                        CommandLine = Path.Combine(Environment.CurrentDirectory, @"OnlineVideoLinks\Assets\jellyfish_9s.mp4")
-                    },
-                    new AdditionalApplicationMock
-                    {
-                        Name = "Video: (steam) Pizza Possum Co-Op Trailer",
-                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
-                        CommandLine = "https://video.fastly.steamstatic.com/store_trailers/256951885/movie_max_vp9.webm?t=1686321338"
-                    },
-                    new AdditionalApplicationMock
-                    {
-                        Name = "Video: (youtube) Superman Worth Playing Today?",
-                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
-                        CommandLine = "https://youtu.be/7hfYthWLJsA"
-                    },
-                    new AdditionalApplicationMock
-                    {
-                        Name = "Video: (youtube) Sea of Stars timestamped",
-                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
-                        CommandLine = "--start-time=1840 --stop-time=1886 https://youtu.be/lETECcvmjlY"
-                    },
-                    new AdditionalApplicationMock
-                    {
-                        Name = "Video: (youtube) Pizza Possum Trailer",
-                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
-                        CommandLine = "https://www.youtube.com/watch?v=0GeWLeDWjng"
-                    },
-                    new AdditionalApplicationMock
-                    {
-                        Name = "Video: (youtube) Piza Possum Review (Co-Op Bros)",
-                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
-                        CommandLine = "https://www.youtube.com/watch?v=xg_O7Fc57CY"
-                    }
-                }
+                PlayModes = new string[] { "Single Player" }
             }, 
             new VideoPlayer.Utilities.GameVideoUtility(),
             new VideoPlayer.Forms.VideoPlayerForm(),
@@ -196,24 +102,28 @@ namespace FormsTestProject
             {
                 new GameMock
                 {
+                    Id = Guid.NewGuid().ToString(),
                     Title = "Death and Return of Superman, The",
                     Genres = new BlockingCollection<string> { "Beat' Em Up" },
                     PlayModes = new string[] {"Single Player"}
                 },
                 new GameMock
                 {
+                    Id = Guid.NewGuid().ToString(),
                     Title = "Aladdin",
                     Genres = new BlockingCollection<string>{"Action", "Adventure"},
                     PlayModes = new string[] {"Single Player"}
                 },
                 new GameMock
                 {
+                    Id = Guid.NewGuid().ToString(),
                     Title = "The Ghoul Patrol",
                     Genres = new BlockingCollection<string>(),
                     PlayModes = new string[] {"Cooperative", "Multiplayer"}
                 },
                 new GameMock
                 {
+                    Id = Guid.NewGuid().ToString(),
                     Title = "Dragon View",
                     Genres = new BlockingCollection<string>{ "Action", "RPG" },
                     PlayModes = new string[] {"Single Player"}
