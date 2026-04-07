@@ -35,7 +35,8 @@ namespace OnlineVideoLinks.Utilities
 {
     public class VlcUtilities
     {
-        private static readonly ILog _log = LogManager.GetLogger(nameof(VlcUtilities));
+        private static ILog _log;
+        private static ILog Log => _log ??= LogManager.GetLogger(nameof(VlcUtilities));
 
         /// <summary>
         /// URL to download yt-dlp executable.
@@ -120,18 +121,18 @@ namespace OnlineVideoLinks.Utilities
             {
                 try
                 {
-                    _log.Info($"Downloading yt-dlp to {ytDlpPath}...");
+                    Log.Info($"Downloading yt-dlp to {ytDlpPath}...");
                     using (var client = new HttpClient())
                     {
                         client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0");
                         var bytes = client.GetByteArrayAsync(YtDlpDownloadUrl).Result;
                         File.WriteAllBytes(ytDlpPath, bytes);
                     }
-                    _log.Info("yt-dlp downloaded successfully.");
+                    Log.Info("yt-dlp downloaded successfully.");
                 }
                 catch (Exception ex)
                 {
-                    _log.Error("Could not download yt-dlp.", ex);
+                    Log.Error("Could not download yt-dlp.", ex);
                 }
             }
         }
@@ -160,7 +161,7 @@ namespace OnlineVideoLinks.Utilities
             var ytDlpPath = GetYtDlpPath();
             if (!File.Exists(ytDlpPath))
             {
-                _log.Warn("yt-dlp not found, falling back to direct URL.");
+                Log.Warn("yt-dlp not found, falling back to direct URL.");
                 return (youtubeUrl, null);
             }
 
@@ -192,25 +193,25 @@ namespace OnlineVideoLinks.Utilities
                     if (urls.Length >= 2)
                     {
                         // First URL is video, second is audio
-                        _log.Debug("Resolved YouTube URL to separate video and audio streams.");
+                        Log.Debug("Resolved YouTube URL to separate video and audio streams.");
                         return (urls[0], urls[1]);
                     }
                     else if (urls.Length == 1)
                     {
                         // Single combined URL
-                        _log.Debug("Resolved YouTube URL to combined stream.");
+                        Log.Debug("Resolved YouTube URL to combined stream.");
                         return (urls[0], null);
                     }
                 }
 
                 if (!string.IsNullOrWhiteSpace(error) && !error.Contains("WARNING"))
                 {
-                    _log.Warn($"yt-dlp error: {error}");
+                    Log.Warn($"yt-dlp error: {error}");
                 }
             }
             catch (Exception ex)
             {
-                _log.Error("Error running yt-dlp.", ex);
+                Log.Error("Error running yt-dlp.", ex);
             }
 
             return (youtubeUrl, null);
