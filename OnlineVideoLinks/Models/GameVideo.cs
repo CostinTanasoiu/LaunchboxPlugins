@@ -143,7 +143,10 @@ namespace OnlineVideoLinks.Models
         /// <param name="app">The Additional App entry.</param>
         public static bool IsAppCorrectlySetup(IAdditionalApplication app)
         {
-            if (app.ApplicationPath != VlcUtilities.GetVlcExecutablePath())
+            // Check if the application path points to LaunchBox's bundled VLC executable
+            if (!app.ApplicationPath.Contains("ThirdParty", StringComparison.OrdinalIgnoreCase) ||
+                !app.ApplicationPath.Contains("VLC", StringComparison.OrdinalIgnoreCase) ||
+                !app.ApplicationPath.EndsWith("vlc.exe", StringComparison.OrdinalIgnoreCase))
                 return false;
 
             // Checking if the app's command line string is missing any of the VLC arguments expected by our plugin
