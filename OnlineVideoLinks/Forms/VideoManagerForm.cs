@@ -32,7 +32,6 @@ using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
 using OnlineVideoLinks.Models;
 using OnlineVideoLinks.Utilities;
-using OnlineVideoLinks.Forms;
 using OnlineVideoLinks.Database;
 
 namespace OnlineVideoLinks
