@@ -12,9 +12,10 @@ namespace BulkGenreEditor.UserControls
 {
     public partial class MultiSelectionBox : UserControl
     {
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string[] AutocompleteItems { get; set; }
 
-        public string Text { 
+        public override string Text { 
             get => txtSearchBox.Text;
             set
             {

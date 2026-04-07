@@ -29,7 +29,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
-using YoutubeGameVideos;
+using OnlineVideoLinks;
 
 namespace FormsTestProject
 {

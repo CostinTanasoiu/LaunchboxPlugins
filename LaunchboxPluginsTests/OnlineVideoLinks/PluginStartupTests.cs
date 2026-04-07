@@ -29,7 +29,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unbroken.LaunchBox.Plugins.Data;
 using Xunit;
-using YoutubeGameVideos;
+using OnlineVideoLinks;
 
 namespace LaunchboxPluginsTests.OnlineVideoLinks
 {

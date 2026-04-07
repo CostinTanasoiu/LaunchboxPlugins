@@ -26,7 +26,7 @@ using System.Reflection;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
 
-namespace YoutubeGameVideos
+namespace OnlineVideoLinks
 {
     public class PluginStartup : ISystemEventsPlugin
     {
@@ -36,17 +36,30 @@ namespace YoutubeGameVideos
 
         public PluginStartup()
         {
-            var log4NetConfigPath = Path.Combine(GeneralUtilities.PluginDirectory, "Log4Net.config");
-            var file = new FileInfo(log4NetConfigPath);
-
-            log4net.GlobalContext.Properties["PluginDirectory"] = GeneralUtilities.PluginDirectory;
-            log4net.Config.XmlConfigurator.Configure(file);
-
-            _log = LogManager.GetLogger(nameof(PluginStartup));
-
-            if (!VlcUtilities.IsVlcInstalled())
+            try
             {
-                _log.Error("VLC was not found. Turning off plugin.");
+                var log4NetConfigPath = Path.Combine(GeneralUtilities.PluginDirectory, "Log4Net.config");
+                var file = new FileInfo(log4NetConfigPath);
+
+                log4net.GlobalContext.Properties["PluginDirectory"] = GeneralUtilities.PluginDirectory;
+
+                if (file.Exists)
+                {
+                    log4net.Config.XmlConfigurator.Configure(file);
+                }
+
+                _log = LogManager.GetLogger(nameof(PluginStartup));
+
+                if (!VlcUtilities.IsVlcInstalled())
+                {
+                    _log?.Error("VLC was not found. Turning off plugin.");
+                    StartupFailed = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                // If logging isn't set up yet, we can't log. Just mark as failed.
+                System.Diagnostics.Debug.WriteLine($"OnlineVideoLinks plugin startup failed: {ex}");
                 StartupFailed = true;
             }
         }
