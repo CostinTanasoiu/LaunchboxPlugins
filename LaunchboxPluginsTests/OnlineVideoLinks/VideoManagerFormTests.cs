@@ -23,21 +23,39 @@ using LaunchboxPluginsTests.MockedClasses;
 using NSubstitute;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unbroken.LaunchBox.Plugins.Data;
 using Xunit;
 using OnlineVideoLinks;
-using OnlineVideoLinks.Models;
 using OnlineVideoLinks.Utilities;
+using OnlineVideoLinks.Database;
 
 namespace LaunchboxPluginsTests.OnlineVideoLinks
 {
-    public class VideoManagerFormTests
+    public class VideoManagerFormTests : IDisposable
     {
         private Fixture _fixture = new Fixture();
-        IGameVideoUtility _gameVideoUtilitiesMock = Substitute.For<IGameVideoUtility>();
+        private IGameVideoUtility _gameVideoUtilitiesMock = Substitute.For<IGameVideoUtility>();
+        private string _testFolder;
+        private GameVideoDb _gameVideoDb;
+
+        public VideoManagerFormTests()
+        {
+            _testFolder = Path.Combine(Path.GetTempPath(), $"VideoManagerFormTests_{Guid.NewGuid()}");
+            Directory.CreateDirectory(_testFolder);
+            _gameVideoDb = new GameVideoDb(_testFolder);
+        }
+
+        public void Dispose()
+        {
+            if (Directory.Exists(_testFolder))
+            {
+                Directory.Delete(_testFolder, true);
+            }
+        }
 
         /// <summary>
         /// This tests that the Video Manager form can load a game with existing videos and properly parse them.
@@ -45,33 +63,38 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
         [Fact]
         public void ShouldLoadGameWithExistingVideos()
         {
-            var dummyAdditionalApps = new AdditionalApplicationMock[]
+            var gameId = "test-game-id";
+            var gameMock = Substitute.For<IGame>();
+            gameMock.Id.Returns(gameId);
+
+            // Add videos to the database
+            var videos = new List<GameVideoEntry>
             {
-                new AdditionalApplicationMock{
-                    ApplicationPath ="C:\\Program Files\\VideoLAN\\VLC\\vlc.exe",
-                    Name = "Video: Gameplay teaser",
-                    CommandLine = "-f https://www.youtube.com/watch?v=KpXkJ8rebDE"
+                new GameVideoEntry
+                {
+                    Title = "Gameplay teaser",
+                    VideoPath = "https://www.youtube.com/watch?v=KpXkJ8rebDE"
                 },
-                new AdditionalApplicationMock{
-                    ApplicationPath ="C:\\Program Files\\VideoLAN\\VLC\\vlc.exe",
-                    Name = "Video: Main trailer",
-                    CommandLine = "-f https://www.youtube.com/watch?v=LLlKtI11C-4"
+                new GameVideoEntry
+                {
+                    Title = "Main trailer",
+                    VideoPath = "https://www.youtube.com/watch?v=LLlKtI11C-4"
                 },
-                new AdditionalApplicationMock{
-                    ApplicationPath ="C:\\Program Files\\VideoLAN\\VLC\\vlc.exe",
-                    Name = "Video: View split-screen demo",
-                    CommandLine = "-f --start-time=122 https://youtu.be/_q4e7BwFFUU"
-                }
-                ,
-                new AdditionalApplicationMock{
-                    ApplicationPath = "C:\\Program Files\\VideoLAN\\VLC\\vlc.exe",
-                    Name = "Video: Video presentation",
-                    CommandLine = "-f --start-time=337 --stop-time=387 https://youtu.be/q_7KUC6CY6Q"
+                new GameVideoEntry
+                {
+                    Title = "View split-screen demo",
+                    VideoPath = "https://youtu.be/_q4e7BwFFUU",
+                    StartTime = 122
+                },
+                new GameVideoEntry
+                {
+                    Title = "Video presentation",
+                    VideoPath = "https://youtu.be/q_7KUC6CY6Q",
+                    StartTime = 337,
+                    StopTime = 387
                 }
             };
-
-            var gameMock = Substitute.For<IGame>();
-            gameMock.GetAllAdditionalApplications().Returns(dummyAdditionalApps);
+            GameVideoDb.Instance.SetVideosForGame(gameId, videos);
 
             var form = new VideoManagerForm(gameMock, _gameVideoUtilitiesMock);
 

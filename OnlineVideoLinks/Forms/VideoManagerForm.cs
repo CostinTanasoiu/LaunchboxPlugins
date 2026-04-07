@@ -33,6 +33,7 @@ using Unbroken.LaunchBox.Plugins.Data;
 using OnlineVideoLinks.Models;
 using OnlineVideoLinks.Utilities;
 using OnlineVideoLinks.Forms;
+using OnlineVideoLinks.Database;
 
 namespace OnlineVideoLinks
 {
@@ -40,6 +41,7 @@ namespace OnlineVideoLinks
     {
         private IGame _game;
         private IGameVideoUtility _gameVideoUtility;
+        private GameVideoDb _gameVideoDb;
         private HelpForm _helpForm = new HelpForm();
 
         private BindingList<GameVideo> _gameVideos = new BindingList<GameVideo>();
@@ -62,14 +64,11 @@ namespace OnlineVideoLinks
 
             this.Text = "Manage videos for: " + game.Title;
 
-            var videoAppList = _game.GetAllAdditionalApplications()
-                .Where(x => x.Name.StartsWith(GameVideo.TitlePrefix))
-                .ToList();
-
-            foreach (var app in videoAppList)
+            // Load videos from the database
+            var videoEntries = _gameVideoDb.GetVideosForGame(_game.Id);
+            foreach (var entry in videoEntries)
             {
-                var gameVideo = new GameVideo(app);
-                _gameVideos.Add(gameVideo);
+                _gameVideos.Add(entry.ToGameVideo(_game.Id));
             }
         }
 
@@ -96,6 +95,7 @@ namespace OnlineVideoLinks
                 {
                     var newVideo = new GameVideo
                     {
+                        GameId = _game.Id,
                         Title = txtVideoTitle.Text,
                         VideoPath = txtVideoPath.Text,
                         StartTime = ParseSecondsFromTextbox(txtStartTime.Text),
@@ -183,18 +183,9 @@ namespace OnlineVideoLinks
         {
             if(_game != null)
             {
-                // Remove all existing videos from the game
-                var gameVideoFields = _game.GetAllAdditionalApplications()
-                    .Where(x => x.Name.StartsWith(GameVideo.TitlePrefix)).ToList();
-
-                foreach (var videoField in gameVideoFields)
-                    _game.TryRemoveAdditionalApplication(videoField);
-
-                // Add the updated list of videos
-                foreach(var video in _gameVideos)
-                    video.AddVideoToGame(_game);
-
-                PluginHelper.DataManager.Save(true);
+                // Convert GameVideo list to GameVideoEntry list and save to database
+                var entries = _gameVideos.Select(GameVideoEntry.FromGameVideo).ToList();
+                _gameVideoDb.SetVideosForGame(_game.Id, entries);
             }
             this.Close();
         }

@@ -44,6 +44,7 @@ namespace OnlineVideoLinks.Models
         public const string GamesDbVideoTitleWithPrefix = "Video: Playthrough";
         public const string GamesDbVideoTitleNoPrefix = "Playthrough";
 
+        public string GameId { get; set; }
         public string Title { get; set; }
 
         /// <summary>

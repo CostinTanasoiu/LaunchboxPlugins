@@ -30,6 +30,7 @@ using System.Windows.Forms;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
 using OnlineVideoLinks;
+using OnlineVideoLinks.Models;
 
 namespace FormsTestProject
 {
@@ -61,7 +62,15 @@ namespace FormsTestProject
         static Form ConfigureVideoManagerForm()
         {
             new PluginStartup();
-            var form = new OnlineVideoLinks.Forms.NewVideoManagerForm();
+            var form = new OnlineVideoLinks.VideoManagerForm(
+                new GameMock
+                {
+                    Title = "Death and Return of Superman, The",
+                    Genres = new BlockingCollection<string> { "Beat' Em Up" },
+                    PlayModes = new string[] { "Single Player" }
+                },
+                new GameVideoUtility()
+            );
             return form;
         }
 
