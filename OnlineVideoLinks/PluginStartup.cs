@@ -55,6 +55,9 @@ namespace OnlineVideoLinks
                     _log?.Error("VLC was not found. Turning off plugin.");
                     StartupFailed = true;
                 }
+				
+				VlcUtilities.VerifyYtDlp();
+                _log.Info("Verified yt-dlp for YouTube video support.");
             }
             catch (Exception ex)
             {
@@ -70,24 +73,9 @@ namespace OnlineVideoLinks
                 return;
 
             // On startup, we want to check if Launchbox's VLC distribution has the latest YouTube addon.
-            if (eventType == SystemEventTypes.LaunchBoxStartupCompleted
-                || eventType == SystemEventTypes.BigBoxStartupCompleted)
+            if (eventType == SystemEventTypes.LaunchBoxStartupCompleted || eventType == SystemEventTypes.BigBoxStartupCompleted)
             {
                 _log.Info("Event raised: " + eventType.ToString());
-
-                try
-                {
-                    VlcUtilities.VerifyYtDlp();
-                    _log.Info("Verified yt-dlp for YouTube video support.");
-
-                    var gameVideoUtility = new GameVideoUtility();
-                    gameVideoUtility.ValidateVideosForAllGames();
-                }
-                catch (Exception ex)
-                {
-                    _log.Error("Video validation failed. Turning off plugin.", ex);
-                    StartupFailed = true;
-                }
             }
         }
     }
