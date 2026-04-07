@@ -46,8 +46,6 @@ namespace FormsTestProject
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            OnlineVideoLinks.Utilities.VlcUtilities.VerifyYtDlp();
-
             var form1 = ConfigureCustomFieldEditor();
             var form2 = ConfigureVideoManagerForm();
             

@@ -77,15 +77,12 @@ namespace OnlineVideoLinks
 
                 try
                 {
-                    VlcUtilities.VerifyYtDlp();
-                    _log.Info("Verified yt-dlp for YouTube video support.");
-
                     var gameVideoUtility = new GameVideoUtility();
                     gameVideoUtility.ValidateVideosForAllGames();
                 }
                 catch (Exception ex)
                 {
-                    _log.Error("Startup failed. Turning off plugin.", ex);
+                    _log.Error("Video validation failed. Turning off plugin.", ex);
                     StartupFailed = true;
                 }
             }

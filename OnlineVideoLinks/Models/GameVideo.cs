@@ -18,13 +18,10 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-using OnlineVideoLinks.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Unbroken.LaunchBox.Plugins.Data;
 
@@ -34,13 +31,17 @@ namespace OnlineVideoLinks.Models
     {
         #region Private members
 
-        private static string[] _commonVlcArguments = new string[] { "-f", "--qt-start-minimized --qt-notification=0", "--play-and-exit" };
+        private static string[] _commonVlcArguments = new string[] { "-f", "--play-and-exit" };
 
         #endregion
 
         #region Public properties
 
         public const string TitlePrefix = "Video: ";
+
+        /// <summary>
+        /// This is the name that we would expect for this game's GamesDB video URL.
+        /// </summary>
         public const string GamesDbVideoTitleWithPrefix = "Video: Playthrough";
         public const string GamesDbVideoTitleNoPrefix = "Playthrough";
 
@@ -98,7 +99,6 @@ namespace OnlineVideoLinks.Models
 
         /// <summary>
         /// Retrieves a string with all the command-line arguments required to play this video with VLC.
-        /// For YouTube URLs, uses yt-dlp to get the direct video URL.
         /// </summary>
         public string GetVlcCmdArguments()
         {
@@ -108,20 +108,7 @@ namespace OnlineVideoLinks.Models
             if (StopTime > 0)
                 cmdArgs += " --stop-time=" + StopTime.ToString();
 
-            // For YouTube URLs, resolve to direct video/audio URLs using yt-dlp
-            var (videoUrl, audioUrl) = VlcUtilities.GetDirectVideoUrls(VideoPath);
-
-            // If we have a separate audio stream, tell VLC to use it as a slave input
-            if (!string.IsNullOrEmpty(audioUrl))
-            {
-                cmdArgs += $" --input-slave=\"{audioUrl}\"";
-            }
-
-            // Set a custom title to avoid showing the long URL in the VLC window
-            cmdArgs += $" --meta-title=\"{Title}\"";
-
-            // Quote the video path to handle URLs with special characters (?, &, =, etc.)
-            cmdArgs += " \"" + videoUrl + "\"";
+            cmdArgs += " " + VideoPath;
             return cmdArgs;
         }
 
@@ -160,7 +147,7 @@ namespace OnlineVideoLinks.Models
                 return false;
 
             // Checking if the app's command line string is missing any of the VLC arguments expected by our plugin
-            foreach(var expectedArg in _commonVlcArguments)
+            foreach (var expectedArg in _commonVlcArguments)
             {
                 if (!app.CommandLine.Contains(expectedArg))
                     return false;

@@ -20,6 +20,7 @@
 
 using LaunchboxPluginsTests.MockedClasses;
 using NSubstitute;
+using OnlineVideoLinks;
 using OnlineVideoLinks.Models;
 using OnlineVideoLinks.Utilities;
 using System;
