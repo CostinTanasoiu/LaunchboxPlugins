@@ -49,6 +49,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\OnlineVideoLinks\OnlineVideoLinks.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Unbroken.LaunchBox.Plugins">
       <HintPath>..\_Dependencies\Unbroken.LaunchBox.Plugins.dll</HintPath>
     </Reference>

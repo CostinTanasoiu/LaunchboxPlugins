@@ -18,15 +18,15 @@ namespace VideoPlayer
 
         public PluginStartup()
         {
-            var log4NetConfigPath = Path.Combine(GeneralUtilities.PluginDirectory, "Log4Net.config");
+            var log4NetConfigPath = Path.Combine(OnlineVideoLinks.Utilities.GeneralUtilities.PluginDirectory, "Log4Net.config");
             var file = new FileInfo(log4NetConfigPath);
 
-            log4net.GlobalContext.Properties["PluginDirectory"] = GeneralUtilities.PluginDirectory;
+            log4net.GlobalContext.Properties["PluginDirectory"] = OnlineVideoLinks.Utilities.GeneralUtilities.PluginDirectory;
             log4net.Config.XmlConfigurator.Configure(file);
 
             _log = LogManager.GetLogger(nameof(PluginStartup));
 
-            if (!VlcUtilities.IsVlcInstalled())
+            if (!OnlineVideoLinks.Utilities.VlcUtilities.IsVlcInstalled())
             {
                 _log.Error("VLC was not found. Turning off plugin.");
                 StartupFailed = true;
@@ -46,7 +46,7 @@ namespace VideoPlayer
 
                 try
                 {
-                    VlcUtilities.VerifyYoutubeAddon();
+                    OnlineVideoLinks.Utilities.VlcUtilities.VerifyYoutubeAddon();
                     _log.Info("Verified the Youtube addon for VLC.");
 
                     var gameVideoUtility = new GameVideoUtility();
