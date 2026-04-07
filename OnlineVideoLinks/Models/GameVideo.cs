@@ -41,9 +41,14 @@ namespace OnlineVideoLinks.Models
         #region Public properties
 
         public const string TitlePrefix = "Video: ";
+
+        /// <summary>
+        /// This is the name that we would expect for this game's GamesDB video URL.
+        /// </summary>
         public const string GamesDbVideoTitleWithPrefix = "Video: Playthrough";
         public const string GamesDbVideoTitleNoPrefix = "Playthrough";
 
+        public string GameId { get; set; }
         public string Title { get; set; }
 
         /// <summary>
@@ -155,11 +160,14 @@ namespace OnlineVideoLinks.Models
         /// <param name="app">The Additional App entry.</param>
         public static bool IsAppCorrectlySetup(IAdditionalApplication app)
         {
-            if (app.ApplicationPath != VlcUtilities.GetVlcExecutablePath())
+            // Check if the application path points to LaunchBox's bundled VLC executable
+            if (!app.ApplicationPath.Contains("ThirdParty", StringComparison.OrdinalIgnoreCase) ||
+                !app.ApplicationPath.Contains("VLC", StringComparison.OrdinalIgnoreCase) ||
+                !app.ApplicationPath.EndsWith("vlc.exe", StringComparison.OrdinalIgnoreCase))
                 return false;
 
             // Checking if the app's command line string is missing any of the VLC arguments expected by our plugin
-            foreach(var expectedArg in _commonVlcArguments)
+            foreach (var expectedArg in _commonVlcArguments)
             {
                 if (!app.CommandLine.Contains(expectedArg))
                     return false;

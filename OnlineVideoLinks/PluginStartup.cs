@@ -85,7 +85,7 @@ namespace OnlineVideoLinks
                 }
                 catch (Exception ex)
                 {
-                    _log.Error("Startup failed. Turning off plugin.", ex);
+                    _log.Error("Video validation failed. Turning off plugin.", ex);
                     StartupFailed = true;
                 }
             }
