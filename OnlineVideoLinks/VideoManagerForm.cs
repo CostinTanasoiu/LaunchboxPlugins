@@ -117,7 +117,8 @@ namespace OnlineVideoLinks
 
         private void PlayVideo(GameVideo gameVideo)
         {
-            _gameVideoUtility.Play(gameVideo);        }
+            _gameVideoUtility.Play(gameVideo);
+        }
 
         private void ResetNewVideoFields()
         {

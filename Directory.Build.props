@@ -1,0 +1,18 @@
+<Project>
+
+  <PropertyGroup>
+    <!-- Versioning -->
+    <Version>1.3.0</Version>
+    <AssemblyVersion>1.3.0.0</AssemblyVersion>
+    <FileVersion>1.3.0.0</FileVersion>
+
+    <!-- Package/Assembly Metadata -->
+    <Authors>Costin Tănăsoiu</Authors>
+    <Company>Costin Tănăsoiu</Company>
+    <Copyright>Copyright © 2019 Costin Tănăsoiu</Copyright>
+    <Product>LaunchBox Plugins</Product>
+    <RepositoryUrl>https://github.com/CostinTanasoiu/LaunchboxPlugins</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+</Project>

@@ -49,10 +49,15 @@ namespace OnlineVideoLinks
 
                 var videoEntries = gameVideos.Select(x => GameVideoEntry.FromGameVideo(x)).ToList();
                 GameVideoDb.Instance.SetVideosForGame(game.Id, game.Title, game.Platform, videoEntries);
+
+                // Deleting the old video apps
+                foreach (var app in videoAppList)
+                {
+                    game.TryRemoveAdditionalApplication(app);
+                }
             }
 
             progressForm.UpdateProgress(games.Length, "Migration complete!");
-            Task.Delay(1000);
             progressForm.Close();
         }
     }
