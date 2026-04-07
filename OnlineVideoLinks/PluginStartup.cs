@@ -77,6 +77,9 @@ namespace OnlineVideoLinks
 
                 try
                 {
+                    VlcUtilities.VerifyYtDlp();
+                    _log.Info("Verified yt-dlp for YouTube video support.");
+
                     var gameVideoUtility = new GameVideoUtility();
                     gameVideoUtility.ValidateVideosForAllGames();
                 }

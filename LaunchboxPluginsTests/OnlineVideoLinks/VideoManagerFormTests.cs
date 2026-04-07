@@ -30,6 +30,7 @@ using System.Threading.Tasks;
 using Unbroken.LaunchBox.Plugins.Data;
 using Xunit;
 using OnlineVideoLinks;
+using OnlineVideoLinks.Models;
 using OnlineVideoLinks.Utilities;
 using OnlineVideoLinks.Database;
 

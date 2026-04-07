@@ -30,7 +30,6 @@ using System.Windows.Forms;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
 using OnlineVideoLinks;
-using OnlineVideoLinks.Models;
 
 namespace FormsTestProject
 {
@@ -46,27 +45,86 @@ namespace FormsTestProject
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            OnlineVideoLinks.Utilities.VlcUtilities.VerifyYtDlp();
+
             var form1 = ConfigureCustomFieldEditor();
             var form2 = ConfigureVideoManagerForm();
+            var form3 = ConfigureVideoSelectorForm();
             
             form1.Show();
             form2.Show();
+            form3.Show();
 
-            Application.Run();
+            Application.Run(new MainForm());
         }
 
         static Form ConfigureVideoManagerForm()
         {
             new PluginStartup();
-            var form = new OnlineVideoLinks.VideoManagerForm(
-                new GameMock
+            var form = new OnlineVideoLinks.Forms.NewVideoManagerForm();
+            return form;
+        }
+
+        static Form ConfigureVideoSelectorForm()
+        {
+            new PluginStartup();
+            var form = new OnlineVideoLinks.VideoSelectorForm(new GameMock
+            {
+                Title = "Death and Return of Superman, The",
+                Genres = new BlockingCollection<string> { "Beat' Em Up" },
+                PlayModes = new string[] { "Single Player" },
+                AdditionalApplications = new List<IAdditionalApplication>()
                 {
-                    Title = "Death and Return of Superman, The",
-                    Genres = new BlockingCollection<string> { "Beat' Em Up" },
-                    PlayModes = new string[] { "Single Player" }
-                },
-                new GameVideoUtility()
-            );
+                    new AdditionalApplicationMock
+                    {
+                        Name = "Video: (local file) Jellyfish",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = Path.Combine(Environment.CurrentDirectory, @"OnlineVideoLinks\Assets\jellyfish.mp4")
+                    },
+                    new AdditionalApplicationMock
+                    {
+                        Name = "Video: Longplay",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = "https://youtu.be/yka30n1D6L0"
+                    },
+                    new AdditionalApplicationMock
+                    {
+                        Name = "Video: Is Death and Return of Superman Worth Playing Today?",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = "https://youtu.be/7hfYthWLJsA"
+                    },
+                    new AdditionalApplicationMock
+                    {
+                        Name = "Video: (steam) Pizza Possum Co-Op Trailer",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = "https://video.fastly.steamstatic.com/store_trailers/256951885/movie_max_vp9.webm?t=1686321338"
+                    },
+                    new AdditionalApplicationMock
+                    {
+                        Name = "Video: Longplay",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = "https://youtu.be/yka30n1D6L0"
+                    },
+                    new AdditionalApplicationMock
+                    {
+                        Name = "Video: Is Death and Return of Superman Worth Playing Today?",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = "https://youtu.be/7hfYthWLJsA"
+                    },
+                    new AdditionalApplicationMock
+                    {
+                        Name = "Video: Longplay",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = "https://youtu.be/yka30n1D6L0"
+                    },
+                    new AdditionalApplicationMock
+                    {
+                        Name = "Video: Is Death and Return of Superman Worth Playing Today?",
+                        ApplicationPath = @"C:\Games\LaunchBox\ThirdParty\VLC\x64\vlc.exe",
+                        CommandLine = "https://youtu.be/7hfYthWLJsA"
+                    }
+                }
+            }, new GameVideoUtility(), new GamepadXinputProvider());
             return form;
         }
 

@@ -26,4 +26,10 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="OnlineVideoLinks\Assets\jellyfish.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
