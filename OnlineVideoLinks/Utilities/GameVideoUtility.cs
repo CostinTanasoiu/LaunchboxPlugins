@@ -2,6 +2,7 @@
 using OnlineVideoLinks.Database;
 using OnlineVideoLinks.Models;
 using OnlineVideoLinks.WPF;
+using SharpDX.XInput;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -22,6 +23,7 @@ namespace OnlineVideoLinks.Utilities
         void SkipBackward();
         void SkipForward();
         void StopPlaying();
+        void SendGamepadInput(GamepadButtonFlags button);
     }
 
     public class GameVideoUtility : IGameVideoUtility
@@ -118,6 +120,12 @@ namespace OnlineVideoLinks.Utilities
         public void PlayPause()
         {
             _player.PlayPause();
+        }
+
+        public void SendGamepadInput(GamepadButtonFlags button)
+        {
+            if(_player != null)
+                _player.SendGamepadInput(button);
         }
 
         #region Private Methods

@@ -48,15 +48,15 @@ namespace FormsTestProject
             Application.SetCompatibleTextRenderingDefault(false);
 
             var forms = new List<Form>();
-            forms.Add(ConfigureCustomFieldEditor());
-            forms.Add(ConfigureVideoManagerForm());
+            //forms.Add(ConfigureCustomFieldEditor());
+            //forms.Add(ConfigureVideoManagerForm());
             forms.Add(ConfigureVideoSelectorForm());
-            forms.Add(ConfigureNewVideoSelectorForm());
+            //forms.Add(ConfigureNewVideoSelectorForm());
 
             foreach (var form in forms)
                 form.Show();
 
-            Application.Run(new MainForm());
+            Application.Run();
         }
 
         static Form ConfigureVideoManagerForm()

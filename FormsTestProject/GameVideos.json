@@ -29,18 +29,24 @@
     "Videos": [
       {
         "Title": "(local file) Jellyfish",
-        "VideoPath": "OnlineVideoLinks\\Assets\\jellyfish.mp4",
+        "VideoPath": "OnlineVideoLinks\\Assets\\jellyfish_9s.mp4",
         "StartTime": 0,
         "StopTime": 0
       },
       {
-        "Title": "Longplay",
+        "Title": "(local file) Turtle",
+        "VideoPath": "OnlineVideoLinks\\Assets\\turtle_960x540_30s.mp4",
+        "StartTime": 0,
+        "StopTime": 0
+      },
+      {
+        "Title": "(youtube) Longplay",
         "VideoPath": "https://youtu.be/yka30n1D6L0",
         "StartTime": 0,
         "StopTime": 0
       },
       {
-        "Title": "Is Death and Return of Superman Worth Playing Today?",
+        "Title": "(youtube) Is Death and Return of Superman Worth Playing Today?",
         "VideoPath": "https://youtu.be/7hfYthWLJsA",
         "StartTime": 0,
         "StopTime": 0
@@ -48,6 +54,18 @@
       {
         "Title": "(steam) Pizza Possum Co-Op Trailer",
         "VideoPath": "https://video.fastly.steamstatic.com/store_trailers/256951885/movie_max_vp9.webm?t=1686321338",
+        "StartTime": 0,
+        "StopTime": 0
+      },
+      {
+        "Title": "Non-existing local file",
+        "VideoPath": "OnlineVideoLinks\\Assets\\does-not-exist.mp4",
+        "StartTime": 0,
+        "StopTime": 0
+      },
+      {
+        "Title": "Non-existing URL",
+        "VideoPath": "https://does-not-exist.hello.world.me",
         "StartTime": 0,
         "StopTime": 0
       }

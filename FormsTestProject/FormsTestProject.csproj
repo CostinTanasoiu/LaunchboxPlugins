@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="FFmpeg.Static" Version="4.4.0.7" />
+    <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.23" />
   </ItemGroup>
 
   <ItemGroup>

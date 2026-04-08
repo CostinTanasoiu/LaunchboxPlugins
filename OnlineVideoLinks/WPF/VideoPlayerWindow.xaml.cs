@@ -132,17 +132,34 @@ namespace OnlineVideoLinks.WPF
 
         private async Task LoadRegularVideo()
         {
-            var media = new Media(_libVLC, new Uri(_gameVideo.VideoPath));
+            Media media;
 
-            await media.Parse(MediaParseOptions.ParseNetwork);
-            var subitem = media.SubItems.FirstOrDefault();
+            // Check if it's a network URL or a local file path
+            if (Uri.TryCreate(_gameVideo.VideoPath, UriKind.Absolute, out var uri) &&
+                (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
+            {
+                media = new Media(_libVLC, uri);
+                await media.Parse(MediaParseOptions.ParseNetwork);
+                var subitem = media.SubItems.FirstOrDefault();
 
-            progressBar.Visibility = Visibility.Collapsed;
+                progressBar.Visibility = Visibility.Collapsed;
 
-            if (subitem != null)
-                vlcView.MediaPlayer.Play(subitem);
+                if (subitem != null)
+                    vlcView.MediaPlayer.Play(subitem);
+                else
+                    vlcView.MediaPlayer.Play(media);
+            }
             else
+            {
+                // Local file path - resolve relative paths to absolute
+                var filePath = Path.IsPathRooted(_gameVideo.VideoPath)
+                    ? _gameVideo.VideoPath
+                    : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _gameVideo.VideoPath);
+
+                media = new Media(_libVLC, filePath, FromType.FromPath);
+                progressBar.Visibility = Visibility.Collapsed;
                 vlcView.MediaPlayer.Play(media);
+            }
         }
 
         private async Task LoadYoutubeVideo()
