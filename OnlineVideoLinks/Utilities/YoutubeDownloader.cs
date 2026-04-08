@@ -17,11 +17,7 @@ namespace OnlineVideoLinks.Utilities
         /// </summary>
         private static string GetLaunchBoxFFmpegPath()
         {
-            // Navigate from plugin folder up to LaunchBox root, then to ThirdParty\FFMPEG
-            var pluginDir = AppDomain.CurrentDomain.BaseDirectory;
-            var launchBoxRoot = Path.GetFullPath(Path.Combine(pluginDir, "..", ".."));
-            var ffmpegPath = Path.Combine(launchBoxRoot, "ThirdParty", "FFMPEG", "ffmpeg.exe");
-
+            var ffmpegPath = Path.Combine(Environment.CurrentDirectory, "ThirdParty", "FFMPEG", "ffmpeg.exe");
             return File.Exists(ffmpegPath) ? ffmpegPath : null;
         }
 

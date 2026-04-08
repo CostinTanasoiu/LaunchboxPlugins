@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharpDX.XInput;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,12 @@ namespace VideoPlayer
         /// Plays this video.
         /// </summary>
         public Task Play(GameVideo video);
+
+        /// <summary>
+        /// Sends gamepad input.
+        /// </summary>
+        /// <param name="button"></param>
+        void SendGamepadInput(GamepadButtonFlags button);
 
         /// <summary>
         /// Stops playing the video.

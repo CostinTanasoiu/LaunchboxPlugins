@@ -66,29 +66,30 @@ namespace VideoPlayer.Forms
 
         private async void HandleXInput_ButtonPressed(GamepadButtonFlags buttonPressed)
         {
+            if (buttonPressed == GamepadButtonFlags.None)
+                return;
+
+            if (_playerPanel.IsPlaying())
+            {
+                _playerPanel.SendGamepadInput(buttonPressed);
+                return;
+            }
+
             switch (buttonPressed)
             {
                 case GamepadButtonFlags.A:
-                    if (!_playerPanel.IsPlaying())
-                    {
-                        var selectedVideo = listBoxVideos.SelectedItem as GameVideo;
-                        await _playerPanel.Play(selectedVideo);
-                    }
+                    var selectedVideo = listBoxVideos.SelectedItem as GameVideo;
+                    await _playerPanel.Play(selectedVideo);
                     break;
                 case GamepadButtonFlags.B:
-                    if (_playerPanel.IsPlaying())
-                    {
-                        _playerPanel.StopPlaying();
-                    }
-                    else
-                        this.Close();
+                    this.Close();
                     break;
                 case GamepadButtonFlags.DPadDown:
-                    if (!_playerPanel.IsPlaying() && listBoxVideos.SelectedIndex < listBoxVideos.Items.Count - 1)
+                    if (listBoxVideos.SelectedIndex < listBoxVideos.Items.Count - 1)
                         listBoxVideos.SelectedIndex++;
                     break;
                 case GamepadButtonFlags.DPadUp:
-                    if (!_playerPanel.IsPlaying() && listBoxVideos.SelectedIndex > 0)
+                    if (listBoxVideos.SelectedIndex > 0)
                         listBoxVideos.SelectedIndex--;
                     break;
             }

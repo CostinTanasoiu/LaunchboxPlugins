@@ -16,15 +16,31 @@ namespace VideoPlayer.Forms.UserControls
         Bitmap? _canvas;
         Image? _imgMain;
         Image? _imgBadge;
+        bool _isHovered;
 
         public PlayerButtonWithBadge()
         {
             InitializeComponent();
 
             pictureBoxCanvas.Click += PictureBoxCanvas_Click;
+            pictureBoxCanvas.MouseEnter += PictureBoxCanvas_MouseEnter;
+            pictureBoxCanvas.MouseLeave += PictureBoxCanvas_MouseLeave;
+            pictureBoxCanvas.Cursor = Cursors.Hand;
             this.Resize += PlayerButtonWithBadge_Resize;
 
             RecreateCanvas();
+        }
+
+        private void PictureBoxCanvas_MouseEnter(object? sender, EventArgs e)
+        {
+            _isHovered = true;
+            DrawCanvas();
+        }
+
+        private void PictureBoxCanvas_MouseLeave(object? sender, EventArgs e)
+        {
+            _isHovered = false;
+            DrawCanvas();
         }
 
         private void PlayerButtonWithBadge_Resize(object? sender, EventArgs e)
@@ -70,6 +86,13 @@ namespace VideoPlayer.Forms.UserControls
 
                 if (_imgBadge != null)
                     gr.DrawImage(_imgBadge, new Rectangle(this.Width - badgeIconSize, 0, badgeIconSize, badgeIconSize));
+
+                // Apply darkening overlay when hovered
+                if (_isHovered)
+                {
+                    using var darkBrush = new SolidBrush(Color.FromArgb(80, 0, 0, 0));
+                    gr.FillRectangle(darkBrush, 0, 0, this.Width, this.Height);
+                }
             }
 
             pictureBoxCanvas.Invalidate();

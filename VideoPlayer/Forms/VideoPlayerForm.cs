@@ -1,4 +1,5 @@
 ﻿using SharpDX.DirectInput;
+using SharpDX.XInput;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,6 +20,7 @@ namespace VideoPlayer.Forms
         const int SkipBwdSeconds = 15;
 
         GameVideo? _gameVideo;
+        private System.Windows.Forms.Timer _progressTimer;
 
         public VideoPlayerForm()
         {
@@ -29,6 +31,25 @@ namespace VideoPlayer.Forms
 
             // This ensures the form will receive all key events before any control on the form receives them.
             this.KeyPreview = true;
+
+            // Ensure progress label is on top and positioned correctly
+            lblProgress.BringToFront();
+            this.Resize += VideoPlayerForm_Resize;
+
+            // Timer to update progress display
+            _progressTimer = new System.Windows.Forms.Timer
+            {
+                Interval = 500
+            };
+            _progressTimer.Tick += ProgressTimer_Tick;
+        }
+
+        private void VideoPlayerForm_Resize(object? sender, EventArgs e)
+        {
+            // Position label in bottom-right, vertically centered with flowLayoutPanel1
+            int labelX = this.ClientSize.Width - lblProgress.Width - 20;
+            int labelY = flowLayoutPanel1.Top + (flowLayoutPanel1.Height - lblProgress.Height) / 2;
+            lblProgress.Location = new Point(labelX, labelY);
         }
 
         public bool IsPlaying()
@@ -53,8 +74,10 @@ namespace VideoPlayer.Forms
             mediaPlayer.settings.volume = 50; // Set volume to 50%
             mediaPlayer.settings.mute = false;
             mediaPlayer.stretchToFit = true;
+            ResetProgress();
 
             mediaPlayer.Ctlcontrols.play();
+            _progressTimer.Start();
         }
 
         public void PlayPause()
@@ -63,6 +86,25 @@ namespace VideoPlayer.Forms
                 mediaPlayer.Ctlcontrols.pause();
             else
                 mediaPlayer.Ctlcontrols.play();
+        }
+
+        /// <summary>
+        /// Sends gamepad input.
+        /// </summary>
+        /// <param name="button"></param>
+        public void SendGamepadInput(GamepadButtonFlags button)
+        {
+            switch (button)
+            {
+                case GamepadButtonFlags.A:
+                    PlayPause(); break;
+                case GamepadButtonFlags.B:
+                    StopPlaying(); break;
+                case GamepadButtonFlags.DPadLeft:
+                    SkipBackward(); break;
+                case GamepadButtonFlags.DPadRight:
+                    SkipForward(); break;
+            }
         }
 
         public void SkipBackward()
@@ -83,6 +125,7 @@ namespace VideoPlayer.Forms
 
         public void StopPlaying()
         {
+            _progressTimer.Stop();
             mediaPlayer.Ctlcontrols.stop();
             mediaPlayer.close();
             _gameVideo = null;
@@ -139,6 +182,34 @@ namespace VideoPlayer.Forms
                     return base.ProcessCmdKey(ref msg, keyData);
             }
             return true;
+        }
+
+        private void ResetProgress()
+        {
+            lblProgress.Text = "--:-- / --:--";
+        }
+
+        private void ProgressTimer_Tick(object? sender, EventArgs e)
+        {
+            var current = TimeSpan.FromSeconds(mediaPlayer.Ctlcontrols.currentPosition);
+            var currentFormatted = TimespanFormat(current);
+
+            // Duration may be 0 for certain formats or while media is still loading
+            if (mediaPlayer.currentMedia != null && mediaPlayer.currentMedia.duration > 0)
+            {
+                var total = TimeSpan.FromSeconds(mediaPlayer.currentMedia.duration);
+                lblProgress.Text = $"{currentFormatted} / {TimespanFormat(total)}";
+            }
+            else
+            {
+                // No duration available - show only current position
+                lblProgress.Text = currentFormatted;
+            }
+        }
+
+        private string TimespanFormat(TimeSpan t)
+        {
+            return t.Hours > 0 ? t.ToString("hh\\:mm\\:ss") : t.ToString("mm\\:ss");
         }
     }
 }
