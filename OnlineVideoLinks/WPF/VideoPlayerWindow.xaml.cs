@@ -1,14 +1,12 @@
-﻿using LibVLCSharp.Shared;
-using OnlineVideoLinks.Models;
+﻿using OnlineVideoLinks.Models;
 using OnlineVideoLinks.Utilities;
 using SharpDX.XInput;
 using System;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace OnlineVideoLinks.WPF
 {
@@ -17,30 +15,24 @@ namespace OnlineVideoLinks.WPF
     /// </summary>
     public partial class VideoPlayerWindow : Window
     {
-        //[DllImport("libvlccore.dll")]
-        //private static extern void Initialize(string? libvlcDirectoryPath = null);
-
         const string TempVideoPath = "temp_video.mp4";
 
-        LibVLC _libVLC;
-        MediaPlayer _mediaPlayer;
-        GameVideo _gameVideo;
+        private GameVideo _gameVideo;
+        private DispatcherTimer _progressTimer;
+        private bool _isPlaying;
 
         public VideoPlayerWindow(GameVideo gameVideo)
         {
             InitializeComponent();
 
-            LibVLCSharp.Shared.Core.Initialize();
-            _libVLC = new LibVLC(enableDebugLogs: true);
-            _libVLC.SetLogFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs\\libvlc.log"));
-
             _gameVideo = gameVideo;
 
-            _mediaPlayer = new MediaPlayer(_libVLC);
-            _mediaPlayer.TimeChanged += _mediaPlayer_TimeChanged;
-            _mediaPlayer.EndReached += _mediaPlayer_EndReached;
-
-            vlcView.MediaPlayer = _mediaPlayer;
+            // Timer to update progress display
+            _progressTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(500)
+            };
+            _progressTimer.Tick += ProgressTimer_Tick;
         }
 
         /// <summary>
@@ -69,7 +61,7 @@ namespace OnlineVideoLinks.WPF
         /// </summary>
         public bool IsPlaying()
         {
-            return _mediaPlayer.IsPlaying;
+            return _isPlaying;
         }
 
         /// <summary>
@@ -77,7 +69,14 @@ namespace OnlineVideoLinks.WPF
         /// </summary>
         public void SkipForward()
         {
-            _mediaPlayer.Time += 10000;
+            if (mediaElement.NaturalDuration.HasTimeSpan)
+            {
+                var newPosition = mediaElement.Position + TimeSpan.FromSeconds(10);
+                if (newPosition < mediaElement.NaturalDuration.TimeSpan)
+                    mediaElement.Position = newPosition;
+                else
+                    mediaElement.Position = mediaElement.NaturalDuration.TimeSpan;
+            }
         }
 
         /// <summary>
@@ -85,9 +84,8 @@ namespace OnlineVideoLinks.WPF
         /// </summary>
         public void SkipBackward()
         {
-            if (_mediaPlayer.Time > 10000)
-                _mediaPlayer.Time -= 10000;
-            else _mediaPlayer.Time = 0;
+            var newPosition = mediaElement.Position - TimeSpan.FromSeconds(10);
+            mediaElement.Position = newPosition > TimeSpan.Zero ? newPosition : TimeSpan.Zero;
         }
 
         /// <summary>
@@ -95,7 +93,18 @@ namespace OnlineVideoLinks.WPF
         /// </summary>
         public void PlayPause()
         {
-            _mediaPlayer.Pause();
+            if (_isPlaying)
+            {
+                mediaElement.Pause();
+                _progressTimer.Stop();
+                _isPlaying = false;
+            }
+            else
+            {
+                mediaElement.Play();
+                _progressTimer.Start();
+                _isPlaying = true;
+            }
         }
 
         /// <summary>
@@ -117,7 +126,7 @@ namespace OnlineVideoLinks.WPF
             }
         }
 
-        private async void vlcView_Loaded(object sender, RoutedEventArgs e)
+        private async void Window_ContentRendered(object sender, EventArgs e)
         {
             if (_gameVideo != null)
             {
@@ -126,28 +135,19 @@ namespace OnlineVideoLinks.WPF
                 if (VideoMetadataUtilities.IsYoutubeUrl(_gameVideo.VideoPath))
                     await LoadYoutubeVideo();
                 else
-                    await LoadRegularVideo();
+                    LoadRegularVideo();
             }
         }
 
-        private async Task LoadRegularVideo()
+        private void LoadRegularVideo()
         {
-            Media media;
+            Uri mediaUri;
 
             // Check if it's a network URL or a local file path
             if (Uri.TryCreate(_gameVideo.VideoPath, UriKind.Absolute, out var uri) &&
                 (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
             {
-                media = new Media(_libVLC, uri);
-                await media.Parse(MediaParseOptions.ParseNetwork);
-                var subitem = media.SubItems.FirstOrDefault();
-
-                progressBar.Visibility = Visibility.Collapsed;
-
-                if (subitem != null)
-                    vlcView.MediaPlayer.Play(subitem);
-                else
-                    vlcView.MediaPlayer.Play(media);
+                mediaUri = uri;
             }
             else
             {
@@ -156,38 +156,44 @@ namespace OnlineVideoLinks.WPF
                     ? _gameVideo.VideoPath
                     : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _gameVideo.VideoPath);
 
-                media = new Media(_libVLC, filePath, FromType.FromPath);
-                progressBar.Visibility = Visibility.Collapsed;
-                vlcView.MediaPlayer.Play(media);
+                mediaUri = new Uri(filePath);
             }
+
+            mediaElement.Source = mediaUri;
+            mediaElement.Play();
+            _isPlaying = true;
+            _progressTimer.Start();
         }
 
         private async Task LoadYoutubeVideo()
         {
             await YoutubeDownloader.DownloadTimestampedVideoMP4(_gameVideo.VideoPath, TempVideoPath, _gameVideo.StartTime, _gameVideo.StopTime);
 
-            var media = new Media(_libVLC, TempVideoPath, FromType.FromPath);
-
-            progressBar.Visibility = Visibility.Collapsed;
-            vlcView.MediaPlayer.Play(media);
+            mediaElement.Source = new Uri(Path.GetFullPath(TempVideoPath));
+            mediaElement.Play();
+            _isPlaying = true;
+            _progressTimer.Start();
         }
 
-        private async void Window_ContentRendered(object sender, EventArgs e)
+        private void MediaElement_MediaOpened(object sender, RoutedEventArgs e)
         {
+            progressBar.Visibility = Visibility.Collapsed;
+        }
 
+        private void MediaElement_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            StopAndClose();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            _mediaPlayer.Stop();
+            _progressTimer.Stop();
+            mediaElement.Stop();
+            mediaElement.Close();
 
-            _mediaPlayer.Media.Dispose();
-            _mediaPlayer.Dispose();
-
-            _libVLC.CloseLogFile();
-            _libVLC.Dispose();
-
-            File.Delete(TempVideoPath);
+            // Clean up temp file if it exists
+            if (File.Exists(TempVideoPath))
+                File.Delete(TempVideoPath);
         }
 
         private void btnPlay_Click(object sender, RoutedEventArgs e)
@@ -210,7 +216,7 @@ namespace OnlineVideoLinks.WPF
             SkipForward();
         }
 
-        private void Window_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        private void Window_KeyUp(object sender, KeyEventArgs e)
         {
             switch (e.Key)
             {
@@ -228,20 +234,14 @@ namespace OnlineVideoLinks.WPF
             }
         }
 
-        private void _mediaPlayer_TimeChanged(object sender, MediaPlayerTimeChangedEventArgs e)
+        private void ProgressTimer_Tick(object sender, EventArgs e)
         {
-            var current = TimeSpan.FromMilliseconds(_mediaPlayer.Time);
-            var total = TimeSpan.FromMilliseconds(_mediaPlayer.Length);
-
-            Dispatcher.BeginInvoke(new Action(() =>
+            if (mediaElement.NaturalDuration.HasTimeSpan)
             {
+                var current = mediaElement.Position;
+                var total = mediaElement.NaturalDuration.TimeSpan;
                 txtProgress.Text = $"{TimespanFormat(current)} / {TimespanFormat(total)}";
-            }));
-        }
-
-        private void _mediaPlayer_EndReached(object sender, EventArgs e)
-        {
-            StopAndClose();
+            }
         }
 
         private string TimespanFormat(TimeSpan t)

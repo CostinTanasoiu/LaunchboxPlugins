@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vlc="clr-namespace:LibVLCSharp.WPF;assembly=LibVLCSharp.WPF"
         xmlns:local="clr-namespace:OnlineVideoLinks.WPF"
         mc:Ignorable="d"
         xmlns:uc="clr-namespace:OnlineVideoLinks.WPF.UserControls"
@@ -64,8 +63,11 @@
                 </TextBlock>
             </StackPanel>
         </Grid>
-        <Grid>
-            <vlc:VideoView Name="vlcView" Background="Black" Loaded="vlcView_Loaded" />
+        <Grid Background="Black">
+            <MediaElement Name="mediaElement"
+                          LoadedBehavior="Manual" UnloadedBehavior="Stop"
+                          MediaOpened="MediaElement_MediaOpened"
+                          MediaEnded="MediaElement_MediaEnded" />
             <ProgressBar Name="progressBar" Width="200" Height="30" 
                          VerticalAlignment="Center" HorizontalAlignment="Center" 
                          IsIndeterminate="True" Visibility="Collapsed"/>
