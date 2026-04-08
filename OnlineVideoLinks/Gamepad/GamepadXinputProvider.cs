@@ -80,9 +80,11 @@ namespace OnlineVideoLinks.Gamepad
                             if (previousState.PacketNumber != state.PacketNumber)
                             {
                                 var btnValue = (int)state.Gamepad.Buttons;
-                                _log.Info($"XInput pressed button '{state.Gamepad.Buttons}'");
-
-                                ButtonPressed?.Invoke(this, new XInputEventArgs(state.Gamepad.Buttons));
+                                if (state.Gamepad.Buttons != GamepadButtonFlags.None)
+                                {
+                                    _log.Info($"XInput pressed button '{state.Gamepad.Buttons}'");
+                                    ButtonPressed?.Invoke(this, new XInputEventArgs(state.Gamepad.Buttons));
+                                }
                             }
                         }
 
