@@ -1,4 +1,5 @@
 ﻿using OnlineVideoLinks.Database;
+using OnlineVideoLinks.Forms;
 using OnlineVideoLinks.Models;
 using OnlineVideoLinks.Utilities;
 using OnlineVideoLinks.WPF;
@@ -74,7 +75,7 @@ namespace OnlineVideoLinks
 
         public async void OnSelect(params IGame[] games)
         {
-            var player = new VideoPlayerWindow();
+            var player = new VideoPlayerForm();
             await player.Play(_video);
         }
     }

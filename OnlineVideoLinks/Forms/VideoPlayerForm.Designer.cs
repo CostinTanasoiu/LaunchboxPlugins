@@ -40,7 +40,7 @@ namespace OnlineVideoLinks.Forms
             mediaPlayer = new AxWMPLib.AxWindowsMediaPlayer();
             flowLayoutPanel1 = new FlowLayoutPanel();
             lblProgress = new Label();
-            lottieLoading = new OnlineVideoLinks.Forms.UserControls.LottieAnimationControl();
+            loadingAnimation = new OnlineVideoLinks.Forms.UserControls.LoadingAnimationControl();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)mediaPlayer).BeginInit();
             flowLayoutPanel1.SuspendLayout();
@@ -144,13 +144,13 @@ namespace OnlineVideoLinks.Forms
             lblProgress.Text = "--:-- / --:--";
             lblProgress.TextAlign = ContentAlignment.MiddleRight;
             // 
-            // lottieLoading
+            // loadingAnimation
             // 
-            lottieLoading.Location = new Point(400, 200);
-            lottieLoading.Name = "lottieLoading";
-            lottieLoading.Size = new Size(200, 200);
-            lottieLoading.TabIndex = 13;
-            lottieLoading.Visible = false;
+            loadingAnimation.Location = new Point(350, 131);
+            loadingAnimation.Name = "loadingAnimation";
+            loadingAnimation.Size = new Size(300, 300);
+            loadingAnimation.TabIndex = 13;
+            loadingAnimation.Visible = false;
             // 
             // VideoPlayerForm
             //
@@ -158,7 +158,7 @@ namespace OnlineVideoLinks.Forms
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Black;
             ClientSize = new Size(1000, 562);
-            Controls.Add(lottieLoading);
+            Controls.Add(loadingAnimation);
             Controls.Add(lblProgress);
             Controls.Add(flowLayoutPanel1);
             Controls.Add(mediaPlayer);
@@ -184,6 +184,6 @@ namespace OnlineVideoLinks.Forms
         private AxWMPLib.AxWindowsMediaPlayer mediaPlayer;
         private FlowLayoutPanel flowLayoutPanel1;
         private Label lblProgress;
-        private UserControls.LottieAnimationControl lottieLoading;
+        private UserControls.LoadingAnimationControl loadingAnimation;
     }
 }

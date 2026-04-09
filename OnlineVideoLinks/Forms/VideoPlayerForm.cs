@@ -22,7 +22,7 @@ namespace OnlineVideoLinks.Forms
         const string TempVideoPath = "temp_video.mp4";
         const int SkipFwdSeconds = 15;
         const int SkipBwdSeconds = 15;
-        const string LottieResourceName = "OnlineVideoLinks.Resources.loading-animation.json";
+        const string LoadingAnimationResource = "OnlineVideoLinks.Resources.loading-animation.gif";
 
         GameVideo? _gameVideo;
         private System.Windows.Forms.Timer _progressTimer;
@@ -51,8 +51,8 @@ namespace OnlineVideoLinks.Forms
             };
             _progressTimer.Tick += ProgressTimer_Tick;
 
-            // Load the Lottie animation from embedded resource
-            lottieLoading.LoadFromEmbeddedResource(LottieResourceName);
+            // Load the loading animation from embedded resource
+            loadingAnimation.LoadFromEmbeddedResource(LoadingAnimationResource);
         }
 
         private void VideoPlayerForm_Resize(object? sender, EventArgs e)
@@ -62,10 +62,10 @@ namespace OnlineVideoLinks.Forms
             int labelY = flowLayoutPanel1.Top + (flowLayoutPanel1.Height - lblProgress.Height) / 2;
             lblProgress.Location = new Point(labelX, labelY);
 
-            // Center Lottie loading animation in the form
-            lottieLoading.Location = new Point(
-                (this.ClientSize.Width - lottieLoading.Width) / 2,
-                (this.ClientSize.Height - lottieLoading.Height) / 2);
+            // Center loading animation in the form
+            loadingAnimation.Location = new Point(
+                (this.ClientSize.Width - loadingAnimation.Width) / 2,
+                (this.ClientSize.Height - loadingAnimation.Height) / 2);
         }
 
         public async Task Play(GameVideo video)
@@ -78,9 +78,9 @@ namespace OnlineVideoLinks.Forms
             this.Show();
 
             // Show loading indicator
-            lottieLoading.Visible = true;
-            lottieLoading.BringToFront();
-            lottieLoading.StartAnimation();
+            loadingAnimation.Visible = true;
+            loadingAnimation.BringToFront();
+            loadingAnimation.StartAnimation();
 
             // Prepare mediaPlayer before loading a new video
             mediaPlayer.close();
@@ -178,8 +178,8 @@ namespace OnlineVideoLinks.Forms
         public void StopPlaying()
         {
             _progressTimer.Stop();
-            lottieLoading.StopAnimation();
-            lottieLoading.Visible = false;
+            loadingAnimation.StopAnimation();
+            loadingAnimation.Visible = false;
             mediaPlayer.OpenStateChange -= MediaPlayer_OpenStateChange;
             mediaPlayer.Ctlcontrols.stop();
             mediaPlayer.close();
@@ -196,8 +196,8 @@ namespace OnlineVideoLinks.Forms
             // wmposMediaOpen = 13 means media is fully open and ready to play
             if (e.newState == (int)WMPLib.WMPOpenState.wmposMediaOpen)
             {
-                lottieLoading.StopAnimation();
-                lottieLoading.Visible = false;
+                loadingAnimation.StopAnimation();
+                loadingAnimation.Visible = false;
                 mediaPlayer.OpenStateChange -= MediaPlayer_OpenStateChange;
             }
         }

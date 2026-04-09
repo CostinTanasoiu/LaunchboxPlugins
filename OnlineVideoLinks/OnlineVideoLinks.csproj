@@ -7,6 +7,9 @@
     <Platforms>AnyCPU</Platforms>
     <!-- Copy all NuGet package DLLs to output folder for plugin deployment -->
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <!-- Use specific RID to flatten native libraries (no runtimes folder) -->
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>false</SelfContained>
   </PropertyGroup>
 
   <ItemGroup>
@@ -49,8 +52,6 @@
     <PackageReference Include="MaterialDesignThemes" Version="3.2.0" />
     <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />
     <PackageReference Include="SharpDX.XInput" Version="4.2.0" />
-    <PackageReference Include="SkiaSharp.Views.WindowsForms" Version="3.116.1" />
-    <PackageReference Include="SkiaSharp.Skottie" Version="3.116.1" />
     <PackageReference Include="SteamWebAPI2" Version="4.4.1" />
     <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
     <PackageReference Include="YoutubeExplode" Version="6.5.7" />
@@ -74,8 +75,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Forms\UserControls\LottieAnimationControl.cs">
-      <SubType>Component</SubType>
+    <Compile Update="Forms\UserControls\LoadingAnimationControl.cs">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="Forms\UserControls\PlayerButtonWithBadge.cs">
       <SubType>UserControl</SubType>
@@ -98,7 +99,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\loading-animation.json" />
+    <EmbeddedResource Include="Resources\loading-animation.gif" />
   </ItemGroup>
 
   <ItemGroup>
