@@ -1,4 +1,5 @@
-﻿using SharpDX.DirectInput;
+﻿using OnlineVideoLinks.Utilities;
+using SharpDX.DirectInput;
 using SharpDX.XInput;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Forms;
+using System.Windows.Media;
 using VideoPlayer.Models;
 
 namespace VideoPlayer.Forms
@@ -50,6 +53,11 @@ namespace VideoPlayer.Forms
             int labelX = this.ClientSize.Width - lblProgress.Width - 20;
             int labelY = flowLayoutPanel1.Top + (flowLayoutPanel1.Height - lblProgress.Height) / 2;
             lblProgress.Location = new Point(labelX, labelY);
+
+            // Center progress bar in the form
+            progressBar.Location = new Point(
+                (this.ClientSize.Width - progressBar.Width) / 2,
+                (this.ClientSize.Height - progressBar.Height) / 2);
         }
 
         public bool IsPlaying()
@@ -64,12 +72,22 @@ namespace VideoPlayer.Forms
 
             this.Show();
 
+            // Show loading indicator
+            progressBar.Visible = true;
+            progressBar.BringToFront();
+
             // Prepare mediaPlayer before loading a new video
             mediaPlayer.close();
             mediaPlayer.URL = null;
 
-            mediaPlayer.URL = video.VideoPath;
-            //mediaPlayer.URL = @"C:\Work_Personal\LaunchboxPlugins\Resources\BigBuckBunny_640x360.mp4";
+            // Subscribe to state change to hide progress bar when ready
+            mediaPlayer.OpenStateChange += MediaPlayer_OpenStateChange;
+
+            //mediaPlayer.URL = video.VideoPath;
+            if (VideoMetadataUtilities.IsYoutubeUrl(video.VideoPath))
+                await LoadYoutubeVideo(video.VideoPath);
+            else
+                LoadRegularVideo(video.VideoPath);
 
             mediaPlayer.settings.volume = 50; // Set volume to 50%
             mediaPlayer.settings.mute = false;
@@ -78,6 +96,35 @@ namespace VideoPlayer.Forms
 
             mediaPlayer.Ctlcontrols.play();
             _progressTimer.Start();
+        }
+
+        private void LoadRegularVideo(string videoPath)
+        {
+            Uri mediaUri;
+
+            // Check if it's a network URL or a local file path
+            if (Uri.TryCreate(videoPath, UriKind.Absolute, out var uri) &&
+                (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
+            {
+                mediaUri = uri;
+            }
+            else
+            {
+                // Local file path - resolve relative paths to absolute
+                var filePath = Path.IsPathRooted(videoPath)
+                    ? videoPath
+                    : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, videoPath);
+
+                mediaUri = new Uri(filePath);
+            }
+
+            mediaPlayer.URL = mediaUri.ToString();
+        }
+
+        private async Task LoadYoutubeVideo(string videoPath)
+        {
+            var playablePath = await YoutubeDownloader.GetPlayableVideoPath(videoPath, TempVideoPath);
+            mediaPlayer.URL = playablePath;
         }
 
         public void PlayPause()
@@ -126,6 +173,8 @@ namespace VideoPlayer.Forms
         public void StopPlaying()
         {
             _progressTimer.Stop();
+            progressBar.Visible = false;
+            mediaPlayer.OpenStateChange -= MediaPlayer_OpenStateChange;
             mediaPlayer.Ctlcontrols.stop();
             mediaPlayer.close();
             _gameVideo = null;
@@ -134,6 +183,16 @@ namespace VideoPlayer.Forms
                 File.Delete(TempVideoPath);
 
             this.Hide();
+        }
+
+        private void MediaPlayer_OpenStateChange(object sender, AxWMPLib._WMPOCXEvents_OpenStateChangeEvent e)
+        {
+            // wmposMediaOpen = 13 means media is fully open and ready to play
+            if (e.newState == (int)WMPLib.WMPOpenState.wmposMediaOpen)
+            {
+                progressBar.Visible = false;
+                mediaPlayer.OpenStateChange -= MediaPlayer_OpenStateChange;
+            }
         }
 
         private void VideoPlayerForm_FormClosing(object sender, FormClosingEventArgs e)
