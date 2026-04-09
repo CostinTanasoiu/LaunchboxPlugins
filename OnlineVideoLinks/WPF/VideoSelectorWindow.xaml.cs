@@ -24,7 +24,7 @@ namespace OnlineVideoLinks.WPF
     /// </summary>
     public partial class VideoSelectorWindow : Window
     {
-        ILog _log = LogManager.GetLogger(nameof(VideoSelectorForm));
+        ILog _log = LogManager.GetLogger(nameof(Forms.VideoSelectorForm));
         IGame _game;
         IGameVideoUtility _gameVideoUtilities;
         IVideoPlayerPanel _playerPanel;

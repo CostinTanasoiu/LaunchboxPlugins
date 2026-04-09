@@ -15,7 +15,7 @@ using Unbroken.LaunchBox.Plugins.Data;
 using OnlineVideoLinks.Gamepad;
 using OnlineVideoLinks.Utilities;
 
-namespace OnlineVideoLinks
+namespace OnlineVideoLinks.Forms
 {
     public partial class VideoSelectorForm : Form
     {

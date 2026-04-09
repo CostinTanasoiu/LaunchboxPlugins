@@ -52,8 +52,8 @@ namespace FormsTestProject
             //forms.Add(ConfigureCustomFieldEditor());
             //forms.Add(ConfigureVideoManagerForm());
             //forms.Add(ConfigureNewVideoManagerForm());
-            //forms.Add(ConfigureVideoSelectorForm());
-            forms.Add(ConfigureNewVideoSelectorForm());
+            forms.Add(ConfigureVideoSelectorForm());
+            //forms.Add(ConfigureNewVideoSelectorForm());
 
             foreach (var form in forms)
                 form.Show();
@@ -84,7 +84,7 @@ namespace FormsTestProject
         static Form ConfigureVideoSelectorForm()
         {
             new PluginStartup();
-            var form = new OnlineVideoLinks.VideoSelectorForm(new GameMock
+            var form = new OnlineVideoLinks.Forms.VideoSelectorForm(new GameMock
             {
                 Id = "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
                 Title = "Death and Return of Superman, The",
