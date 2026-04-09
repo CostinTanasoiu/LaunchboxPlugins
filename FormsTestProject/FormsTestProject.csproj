@@ -10,7 +10,6 @@
     <ProjectReference Include="..\BulkGenreEditor\BulkGenreEditor.csproj" />
     <ProjectReference Include="..\LaunchboxPluginsTests\LaunchboxPluginsTests.csproj" />
     <ProjectReference Include="..\OnlineVideoLinks\OnlineVideoLinks.csproj" />
-    <ProjectReference Include="..\VideoPlayer\VideoPlayer.csproj" />
   </ItemGroup>
 
   <ItemGroup>

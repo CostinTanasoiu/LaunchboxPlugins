@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace VideoPlayer.Forms.UserControls
+namespace OnlineVideoLinks.Forms.UserControls
 {
     public partial class PlayerButtonWithBadge : UserControl
     {

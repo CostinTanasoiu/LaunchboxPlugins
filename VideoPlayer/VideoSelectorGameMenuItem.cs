@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unbroken.LaunchBox.Plugins.Data;
 using Unbroken.LaunchBox.Plugins;
-using VideoPlayer.Forms;
+using OnlineVideoLinks.Forms;
 using OnlineVideoLinks.Gamepad;
 using System.Drawing;
 

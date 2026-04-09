@@ -9,6 +9,7 @@ using System.Text;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
 using OnlineVideoLinks;
+using OnlineVideoLinks.Forms;
 
 namespace OnlineVideoLinks
 {
@@ -36,16 +37,19 @@ namespace OnlineVideoLinks
 
         public void OnSelected(IGame selectedGame)
         {
-            //var form = new VideoSelectorForm(selectedGame, 
-            //    new GameVideoUtility(), new GamepadXinputProvider());
-            //form.ShowDialog();
-
-            var window = new VideoSelectorWindow(
+            var form = new VideoSelectorForm(
                 selectedGame,
                 new GameVideoUtility(),
-                new VideoPlayerWindow(),
+                new VideoPlayerForm(),
                 new GamepadXinputProvider());
-            window.ShowDialog();
+            form.ShowDialog();
+
+            //var window = new VideoSelectorWindow(
+            //    selectedGame,
+            //    new GameVideoUtility(),
+            //    new VideoPlayerWindow(),
+            //    new GamepadXinputProvider());
+            //window.ShowDialog();
         }
 
         public void OnSelected(IGame[] selectedGames)

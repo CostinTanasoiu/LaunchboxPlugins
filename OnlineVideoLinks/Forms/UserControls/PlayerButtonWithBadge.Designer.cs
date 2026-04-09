@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace VideoPlayer.Forms.UserControls
+namespace OnlineVideoLinks.Forms.UserControls
 {
     partial class PlayerButtonWithBadge
     {

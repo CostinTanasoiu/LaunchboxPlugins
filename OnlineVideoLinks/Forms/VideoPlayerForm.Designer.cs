@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace VideoPlayer.Forms
+namespace OnlineVideoLinks.Forms
 {
     partial class VideoPlayerForm
     {
@@ -32,15 +32,15 @@ namespace VideoPlayer.Forms
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(VideoPlayerForm));
-            btnSkipFwd = new VideoPlayer.Forms.UserControls.PlayerButtonWithBadge();
-            btnStop = new VideoPlayer.Forms.UserControls.PlayerButtonWithBadge();
-            btnPlay = new VideoPlayer.Forms.UserControls.PlayerButtonWithBadge();
+            btnSkipFwd = new OnlineVideoLinks.Forms.UserControls.PlayerButtonWithBadge();
+            btnStop = new OnlineVideoLinks.Forms.UserControls.PlayerButtonWithBadge();
+            btnPlay = new OnlineVideoLinks.Forms.UserControls.PlayerButtonWithBadge();
             pictureBox1 = new PictureBox();
-            btnSkipBack = new VideoPlayer.Forms.UserControls.PlayerButtonWithBadge();
+            btnSkipBack = new OnlineVideoLinks.Forms.UserControls.PlayerButtonWithBadge();
             mediaPlayer = new AxWMPLib.AxWindowsMediaPlayer();
             flowLayoutPanel1 = new FlowLayoutPanel();
             lblProgress = new Label();
-            lottieLoading = new VideoPlayer.Forms.UserControls.LottieAnimationControl();
+            lottieLoading = new OnlineVideoLinks.Forms.UserControls.LottieAnimationControl();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)mediaPlayer).BeginInit();
             flowLayoutPanel1.SuspendLayout();
@@ -49,9 +49,9 @@ namespace VideoPlayer.Forms
             // btnSkipFwd
             // 
             btnSkipFwd.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnSkipFwd.BadgeIcon = Resources.d_pad_right;
+            btnSkipFwd.BadgeIcon = Resources.DPadRight;
             btnSkipFwd.Location = new Point(471, 6);
-            btnSkipFwd.MainIcon = Resources.next;
+            btnSkipFwd.MainIcon = Resources.SkipForward;
             btnSkipFwd.Margin = new Padding(6, 6, 19, 6);
             btnSkipFwd.Name = "btnSkipFwd";
             btnSkipFwd.Size = new Size(95, 95);
@@ -63,7 +63,7 @@ namespace VideoPlayer.Forms
             btnStop.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnStop.BadgeIcon = Resources.ButtonB;
             btnStop.Location = new Point(351, 6);
-            btnStop.MainIcon = Resources.stop;
+            btnStop.MainIcon = Resources.Stop;
             btnStop.Margin = new Padding(6, 6, 19, 6);
             btnStop.Name = "btnStop";
             btnStop.Size = new Size(95, 95);
@@ -75,7 +75,7 @@ namespace VideoPlayer.Forms
             btnPlay.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnPlay.BadgeIcon = Resources.ButtonA;
             btnPlay.Location = new Point(231, 6);
-            btnPlay.MainIcon = Resources.play_pause;
+            btnPlay.MainIcon = Resources.PlayPause;
             btnPlay.Margin = new Padding(6, 6, 19, 6);
             btnPlay.Name = "btnPlay";
             btnPlay.Size = new Size(95, 95);
@@ -85,7 +85,7 @@ namespace VideoPlayer.Forms
             // pictureBox1
             // 
             pictureBox1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            pictureBox1.Image = Resources.game_controller;
+            pictureBox1.Image = Resources.GameController;
             pictureBox1.Location = new Point(6, 21);
             pictureBox1.Margin = new Padding(6, 6, 19, 6);
             pictureBox1.Name = "pictureBox1";
@@ -97,9 +97,9 @@ namespace VideoPlayer.Forms
             // btnSkipBack
             // 
             btnSkipBack.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            btnSkipBack.BadgeIcon = Resources.d_pad_left;
+            btnSkipBack.BadgeIcon = Resources.DPadLeft;
             btnSkipBack.Location = new Point(111, 6);
-            btnSkipBack.MainIcon = Resources.previous;
+            btnSkipBack.MainIcon = Resources.SkipBackward;
             btnSkipBack.Margin = new Padding(6, 6, 19, 6);
             btnSkipBack.Name = "btnSkipBack";
             btnSkipBack.Size = new Size(95, 95);

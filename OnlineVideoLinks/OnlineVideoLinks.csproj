@@ -14,6 +14,26 @@
   </ItemGroup>
 
   <ItemGroup>
+    <COMReference Include="WMPLib">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>0</VersionMinor>
+      <VersionMajor>1</VersionMajor>
+      <Guid>6bf52a50-394a-11d3-b153-00c04f79faa6</Guid>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="AxWMPLib">
+      <WrapperTool>aximp</WrapperTool>
+      <VersionMinor>0</VersionMinor>
+      <VersionMajor>1</VersionMajor>
+      <Guid>6bf52a50-394a-11d3-b153-00c04f79faa6</Guid>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+    </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Resources\Enter_Alt_Key_Light.png" />
     <None Remove="Resources\Esc_Key_Light.png" />
     <None Remove="Resources\HelpDocument.rtf" />
@@ -29,6 +49,8 @@
     <PackageReference Include="MaterialDesignThemes" Version="3.2.0" />
     <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />
     <PackageReference Include="SharpDX.XInput" Version="4.2.0" />
+    <PackageReference Include="SkiaSharp.Views.WindowsForms" Version="3.116.1" />
+    <PackageReference Include="SkiaSharp.Skottie" Version="3.116.1" />
     <PackageReference Include="SteamWebAPI2" Version="4.4.1" />
     <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
     <PackageReference Include="YoutubeExplode" Version="6.5.7" />
@@ -52,6 +74,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Forms\UserControls\LottieAnimationControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Forms\UserControls\PlayerButtonWithBadge.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Forms\VideoPlayerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\VideoSelectorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,6 +98,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\loading-animation.json" />
   </ItemGroup>
 
   <ItemGroup>

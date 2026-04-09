@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.9.34902.65
+# Visual Studio Version 18
+VisualStudioVersion = 18.4.11626.88 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BulkGenreEditor", "BulkGenreEditor\BulkGenreEditor.csproj", "{C578868B-7002-4110-9C3C-8E4E9B19E3F4}"
 EndProject
@@ -14,8 +14,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{1ECABEDC-9DF9-4E18-921D-907BA150A091}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfTestProject", "WpfTestProject\WpfTestProject.csproj", "{53C14080-C406-4548-A35E-1529061374EC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoPlayer", "VideoPlayer\VideoPlayer.csproj", "{94785547-DC8C-473C-8EB4-B38CC639B004}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -64,14 +62,6 @@ Global
 		{53C14080-C406-4548-A35E-1529061374EC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{53C14080-C406-4548-A35E-1529061374EC}.Release|x64.ActiveCfg = Release|Any CPU
 		{53C14080-C406-4548-A35E-1529061374EC}.Release|x64.Build.0 = Release|Any CPU
-		{94785547-DC8C-473C-8EB4-B38CC639B004}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{94785547-DC8C-473C-8EB4-B38CC639B004}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{94785547-DC8C-473C-8EB4-B38CC639B004}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{94785547-DC8C-473C-8EB4-B38CC639B004}.Debug|x64.Build.0 = Debug|Any CPU
-		{94785547-DC8C-473C-8EB4-B38CC639B004}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{94785547-DC8C-473C-8EB4-B38CC639B004}.Release|Any CPU.Build.0 = Release|Any CPU
-		{94785547-DC8C-473C-8EB4-B38CC639B004}.Release|x64.ActiveCfg = Release|Any CPU
-		{94785547-DC8C-473C-8EB4-B38CC639B004}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,7 +69,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C578868B-7002-4110-9C3C-8E4E9B19E3F4} = {1ECABEDC-9DF9-4E18-921D-907BA150A091}
 		{18EB8079-C8D5-4063-A935-588BD80CB338} = {1ECABEDC-9DF9-4E18-921D-907BA150A091}
-		{94785547-DC8C-473C-8EB4-B38CC639B004} = {1ECABEDC-9DF9-4E18-921D-907BA150A091}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A8CBA23D-CF98-4CD2-8020-48393EA63039}

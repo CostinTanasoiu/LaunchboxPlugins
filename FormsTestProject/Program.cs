@@ -30,8 +30,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
-using VideoPlayer.Forms;
 using OnlineVideoLinks;
+using OnlineVideoLinks.Forms;
 using OnlineVideoLinks.WPF;
 
 namespace FormsTestProject
@@ -108,7 +108,7 @@ namespace FormsTestProject
                 PlayModes = new string[] { "Single Player" }
             }, 
             new OnlineVideoLinks.Utilities.GameVideoUtility(),
-            new VideoPlayer.Forms.VideoPlayerForm(),
+            new OnlineVideoLinks.Forms.VideoPlayerForm(),
             new OnlineVideoLinks.Gamepad.GamepadXinputProvider()
             );
             return form;

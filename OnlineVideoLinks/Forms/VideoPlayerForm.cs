@@ -15,14 +15,14 @@ using System.Windows.Media;
 using OnlineVideoLinks.Models;
 using System.IO;
 
-namespace VideoPlayer.Forms
+namespace OnlineVideoLinks.Forms
 {
     public partial class VideoPlayerForm : Form, IVideoPlayerPanel
     {
         const string TempVideoPath = "temp_video.mp4";
         const int SkipFwdSeconds = 15;
         const int SkipBwdSeconds = 15;
-        const string LottieResourceName = "VideoPlayer.Resources.loading-animation.json";
+        const string LottieResourceName = "OnlineVideoLinks.Resources.loading-animation.json";
 
         GameVideo? _gameVideo;
         private System.Windows.Forms.Timer _progressTimer;

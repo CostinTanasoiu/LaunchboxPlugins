@@ -4,7 +4,7 @@ using SkiaSharp.Views.Desktop;
 using System;
 using System.IO;
 
-namespace VideoPlayer.Forms.UserControls
+namespace OnlineVideoLinks.Forms.UserControls
 {
     /// <summary>
     /// A Windows Forms control that renders Lottie animations using SkiaSharp.Skottie.
