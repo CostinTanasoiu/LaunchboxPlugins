@@ -43,6 +43,7 @@ namespace OnlineVideoLinks.Forms
             // Ensure progress label is on top and positioned correctly
             lblProgress.BringToFront();
             this.Resize += VideoPlayerForm_Resize;
+            this.Shown += (s, e) => VideoPlayerForm_Resize(s, e); // Recalculate when form is shown
 
             // Timer to update progress display
             _progressTimer = new System.Windows.Forms.Timer
@@ -62,10 +63,25 @@ namespace OnlineVideoLinks.Forms
             int labelY = flowLayoutPanel1.Top + (flowLayoutPanel1.Height - lblProgress.Height) / 2;
             lblProgress.Location = new Point(labelX, labelY);
 
-            // Center loading animation in the form
+            // Size loading animation up to 600x600, constrained by available space
+            const int MaxAnimationSize = 600;
+            const int Padding = 40; // Minimum padding from edges
+            int availableWidth = this.ClientSize.Width - (Padding * 2);
+            int availableHeight = this.ClientSize.Height - flowLayoutPanel1.Height - (Padding * 2);
+            int animationSize = Math.Min(MaxAnimationSize, Math.Min(availableWidth, availableHeight));
+            animationSize = Math.Max(animationSize, 100); // Minimum size of 100
+
+            System.Diagnostics.Debug.WriteLine($"Form ClientSize: {this.ClientSize.Width}x{this.ClientSize.Height}, " +
+                $"FlowPanel Height: {flowLayoutPanel1.Height}, " +
+                $"Available: {availableWidth}x{availableHeight}, " +
+                $"Animation Size: {animationSize}");
+
+            loadingAnimation.Size = new Size(animationSize, animationSize);
+
+            // Center loading animation in the form (above the control panel)
             loadingAnimation.Location = new Point(
                 (this.ClientSize.Width - loadingAnimation.Width) / 2,
-                (this.ClientSize.Height - loadingAnimation.Height) / 2);
+                (this.ClientSize.Height - flowLayoutPanel1.Height - loadingAnimation.Height) / 2);
         }
 
         public async Task Play(GameVideo video)

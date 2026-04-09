@@ -7,9 +7,6 @@
     <Platforms>AnyCPU</Platforms>
     <!-- Copy all NuGet package DLLs to output folder for plugin deployment -->
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <!-- Use specific RID to flatten native libraries (no runtimes folder) -->
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <SelfContained>false</SelfContained>
   </PropertyGroup>
 
   <ItemGroup>
