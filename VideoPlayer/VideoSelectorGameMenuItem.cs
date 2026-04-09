@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Unbroken.LaunchBox.Plugins.Data;
 using Unbroken.LaunchBox.Plugins;
-using VideoPlayer.Utilities;
 using VideoPlayer.Forms;
 using VideoPlayer.Gamepad;
 
@@ -25,7 +24,7 @@ namespace VideoPlayer
 
         public bool GetIsValidForGame(IGame selectedGame)
         {
-            return GameVideoUtility.DoesGameHaveVideos(selectedGame) && !PluginStartup.StartupFailed;
+            return OnlineVideoLinks.Utilities.GameVideoUtility.DoesGameHaveVideos(selectedGame) && !PluginStartup.StartupFailed;
         }
 
         public bool GetIsValidForGames(IGame[] selectedGames)
@@ -37,7 +36,7 @@ namespace VideoPlayer
         {
             var form = new VideoSelectorForm(
                 selectedGame,
-                new GameVideoUtility(),
+                new OnlineVideoLinks.Utilities.GameVideoUtility(),
                 new VideoPlayerForm(),
                 new GamepadXinputProvider()
                 );

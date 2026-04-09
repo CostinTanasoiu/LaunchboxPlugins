@@ -50,10 +50,10 @@ namespace FormsTestProject
 
             var forms = new List<Form>();
             //forms.Add(ConfigureCustomFieldEditor());
-            forms.Add(ConfigureVideoManagerForm());
+            //forms.Add(ConfigureVideoManagerForm());
             //forms.Add(ConfigureNewVideoManagerForm());
             //forms.Add(ConfigureVideoSelectorForm());
-            //forms.Add(ConfigureNewVideoSelectorForm());
+            forms.Add(ConfigureNewVideoSelectorForm());
 
             foreach (var form in forms)
                 form.Show();
@@ -107,7 +107,7 @@ namespace FormsTestProject
                 Genres = new BlockingCollection<string> { "Beat' Em Up" },
                 PlayModes = new string[] { "Single Player" }
             }, 
-            new VideoPlayer.Utilities.GameVideoUtility(),
+            new OnlineVideoLinks.Utilities.GameVideoUtility(),
             new VideoPlayer.Forms.VideoPlayerForm(),
             new VideoPlayer.Gamepad.GamepadXinputProvider()
             );

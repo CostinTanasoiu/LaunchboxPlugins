@@ -1,7 +1,6 @@
 ﻿using log4net;
 using VideoPlayer.Gamepad;
 using VideoPlayer.Models;
-using VideoPlayer.Utilities;
 using SharpDX.DirectInput;
 using SharpDX.XInput;
 using System;
@@ -21,14 +20,14 @@ namespace VideoPlayer.Forms
     {
         ILog _log = LogManager.GetLogger(nameof(VideoSelectorForm));
         IGame _game;
-        IGameVideoUtility _gameVideoUtilities;
+        OnlineVideoLinks.Utilities.IGameVideoUtility _gameVideoUtilities;
         OnlineVideoLinks.IVideoPlayerPanel _playerPanel;
 
         //GamepadDinputProvider _gamepadDinputProvider;
         IGamepadXinputProvider _gamepadXinputProvider;
 
-        public VideoSelectorForm(IGame game, 
-            IGameVideoUtility gameVideoUtilities,
+        public VideoSelectorForm(IGame game,
+            OnlineVideoLinks.Utilities.IGameVideoUtility gameVideoUtilities,
             OnlineVideoLinks.IVideoPlayerPanel playerPanel,
             IGamepadXinputProvider gamepadXinputProvider)
         {
