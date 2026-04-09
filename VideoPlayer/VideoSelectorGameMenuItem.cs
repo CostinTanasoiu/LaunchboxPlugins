@@ -7,6 +7,7 @@ using Unbroken.LaunchBox.Plugins.Data;
 using Unbroken.LaunchBox.Plugins;
 using VideoPlayer.Forms;
 using OnlineVideoLinks.Gamepad;
+using System.Drawing;
 
 namespace VideoPlayer
 {

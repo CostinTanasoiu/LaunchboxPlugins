@@ -1,6 +1,8 @@
 using SkiaSharp;
 using SkiaSharp.Skottie;
 using SkiaSharp.Views.Desktop;
+using System;
+using System.IO;
 
 namespace VideoPlayer.Forms.UserControls
 {

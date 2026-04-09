@@ -1,4 +1,7 @@
-﻿namespace VideoPlayer.Forms
+﻿using System.Drawing;
+using System.Windows.Forms;
+
+namespace VideoPlayer.Forms
 {
     partial class VideoPlayerForm
     {

@@ -1,4 +1,7 @@
-﻿namespace VideoPlayer.Forms.UserControls
+﻿using System.Drawing;
+using System.Windows.Forms;
+
+namespace VideoPlayer.Forms.UserControls
 {
     partial class PlayerButtonWithBadge
     {

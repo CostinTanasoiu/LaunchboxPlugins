@@ -52,8 +52,8 @@ namespace FormsTestProject
             //forms.Add(ConfigureCustomFieldEditor());
             //forms.Add(ConfigureVideoManagerForm());
             //forms.Add(ConfigureNewVideoManagerForm());
-            forms.Add(ConfigureVideoSelectorForm());
-            //forms.Add(ConfigureNewVideoSelectorForm());
+            //forms.Add(ConfigureVideoSelectorForm());
+            forms.Add(ConfigureNewVideoSelectorForm());
 
             foreach (var form in forms)
                 form.Show();
