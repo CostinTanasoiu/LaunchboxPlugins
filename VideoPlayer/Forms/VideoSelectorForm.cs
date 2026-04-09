@@ -1,6 +1,5 @@
 ﻿using log4net;
-using VideoPlayer.Gamepad;
-using VideoPlayer.Models;
+using OnlineVideoLinks.Models;
 using SharpDX.DirectInput;
 using SharpDX.XInput;
 using System;
@@ -13,6 +12,8 @@ using System.Text;
 using System.Windows.Forms;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
+using OnlineVideoLinks.Gamepad;
+using OnlineVideoLinks.Utilities;
 
 namespace VideoPlayer.Forms
 {
@@ -20,15 +21,15 @@ namespace VideoPlayer.Forms
     {
         ILog _log = LogManager.GetLogger(nameof(VideoSelectorForm));
         IGame _game;
-        OnlineVideoLinks.Utilities.IGameVideoUtility _gameVideoUtilities;
-        OnlineVideoLinks.IVideoPlayerPanel _playerPanel;
+        IGameVideoUtility _gameVideoUtilities;
+        IVideoPlayerPanel _playerPanel;
 
         //GamepadDinputProvider _gamepadDinputProvider;
         IGamepadXinputProvider _gamepadXinputProvider;
 
         public VideoSelectorForm(IGame game,
-            OnlineVideoLinks.Utilities.IGameVideoUtility gameVideoUtilities,
-            OnlineVideoLinks.IVideoPlayerPanel playerPanel,
+            IGameVideoUtility gameVideoUtilities,
+            IVideoPlayerPanel playerPanel,
             IGamepadXinputProvider gamepadXinputProvider)
         {
             InitializeComponent();
@@ -53,7 +54,7 @@ namespace VideoPlayer.Forms
                 Cursor.Hide();
         }
 
-        private void _gamepadXinputProvider_ButtonPressed(object sender, Models.XInputEventArgs e)
+        private void _gamepadXinputProvider_ButtonPressed(object sender, XInputEventArgs e)
         {
             if (this.IsHandleCreated)
                 Invoke(new Action(() =>
@@ -77,11 +78,11 @@ namespace VideoPlayer.Forms
             switch (buttonPressed)
             {
                 case GamepadButtonFlags.A:
-                    var selectedVideo = listBoxVideos.SelectedItem as OnlineVideoLinks.Models.GameVideo;
+                    var selectedVideo = listBoxVideos.SelectedItem as GameVideo;
                     await _playerPanel.Play(selectedVideo);
                     break;
                 case GamepadButtonFlags.B:
-                    this.Close();
+                    _playerPanel.StopPlaying();
                     break;
                 case GamepadButtonFlags.DPadDown:
                     if (listBoxVideos.SelectedIndex < listBoxVideos.Items.Count - 1)

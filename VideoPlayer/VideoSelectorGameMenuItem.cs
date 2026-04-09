@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Unbroken.LaunchBox.Plugins.Data;
 using Unbroken.LaunchBox.Plugins;
 using VideoPlayer.Forms;
-using VideoPlayer.Gamepad;
+using OnlineVideoLinks.Gamepad;
 
 namespace VideoPlayer
 {

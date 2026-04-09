@@ -1,7 +1,5 @@
 ﻿using log4net;
-using OnlineVideoLinks.Gamepad;
 using OnlineVideoLinks.Models;
-using OnlineVideoLinks.Utilities;
 using SharpDX.DirectInput;
 using SharpDX.XInput;
 using System;
@@ -14,6 +12,8 @@ using System.Text;
 using System.Windows.Forms;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
+using OnlineVideoLinks.Gamepad;
+using OnlineVideoLinks.Utilities;
 
 namespace OnlineVideoLinks
 {
@@ -27,7 +27,7 @@ namespace OnlineVideoLinks
         //GamepadDinputProvider _gamepadDinputProvider;
         IGamepadXinputProvider _gamepadXinputProvider;
 
-        public VideoSelectorForm(IGame game, 
+        public VideoSelectorForm(IGame game,
             IGameVideoUtility gameVideoUtilities,
             IVideoPlayerPanel playerPanel,
             IGamepadXinputProvider gamepadXinputProvider)
@@ -54,7 +54,7 @@ namespace OnlineVideoLinks
                 Cursor.Hide();
         }
 
-        private void _gamepadXinputProvider_ButtonPressed(object sender, Models.XInputEventArgs e)
+        private void _gamepadXinputProvider_ButtonPressed(object sender, XInputEventArgs e)
         {
             if (this.IsHandleCreated)
                 Invoke(new Action(() =>

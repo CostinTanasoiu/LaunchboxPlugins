@@ -109,7 +109,7 @@ namespace FormsTestProject
             }, 
             new OnlineVideoLinks.Utilities.GameVideoUtility(),
             new VideoPlayer.Forms.VideoPlayerForm(),
-            new VideoPlayer.Gamepad.GamepadXinputProvider()
+            new OnlineVideoLinks.Gamepad.GamepadXinputProvider()
             );
             return form;
         }

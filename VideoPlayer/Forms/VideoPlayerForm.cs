@@ -12,18 +12,18 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media;
-using VideoPlayer.Models;
+using OnlineVideoLinks.Models;
 
 namespace VideoPlayer.Forms
 {
-    public partial class VideoPlayerForm : Form, OnlineVideoLinks.IVideoPlayerPanel
+    public partial class VideoPlayerForm : Form, IVideoPlayerPanel
     {
         const string TempVideoPath = "temp_video.mp4";
         const int SkipFwdSeconds = 15;
         const int SkipBwdSeconds = 15;
         const string LottieResourceName = "VideoPlayer.Resources.loading-animation.json";
 
-        OnlineVideoLinks.Models.GameVideo? _gameVideo;
+        GameVideo? _gameVideo;
         private System.Windows.Forms.Timer _progressTimer;
 
         public VideoPlayerForm()
@@ -69,7 +69,7 @@ namespace VideoPlayer.Forms
             return mediaPlayer.playState == WMPLib.WMPPlayState.wmppsPlaying;
         }
 
-        public async Task Play(OnlineVideoLinks.Models.GameVideo video)
+        public async Task Play(GameVideo video)
         {
             if (IsPlaying())
                 StopPlaying();

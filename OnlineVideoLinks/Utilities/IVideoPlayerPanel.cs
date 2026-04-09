@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using OnlineVideoLinks.Models;
 
-namespace OnlineVideoLinks
+namespace OnlineVideoLinks.Utilities
 {
     public interface IVideoPlayerPanel
     {
