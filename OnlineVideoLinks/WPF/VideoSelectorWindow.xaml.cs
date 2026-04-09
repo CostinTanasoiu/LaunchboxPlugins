@@ -27,18 +27,21 @@ namespace OnlineVideoLinks.WPF
         ILog _log = LogManager.GetLogger(nameof(VideoSelectorForm));
         IGame _game;
         IGameVideoUtility _gameVideoUtilities;
+        IVideoPlayerPanel _playerPanel;
 
         //GamepadDinputProvider _gamepadDinputProvider;
         IGamepadXinputProvider _gamepadXinputProvider;
 
         public VideoSelectorWindow(IGame game,
             IGameVideoUtility gameVideoUtilities,
+            IVideoPlayerPanel playerPanel,
             IGamepadXinputProvider gamepadXinputProvider)
         {
             InitializeComponent();
 
             _game = game;
             _gameVideoUtilities = gameVideoUtilities;
+            _playerPanel = playerPanel;
             _gamepadXinputProvider = gamepadXinputProvider;
 
             var customVideos = _gameVideoUtilities.GetGameVideos(_game);
@@ -87,42 +90,31 @@ namespace OnlineVideoLinks.WPF
 
         private void HandleXInput_ButtonPressed(GamepadButtonFlags buttonPressed)
         {
+            if (buttonPressed == GamepadButtonFlags.None)
+                return;
+
+            if (_playerPanel.IsPlaying())
+            {
+                _playerPanel.SendGamepadInput(buttonPressed);
+                return;
+            }
+
             switch (buttonPressed)
             {
                 case GamepadButtonFlags.A:
-                    if (!_gameVideoUtilities.IsPlaying())
-                    {
-                        var selectedVideo = listBoxVideos.SelectedItem as GameVideo;
-                        _gameVideoUtilities.Play(selectedVideo);
-                    }
+                    var selectedVideo = listBoxVideos.SelectedItem as GameVideo;
+                    _playerPanel.Play(selectedVideo);
                     break;
                 case GamepadButtonFlags.B:
-                    if (_gameVideoUtilities.IsPlaying())
-                    {
-                        _gameVideoUtilities.StopPlaying();
-                    }
-                    else
-                        this.Close();
+                    this.Close();
                     break;
                 case GamepadButtonFlags.DPadDown:
-                    if (!_gameVideoUtilities.IsPlaying() && listBoxVideos.SelectedIndex < listBoxVideos.Items.Count - 1)
+                    if (listBoxVideos.SelectedIndex < listBoxVideos.Items.Count - 1)
                         listBoxVideos.SelectedIndex++;
                     break;
                 case GamepadButtonFlags.DPadUp:
-                    if (!_gameVideoUtilities.IsPlaying() && listBoxVideos.SelectedIndex > 0)
+                    if (listBoxVideos.SelectedIndex > 0)
                         listBoxVideos.SelectedIndex--;
-                    break;
-                case GamepadButtonFlags.DPadLeft:
-                    if(_gameVideoUtilities.IsPlaying())
-                    {
-                        _gameVideoUtilities.SkipBackward();
-                    }
-                    break;
-                case GamepadButtonFlags.DPadRight:
-                    if (_gameVideoUtilities.IsPlaying())
-                    {
-                        _gameVideoUtilities.SkipForward();
-                    }
                     break;
             }
         }

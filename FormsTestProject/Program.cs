@@ -32,6 +32,7 @@ using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
 using VideoPlayer.Forms;
 using OnlineVideoLinks;
+using OnlineVideoLinks.WPF;
 
 namespace FormsTestProject
 {
@@ -49,9 +50,10 @@ namespace FormsTestProject
 
             var forms = new List<Form>();
             //forms.Add(ConfigureCustomFieldEditor());
-            //forms.Add(ConfigureVideoManagerForm());
+            forms.Add(ConfigureVideoManagerForm());
+            //forms.Add(ConfigureNewVideoManagerForm());
             //forms.Add(ConfigureVideoSelectorForm());
-            forms.Add(ConfigureNewVideoSelectorForm());
+            //forms.Add(ConfigureNewVideoSelectorForm());
 
             foreach (var form in forms)
                 form.Show();
@@ -60,6 +62,19 @@ namespace FormsTestProject
         }
 
         static Form ConfigureVideoManagerForm()
+        {
+            new PluginStartup();
+            var form = new OnlineVideoLinks.VideoManagerForm(new GameMock
+            {
+                Id = "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                Title = "Death and Return of Superman, The",
+                Genres = new BlockingCollection<string> { "Beat' Em Up" },
+                PlayModes = new string[] { "Single Player" }
+            }, new VideoPlayerWindow());
+            return form;
+        }
+
+        static Form ConfigureNewVideoManagerForm()
         {
             new PluginStartup();
             var form = new OnlineVideoLinks.Forms.NewVideoManagerForm();
@@ -75,7 +90,10 @@ namespace FormsTestProject
                 Title = "Death and Return of Superman, The",
                 Genres = new BlockingCollection<string> { "Beat' Em Up" },
                 PlayModes = new string[] { "Single Player" }
-            }, new GameVideoUtility(), new GamepadXinputProvider());
+            }, 
+            new GameVideoUtility(), 
+            new VideoPlayerWindow(),
+            new GamepadXinputProvider());
             return form;
         }
 

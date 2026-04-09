@@ -19,6 +19,7 @@
 */
 
 using OnlineVideoLinks.Utilities;
+using OnlineVideoLinks.WPF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,7 +57,7 @@ namespace OnlineVideoLinks
 
         public void OnSelected(IGame selectedGame)
         {
-            var form = new VideoManagerForm(selectedGame, new GameVideoUtility());
+            var form = new VideoManagerForm(selectedGame, new VideoPlayerWindow());
             form.ShowDialog();
             form.Dispose();
         }

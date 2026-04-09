@@ -40,8 +40,11 @@ namespace OnlineVideoLinks
             //    new GameVideoUtility(), new GamepadXinputProvider());
             //form.ShowDialog();
 
-            var window = new VideoSelectorWindow(selectedGame,
-                new GameVideoUtility(),  new GamepadXinputProvider());
+            var window = new VideoSelectorWindow(
+                selectedGame,
+                new GameVideoUtility(),
+                new VideoPlayerWindow(),
+                new GamepadXinputProvider());
             window.ShowDialog();
         }
 

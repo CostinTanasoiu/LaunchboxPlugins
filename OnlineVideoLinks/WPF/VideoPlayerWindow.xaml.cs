@@ -13,7 +13,7 @@ namespace OnlineVideoLinks.WPF
     /// <summary>
     /// Interaction logic for VideoPlayerWindow.xaml
     /// </summary>
-    public partial class VideoPlayerWindow : Window
+    public partial class VideoPlayerWindow : Window, IVideoPlayerPanel
     {
         const string TempVideoPath = "temp_video.mp4";
 
@@ -21,11 +21,11 @@ namespace OnlineVideoLinks.WPF
         private DispatcherTimer _progressTimer;
         private bool _isPlaying;
 
-        public VideoPlayerWindow(GameVideo gameVideo)
+        public VideoPlayerWindow()
         {
             InitializeComponent();
 
-            _gameVideo = gameVideo;
+            //_gameVideo = gameVideo;
 
             // Timer to update progress display
             _progressTimer = new DispatcherTimer
@@ -39,21 +39,23 @@ namespace OnlineVideoLinks.WPF
         /// Loads a game video and immediately starts playing it.
         /// </summary>
         /// <param name="video"></param>
-        public void LoadAndPlay(GameVideo video)
+        public async Task Play(GameVideo video)
         {
-            _gameVideo = video;
-            this.ShowDialog();
-        }
+            if (_isPlaying)
+                StopPlaying();
 
-        /// <summary>
-        /// Stops playing and closes the window.
-        /// </summary>
-        public void StopAndClose()
-        {
-            Dispatcher.BeginInvoke(new Action(() =>
-            {
-                this.Close();
-            }));
+            _gameVideo = video;
+
+            this.Show();
+
+            // Show loading indicator
+            // TODO
+            progressBar.Visibility = Visibility.Visible;
+
+            if (VideoMetadataUtilities.IsYoutubeUrl(_gameVideo.VideoPath))
+                await LoadYoutubeVideo();
+            else
+                LoadRegularVideo();
         }
 
         /// <summary>
@@ -62,30 +64,6 @@ namespace OnlineVideoLinks.WPF
         public bool IsPlaying()
         {
             return _isPlaying;
-        }
-
-        /// <summary>
-        /// Skips 10 seconds forward.
-        /// </summary>
-        public void SkipForward()
-        {
-            if (mediaElement.NaturalDuration.HasTimeSpan)
-            {
-                var newPosition = mediaElement.Position + TimeSpan.FromSeconds(10);
-                if (newPosition < mediaElement.NaturalDuration.TimeSpan)
-                    mediaElement.Position = newPosition;
-                else
-                    mediaElement.Position = mediaElement.NaturalDuration.TimeSpan;
-            }
-        }
-
-        /// <summary>
-        /// Skips 10 seconds backward.
-        /// </summary>
-        public void SkipBackward()
-        {
-            var newPosition = mediaElement.Position - TimeSpan.FromSeconds(10);
-            mediaElement.Position = newPosition > TimeSpan.Zero ? newPosition : TimeSpan.Zero;
         }
 
         /// <summary>
@@ -108,35 +86,52 @@ namespace OnlineVideoLinks.WPF
         }
 
         /// <summary>
-        /// Sends gamepad input.
+        /// Skips 10 seconds backward.
         /// </summary>
-        /// <param name="button"></param>
-        public void SendGamepadInput(GamepadButtonFlags button)
+        public void SkipBackward()
         {
-            switch (button)
+            var newPosition = mediaElement.Position - TimeSpan.FromSeconds(10);
+            mediaElement.Position = newPosition > TimeSpan.Zero ? newPosition : TimeSpan.Zero;
+        }
+
+        /// <summary>
+        /// Skips 10 seconds forward.
+        /// </summary>
+        public void SkipForward()
+        {
+            if (mediaElement.NaturalDuration.HasTimeSpan)
             {
-                case GamepadButtonFlags.A:
-                    PlayPause(); break;
-                case GamepadButtonFlags.B:
-                    this.Close(); break;
-                case GamepadButtonFlags.DPadLeft:
-                    SkipBackward(); break;
-                case GamepadButtonFlags.DPadRight:
-                    SkipForward(); break;
+                var newPosition = mediaElement.Position + TimeSpan.FromSeconds(10);
+                if (newPosition < mediaElement.NaturalDuration.TimeSpan)
+                    mediaElement.Position = newPosition;
+                else
+                    mediaElement.Position = mediaElement.NaturalDuration.TimeSpan;
             }
         }
 
+        public void StopPlaying()
+        {
+            _progressTimer.Stop();
+            mediaElement.Stop();
+            mediaElement.Close();
+            mediaElement.Source = null;
+            _isPlaying = false;
+            this.Hide();
+        }
+
+        /// <summary>
+        /// Stops playing and closes the window.
+        /// </summary>
+        //public void StopAndClose()
+        //{
+        //    Dispatcher.BeginInvoke(new Action(() =>
+        //    {
+        //        this.Close();
+        //    }));
+        //}
+
         private async void Window_ContentRendered(object sender, EventArgs e)
         {
-            if (_gameVideo != null)
-            {
-                progressBar.Visibility = Visibility.Visible;
-
-                if (VideoMetadataUtilities.IsYoutubeUrl(_gameVideo.VideoPath))
-                    await LoadYoutubeVideo();
-                else
-                    LoadRegularVideo();
-            }
         }
 
         private void LoadRegularVideo()
@@ -175,6 +170,25 @@ namespace OnlineVideoLinks.WPF
             _progressTimer.Start();
         }
 
+        /// <summary>
+        /// Sends gamepad input.
+        /// </summary>
+        /// <param name="button"></param>
+        public void SendGamepadInput(GamepadButtonFlags button)
+        {
+            switch (button)
+            {
+                case GamepadButtonFlags.A:
+                    PlayPause(); break;
+                case GamepadButtonFlags.B:
+                    this.Close(); break;
+                case GamepadButtonFlags.DPadLeft:
+                    SkipBackward(); break;
+                case GamepadButtonFlags.DPadRight:
+                    SkipForward(); break;
+            }
+        }
+
         private void MediaElement_MediaOpened(object sender, RoutedEventArgs e)
         {
             progressBar.Visibility = Visibility.Collapsed;
@@ -182,14 +196,12 @@ namespace OnlineVideoLinks.WPF
 
         private void MediaElement_MediaEnded(object sender, RoutedEventArgs e)
         {
-            StopAndClose();
+            StopPlaying();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            _progressTimer.Stop();
-            mediaElement.Stop();
-            mediaElement.Close();
+            StopPlaying();
 
             // Clean up temp file if it exists
             if (File.Exists(TempVideoPath))
@@ -203,7 +215,7 @@ namespace OnlineVideoLinks.WPF
 
         private void btnStop_Click(object sender, RoutedEventArgs e)
         {
-            StopAndClose();
+            StopPlaying();
         }
 
         private void btnSkipBack_Click(object sender, RoutedEventArgs e)
@@ -226,7 +238,7 @@ namespace OnlineVideoLinks.WPF
                     PlayPause(); break;
                 case Key.Escape:
                 case Key.B:
-                    StopAndClose(); break;
+                    StopPlaying(); break;
                 case Key.Left:
                     SkipBackward(); break;
                 case Key.Right:

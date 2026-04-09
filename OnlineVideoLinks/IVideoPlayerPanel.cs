@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VideoPlayer.Models;
+using OnlineVideoLinks.Models;
 
-namespace VideoPlayer
+namespace OnlineVideoLinks
 {
     public interface IVideoPlayerPanel
     {
@@ -14,12 +14,6 @@ namespace VideoPlayer
         /// Plays this video.
         /// </summary>
         public Task Play(GameVideo video);
-
-        /// <summary>
-        /// Sends gamepad input.
-        /// </summary>
-        /// <param name="button"></param>
-        void SendGamepadInput(GamepadButtonFlags button);
 
         /// <summary>
         /// Stops playing the video.
@@ -45,5 +39,11 @@ namespace VideoPlayer
         /// Toggles the play/pause function.
         /// </summary>
         public void PlayPause();
+
+        /// <summary>
+        /// Sends gamepad input.
+        /// </summary>
+        /// <param name="button"></param>
+        void SendGamepadInput(GamepadButtonFlags button);
     }
 }

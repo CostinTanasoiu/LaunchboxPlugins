@@ -16,14 +16,14 @@ using VideoPlayer.Models;
 
 namespace VideoPlayer.Forms
 {
-    public partial class VideoPlayerForm : Form, IVideoPlayerPanel
+    public partial class VideoPlayerForm : Form, OnlineVideoLinks.IVideoPlayerPanel
     {
         const string TempVideoPath = "temp_video.mp4";
         const int SkipFwdSeconds = 15;
         const int SkipBwdSeconds = 15;
         const string LottieResourceName = "VideoPlayer.Resources.loading-animation.json";
 
-        GameVideo? _gameVideo;
+        OnlineVideoLinks.Models.GameVideo? _gameVideo;
         private System.Windows.Forms.Timer _progressTimer;
 
         public VideoPlayerForm()
@@ -69,7 +69,7 @@ namespace VideoPlayer.Forms
             return mediaPlayer.playState == WMPLib.WMPPlayState.wmppsPlaying;
         }
 
-        public async Task Play(GameVideo video)
+        public async Task Play(OnlineVideoLinks.Models.GameVideo video)
         {
             if (IsPlaying())
                 StopPlaying();
@@ -133,14 +133,6 @@ namespace VideoPlayer.Forms
             mediaPlayer.URL = playablePath;
         }
 
-        public void PlayPause()
-        {
-            if (IsPlaying())
-                mediaPlayer.Ctlcontrols.pause();
-            else
-                mediaPlayer.Ctlcontrols.play();
-        }
-
         /// <summary>
         /// Sends gamepad input.
         /// </summary>
@@ -158,6 +150,14 @@ namespace VideoPlayer.Forms
                 case GamepadButtonFlags.DPadRight:
                     SkipForward(); break;
             }
+        }
+
+        public void PlayPause()
+        {
+            if (IsPlaying())
+                mediaPlayer.Ctlcontrols.pause();
+            else
+                mediaPlayer.Ctlcontrols.play();
         }
 
         public void SkipBackward()

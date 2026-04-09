@@ -15,24 +15,12 @@ namespace OnlineVideoLinks.Utilities
 {
     public interface IGameVideoUtility
     {
-        GameVideo CurrentlyPlayingVideo { get; set; }
         GameVideo[] GetGameVideos(IGame game);
-        bool IsPlaying();
-        void Play(GameVideo video);
-        void PlayPause();
-        void SkipBackward();
-        void SkipForward();
-        void StopPlaying();
-        void SendGamepadInput(GamepadButtonFlags button);
     }
 
     public class GameVideoUtility : IGameVideoUtility
     {
         ILog _log = LogManager.GetLogger(nameof(GameVideoUtility));
-
-        private VideoPlayerWindow _player;
-
-        public GameVideo CurrentlyPlayingVideo { get; set; }
 
         /// <summary>
         /// Checks whether a game has videos.
@@ -61,82 +49,5 @@ namespace OnlineVideoLinks.Utilities
             }
             return gameVideos.ToArray();
         }
-
-        /// <summary>
-        /// Plays this video.
-        /// </summary>
-        public void Play(GameVideo video)
-        {
-            StopPlaying();
-
-            _player = new VideoPlayerWindow(video);
-            _player.Closed += _player_Closed;
-            _player.ShowDialog();
-
-            CurrentlyPlayingVideo = video;
-        }
-
-        /// <summary>
-        /// Stops playing the video.
-        /// </summary>
-        public void StopPlaying()
-        {
-            if (_player != null)
-            {
-                _player.Close();
-                _player = null;
-
-                CurrentlyPlayingVideo = null;
-            }
-        }
-
-        /// <summary>
-        /// Checks whether this video is currently playing.
-        /// </summary>
-        public bool IsPlaying()
-        {
-            return _player != null;
-        }
-
-        /// <summary>
-        /// Skips 10 seconds forward.
-        /// </summary>
-        public void SkipForward()
-        {
-            _player.SkipForward();
-        }
-
-        /// <summary>
-        /// Skips 10 seconds backward.
-        /// </summary>
-        public void SkipBackward()
-        {
-            _player.SkipBackward();
-        }
-
-        /// <summary>
-        /// Toggles the play/pause function.
-        /// </summary>
-        public void PlayPause()
-        {
-            _player.PlayPause();
-        }
-
-        public void SendGamepadInput(GamepadButtonFlags button)
-        {
-            if(_player != null)
-                _player.SendGamepadInput(button);
-        }
-
-        #region Private Methods
-
-
-        private void _player_Closed(object sender, EventArgs e)
-        {
-            _player = null;
-            CurrentlyPlayingVideo = null;
-        }
-
-        #endregion
     }
 }

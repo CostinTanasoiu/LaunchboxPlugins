@@ -12,7 +12,7 @@ namespace VideoPlayer.Utilities
 {
     public interface IGameVideoUtility
     {
-        GameVideo[] GetGameVideos(IGame game);
+        OnlineVideoLinks.Models.GameVideo[] GetGameVideos(IGame game);
     }
 
     public class GameVideoUtility : IGameVideoUtility
@@ -37,14 +37,14 @@ namespace VideoPlayer.Utilities
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
-        public GameVideo[] GetGameVideos(IGame game)
+        public OnlineVideoLinks.Models.GameVideo[] GetGameVideos(IGame game)
         {
             // Load videos from the database
             var videoEntries = OnlineVideoLinks.Database.GameVideoDb.Instance.GetVideosForGame(game.Id);
-            var gameVideos = new List<GameVideo>();
+            var gameVideos = new List<OnlineVideoLinks.Models.GameVideo>();
             foreach (var entry in videoEntries)
             {
-                gameVideos.Add(new GameVideo
+                gameVideos.Add(new OnlineVideoLinks.Models.GameVideo
                 {
                     GameId = game.Id,
                     Title = entry.Title,

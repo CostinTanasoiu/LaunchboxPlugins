@@ -22,14 +22,14 @@ namespace VideoPlayer.Forms
         ILog _log = LogManager.GetLogger(nameof(VideoSelectorForm));
         IGame _game;
         IGameVideoUtility _gameVideoUtilities;
-        IVideoPlayerPanel _playerPanel;
+        OnlineVideoLinks.IVideoPlayerPanel _playerPanel;
 
         //GamepadDinputProvider _gamepadDinputProvider;
         IGamepadXinputProvider _gamepadXinputProvider;
 
         public VideoSelectorForm(IGame game, 
             IGameVideoUtility gameVideoUtilities,
-            IVideoPlayerPanel playerPanel,
+            OnlineVideoLinks.IVideoPlayerPanel playerPanel,
             IGamepadXinputProvider gamepadXinputProvider)
         {
             InitializeComponent();
@@ -78,7 +78,7 @@ namespace VideoPlayer.Forms
             switch (buttonPressed)
             {
                 case GamepadButtonFlags.A:
-                    var selectedVideo = listBoxVideos.SelectedItem as GameVideo;
+                    var selectedVideo = listBoxVideos.SelectedItem as OnlineVideoLinks.Models.GameVideo;
                     await _playerPanel.Play(selectedVideo);
                     break;
                 case GamepadButtonFlags.B:
