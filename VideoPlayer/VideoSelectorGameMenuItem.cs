@@ -35,7 +35,7 @@ namespace VideoPlayer
 
         public void OnSelected(IGame selectedGame)
         {
-            var form = new VideoSelectorForm(
+            var form = new OnlineVideoLinks.Forms.VideoSelectorForm(
                 selectedGame,
                 new OnlineVideoLinks.Utilities.GameVideoUtility(),
                 new VideoPlayerForm(),

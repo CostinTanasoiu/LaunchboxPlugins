@@ -100,7 +100,7 @@ namespace FormsTestProject
         static Form ConfigureNewVideoSelectorForm()
         {
             new PluginStartup();
-            var form = new VideoPlayer.Forms.VideoSelectorForm(new GameMock
+            var form = new OnlineVideoLinks.Forms.VideoSelectorForm(new GameMock
             {
                 Id = "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
                 Title = "Death and Return of Superman, The",

@@ -14,15 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Forms\VideoPlayerFormVLC.cs" />
-    <Compile Remove="Forms\VideoPlayerFormVLC.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Remove="Forms\VideoPlayerFormVLC.resx" />
-  </ItemGroup>
-
-  <ItemGroup>
     <COMReference Include="WMPLib">
       <WrapperTool>tlbimp</WrapperTool>
       <VersionMinor>0</VersionMinor>
@@ -61,9 +52,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Forms\VideoSelectorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Update="Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
