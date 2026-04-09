@@ -21,6 +21,9 @@ namespace OnlineVideoLinks.WPF
         private DispatcherTimer _progressTimer;
         private bool _isPlaying;
 
+        public bool IsPlaying => _isPlaying;
+        public bool IsVisible => this.Visibility == Visibility.Visible;
+
         public VideoPlayerWindow()
         {
             InitializeComponent();
@@ -56,14 +59,6 @@ namespace OnlineVideoLinks.WPF
                 await LoadYoutubeVideo();
             else
                 LoadRegularVideo();
-        }
-
-        /// <summary>
-        /// Checks whether the loaded video is currently playing.
-        /// </summary>
-        public bool IsPlaying()
-        {
-            return _isPlaying;
         }
 
         /// <summary>
@@ -237,6 +232,7 @@ namespace OnlineVideoLinks.WPF
                 case Key.A:
                     PlayPause(); break;
                 case Key.Escape:
+                    StopPlaying(); break;
                 case Key.B:
                     StopPlaying(); break;
                 case Key.Left:

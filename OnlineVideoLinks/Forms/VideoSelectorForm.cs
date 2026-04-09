@@ -69,11 +69,14 @@ namespace OnlineVideoLinks.Forms
             if (buttonPressed == GamepadButtonFlags.None)
                 return;
 
-            if (_playerPanel.IsPlaying())
+            if (_playerPanel.IsPlaying)
             {
                 _playerPanel.SendGamepadInput(buttonPressed);
+                _log.Info($"Sent gamepad input to player panel: {buttonPressed}");
                 return;
             }
+
+            _log.Info($"Allowing gamepad button pressed on selector panel: {buttonPressed}");
 
             switch (buttonPressed)
             {
@@ -82,7 +85,7 @@ namespace OnlineVideoLinks.Forms
                     await _playerPanel.Play(selectedVideo);
                     break;
                 case GamepadButtonFlags.B:
-                    _playerPanel.StopPlaying();
+                    this.Close();
                     break;
                 case GamepadButtonFlags.DPadDown:
                     if (listBoxVideos.SelectedIndex < listBoxVideos.Items.Count - 1)
@@ -97,6 +100,8 @@ namespace OnlineVideoLinks.Forms
 
         private void listBoxVideos_KeyUp(object sender, KeyEventArgs e)
         {
+            _log.Info($"Key up event: {e.KeyCode}");
+
             // Translating keys to gamepad buttons.
             if (e.KeyCode == Keys.Enter)
                 HandleXInput_ButtonPressed(GamepadButtonFlags.A);

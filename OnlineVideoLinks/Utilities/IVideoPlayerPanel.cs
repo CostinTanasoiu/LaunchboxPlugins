@@ -11,6 +11,16 @@ namespace OnlineVideoLinks.Utilities
     public interface IVideoPlayerPanel
     {
         /// <summary>
+        /// Checks whether the player is visible.
+        /// </summary>
+        public bool IsVisible { get; }
+
+        /// <summary>
+        /// Checks whether this video is currently playing.
+        /// </summary>
+        public bool IsPlaying { get; }
+
+        /// <summary>
         /// Plays this video.
         /// </summary>
         public Task Play(GameVideo video);
@@ -19,11 +29,6 @@ namespace OnlineVideoLinks.Utilities
         /// Stops playing the video.
         /// </summary>
         public void StopPlaying();
-
-        /// <summary>
-        /// Checks whether this video is currently playing.
-        /// </summary>
-        public bool IsPlaying();
 
         /// <summary>
         /// Skips 10 seconds forward.

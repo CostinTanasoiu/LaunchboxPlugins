@@ -93,7 +93,7 @@ namespace OnlineVideoLinks.WPF
             if (buttonPressed == GamepadButtonFlags.None)
                 return;
 
-            if (_playerPanel.IsPlaying())
+            if (_playerPanel.IsVisible)
             {
                 _playerPanel.SendGamepadInput(buttonPressed);
                 return;

@@ -32,7 +32,7 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
             _playerPanel.When(x => x.StopPlaying())
                 .Do(x => _isPlaying = false);
 
-            _playerPanel.IsPlaying()
+            _playerPanel.IsPlaying
                 .Returns(x =>
                 {
                     return _isPlaying;
@@ -240,7 +240,7 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
                 _gamepadXinputProviderMock.ButtonPressed += Raise.EventWith(null, new XInputEventArgs(button));
 
             // Asserts
-            Assert.False(_playerPanel.IsPlaying());
+            Assert.False(_playerPanel.IsPlaying);
             Assert.True(form.IsDisposed);
         }
     }

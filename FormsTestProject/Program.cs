@@ -52,8 +52,7 @@ namespace FormsTestProject
             //forms.Add(ConfigureCustomFieldEditor());
             //forms.Add(ConfigureVideoManagerForm());
             //forms.Add(ConfigureNewVideoManagerForm());
-            //forms.Add(ConfigureVideoSelectorForm());
-            forms.Add(ConfigureNewVideoSelectorForm());
+            forms.Add(ConfigureVideoSelectorForm());
 
             foreach (var form in forms)
                 form.Show();
@@ -64,7 +63,7 @@ namespace FormsTestProject
         static Form ConfigureVideoManagerForm()
         {
             new PluginStartup();
-            var form = new OnlineVideoLinks.VideoManagerForm(new GameMock
+            var form = new VideoManagerForm(new GameMock
             {
                 Id = "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
                 Title = "Death and Return of Superman, The",
@@ -77,39 +76,23 @@ namespace FormsTestProject
         static Form ConfigureNewVideoManagerForm()
         {
             new PluginStartup();
-            var form = new OnlineVideoLinks.Forms.NewVideoManagerForm();
+            var form = new NewVideoManagerForm();
             return form;
         }
 
         static Form ConfigureVideoSelectorForm()
         {
             new PluginStartup();
-            var form = new OnlineVideoLinks.Forms.VideoSelectorForm(new GameMock
+            var form = new VideoSelectorForm(new GameMock
             {
                 Id = "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
                 Title = "Death and Return of Superman, The",
                 Genres = new BlockingCollection<string> { "Beat' Em Up" },
                 PlayModes = new string[] { "Single Player" }
             }, 
-            new GameVideoUtility(), 
-            new VideoPlayerWindow(),
-            new GamepadXinputProvider());
-            return form;
-        }
-
-        static Form ConfigureNewVideoSelectorForm()
-        {
-            new PluginStartup();
-            var form = new OnlineVideoLinks.Forms.VideoSelectorForm(new GameMock
-            {
-                Id = "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-                Title = "Death and Return of Superman, The",
-                Genres = new BlockingCollection<string> { "Beat' Em Up" },
-                PlayModes = new string[] { "Single Player" }
-            }, 
-            new OnlineVideoLinks.Utilities.GameVideoUtility(),
-            new OnlineVideoLinks.Forms.VideoPlayerForm(),
-            new OnlineVideoLinks.Gamepad.GamepadXinputProvider()
+            new GameVideoUtility(),
+            new VideoPlayerForm(),
+            new GamepadXinputProvider()
             );
             return form;
         }

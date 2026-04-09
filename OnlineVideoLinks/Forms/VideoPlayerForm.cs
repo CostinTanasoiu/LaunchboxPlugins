@@ -27,6 +27,9 @@ namespace OnlineVideoLinks.Forms
         GameVideo? _gameVideo;
         private System.Windows.Forms.Timer _progressTimer;
 
+        public bool IsVisible => this.Visible;
+        public bool IsPlaying => mediaPlayer.playState == WMPLib.WMPPlayState.wmppsPlaying;
+
         public VideoPlayerForm()
         {
             InitializeComponent();
@@ -65,14 +68,9 @@ namespace OnlineVideoLinks.Forms
                 (this.ClientSize.Height - lottieLoading.Height) / 2);
         }
 
-        public bool IsPlaying()
-        {
-            return mediaPlayer.playState == WMPLib.WMPPlayState.wmppsPlaying;
-        }
-
         public async Task Play(GameVideo video)
         {
-            if (IsPlaying())
+            if (IsPlaying)
                 StopPlaying();
 
             ResetProgress();
@@ -155,7 +153,7 @@ namespace OnlineVideoLinks.Forms
 
         public void PlayPause()
         {
-            if (IsPlaying())
+            if (IsPlaying)
                 mediaPlayer.Ctlcontrols.pause();
             else
                 mediaPlayer.Ctlcontrols.play();
@@ -240,6 +238,7 @@ namespace OnlineVideoLinks.Forms
                 case Keys.A:
                     PlayPause(); break;
                 case Keys.Escape:
+                    StopPlaying(); break;
                 case Keys.B:
                     StopPlaying(); break;
                 case Keys.Left:
