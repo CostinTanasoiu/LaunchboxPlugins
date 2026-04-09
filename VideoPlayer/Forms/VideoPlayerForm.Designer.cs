@@ -37,7 +37,7 @@
             mediaPlayer = new AxWMPLib.AxWindowsMediaPlayer();
             flowLayoutPanel1 = new FlowLayoutPanel();
             lblProgress = new Label();
-            progressBar = new ProgressBar();
+            lottieLoading = new VideoPlayer.Forms.UserControls.LottieAnimationControl();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)mediaPlayer).BeginInit();
             flowLayoutPanel1.SuspendLayout();
@@ -141,15 +141,13 @@
             lblProgress.Text = "--:-- / --:--";
             lblProgress.TextAlign = ContentAlignment.MiddleRight;
             // 
-            // progressBar
+            // lottieLoading
             // 
-            progressBar.Location = new Point(400, 250);
-            progressBar.Name = "progressBar";
-            progressBar.Size = new Size(200, 30);
-            progressBar.Style = ProgressBarStyle.Marquee;
-            progressBar.MarqueeAnimationSpeed = 30;
-            progressBar.TabIndex = 13;
-            progressBar.Visible = false;
+            lottieLoading.Location = new Point(400, 200);
+            lottieLoading.Name = "lottieLoading";
+            lottieLoading.Size = new Size(200, 200);
+            lottieLoading.TabIndex = 13;
+            lottieLoading.Visible = false;
             // 
             // VideoPlayerForm
             //
@@ -157,7 +155,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Black;
             ClientSize = new Size(1000, 562);
-            Controls.Add(progressBar);
+            Controls.Add(lottieLoading);
             Controls.Add(lblProgress);
             Controls.Add(flowLayoutPanel1);
             Controls.Add(mediaPlayer);
@@ -183,6 +181,6 @@
         private AxWMPLib.AxWindowsMediaPlayer mediaPlayer;
         private FlowLayoutPanel flowLayoutPanel1;
         private Label lblProgress;
-        private ProgressBar progressBar;
+        private UserControls.LottieAnimationControl lottieLoading;
     }
 }

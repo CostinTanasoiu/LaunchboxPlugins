@@ -21,6 +21,7 @@ namespace VideoPlayer.Forms
         const string TempVideoPath = "temp_video.mp4";
         const int SkipFwdSeconds = 15;
         const int SkipBwdSeconds = 15;
+        const string LottieResourceName = "VideoPlayer.Resources.loading-animation.json";
 
         GameVideo? _gameVideo;
         private System.Windows.Forms.Timer _progressTimer;
@@ -45,6 +46,9 @@ namespace VideoPlayer.Forms
                 Interval = 500
             };
             _progressTimer.Tick += ProgressTimer_Tick;
+
+            // Load the Lottie animation from embedded resource
+            lottieLoading.LoadFromEmbeddedResource(LottieResourceName);
         }
 
         private void VideoPlayerForm_Resize(object? sender, EventArgs e)
@@ -54,10 +58,10 @@ namespace VideoPlayer.Forms
             int labelY = flowLayoutPanel1.Top + (flowLayoutPanel1.Height - lblProgress.Height) / 2;
             lblProgress.Location = new Point(labelX, labelY);
 
-            // Center progress bar in the form
-            progressBar.Location = new Point(
-                (this.ClientSize.Width - progressBar.Width) / 2,
-                (this.ClientSize.Height - progressBar.Height) / 2);
+            // Center Lottie loading animation in the form
+            lottieLoading.Location = new Point(
+                (this.ClientSize.Width - lottieLoading.Width) / 2,
+                (this.ClientSize.Height - lottieLoading.Height) / 2);
         }
 
         public bool IsPlaying()
@@ -70,11 +74,14 @@ namespace VideoPlayer.Forms
             if (IsPlaying())
                 StopPlaying();
 
+            ResetProgress();
+
             this.Show();
 
             // Show loading indicator
-            progressBar.Visible = true;
-            progressBar.BringToFront();
+            lottieLoading.Visible = true;
+            lottieLoading.BringToFront();
+            lottieLoading.StartAnimation();
 
             // Prepare mediaPlayer before loading a new video
             mediaPlayer.close();
@@ -92,7 +99,6 @@ namespace VideoPlayer.Forms
             mediaPlayer.settings.volume = 50; // Set volume to 50%
             mediaPlayer.settings.mute = false;
             mediaPlayer.stretchToFit = true;
-            ResetProgress();
 
             mediaPlayer.Ctlcontrols.play();
             _progressTimer.Start();
@@ -173,7 +179,8 @@ namespace VideoPlayer.Forms
         public void StopPlaying()
         {
             _progressTimer.Stop();
-            progressBar.Visible = false;
+            lottieLoading.StopAnimation();
+            lottieLoading.Visible = false;
             mediaPlayer.OpenStateChange -= MediaPlayer_OpenStateChange;
             mediaPlayer.Ctlcontrols.stop();
             mediaPlayer.close();
@@ -190,7 +197,8 @@ namespace VideoPlayer.Forms
             // wmposMediaOpen = 13 means media is fully open and ready to play
             if (e.newState == (int)WMPLib.WMPOpenState.wmposMediaOpen)
             {
-                progressBar.Visible = false;
+                lottieLoading.StopAnimation();
+                lottieLoading.Visible = false;
                 mediaPlayer.OpenStateChange -= MediaPlayer_OpenStateChange;
             }
         }
