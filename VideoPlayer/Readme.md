@@ -1,9 +1,0 @@
-## Resources
-
-For the video player buttons, I used icons from https://pictogrammers.com/library/mdi/
-- play-pause
-- square
-- skip-backward
-- skip-forward
-
-Loading animation from: https://app.lottiefiles.com/animation/cd64dd83-55d4-496e-927d-1c2f98b2c0ae
