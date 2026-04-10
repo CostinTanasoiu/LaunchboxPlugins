@@ -1,5 +1,7 @@
-﻿using OnlineVideoLinks.Models;
+﻿using OnlineVideoLinks.Gamepad;
+using OnlineVideoLinks.Models;
 using OnlineVideoLinks.Utilities;
+using OnlineVideoLinks.WPF;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -7,6 +9,7 @@ using System.Text;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
 using OnlineVideoLinks;
+using OnlineVideoLinks.Forms;
 
 namespace OnlineVideoLinks
 {
@@ -34,9 +37,20 @@ namespace OnlineVideoLinks
 
         public void OnSelected(IGame selectedGame)
         {
-            var form = new VideoSelectorForm(selectedGame, 
-                new GameVideoUtility(), new GamepadXinputProvider());
+            var form = new VideoSelectorForm(
+                selectedGame,
+                PluginContext.Instance.VideoUtility,
+                () => new VideoPlayerForm(),
+                PluginContext.Instance.GamepadInput);
             form.ShowDialog();
+            form.Dispose();
+
+            //var window = new VideoSelectorWindow(
+            //    selectedGame,
+            //    new GameVideoUtility(),
+            //    () => new VideoPlayerWindow(),
+            //    new GamepadXinputProvider());
+            //window.ShowDialog();
         }
 
         public void OnSelected(IGame[] selectedGames)

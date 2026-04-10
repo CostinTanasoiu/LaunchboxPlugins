@@ -1,0 +1,86 @@
+{
+  "fd937fa0-dc94-4b39-9fca-3a6c9549d6b2": {
+    "GameTitle": "Super Mario World",
+    "Platform": "Super Nintendo Entertainment System",
+    "Videos": [
+      {
+        "Title": "Super Mario World: Why the Hype? - SNESdrunk",
+        "VideoPath": "https://youtu.be/SCBxj9s8gJU",
+        "StartTime": 0,
+        "StopTime": 0
+      },
+      {
+        "Title": "Super Mario World Review and Retrospective SNES",
+        "VideoPath": "https://youtu.be/mgQUAbiIUuo",
+        "StartTime": 0,
+        "StopTime": 0
+      },
+      {
+        "Title": "(local) Big Buck Bunny 1080p",
+        "VideoPath": "C:\\Work_Personal\\LaunchboxPlugins\\Resources\\bbb_sunflower_1080p_30fps_normal.mp4",
+        "StartTime": 0,
+        "StopTime": 0
+      }
+    ]
+  },
+  "a1b2c3d4-e5f6-7890-abcd-ef1234567890": {
+    "GameTitle": "Death and Return of Superman, The",
+    "Platform": "Super Nintendo Entertainment System",
+    "Videos": [
+      {
+        "Title": "(local file) Jellyfish",
+        "VideoPath": "OnlineVideoLinks\\Assets\\jellyfish_9s.mp4",
+        "StartTime": 0,
+        "StopTime": 0
+      },
+      {
+        "Title": "(local file) Turtle",
+        "VideoPath": "OnlineVideoLinks\\Assets\\turtle_960x540_30s.mp4",
+        "StartTime": 0,
+        "StopTime": 0
+      },
+      {
+        "Title": "(youtube) Longplay",
+        "VideoPath": "https://youtu.be/yka30n1D6L0",
+        "StartTime": 0,
+        "StopTime": 0
+      },
+      {
+        "Title": "(youtube) Is Death and Return of Superman Worth Playing Today?",
+        "VideoPath": "https://youtu.be/7hfYthWLJsA",
+        "StartTime": 0,
+        "StopTime": 0
+      },
+      {
+        "Title": "(youtube) The Super Mario Galaxy Movie – Official Trailer",
+        "VideoPath": "https://www.youtube.com/watch?v=GuCejewteF8",
+        "StartTime": 0,
+        "StopTime": 0
+      },
+      {
+        "Title": "(youtube) SAMSUNG UHD Demo, up to 4K",
+        "VideoPath": "https://www.youtube.com/watch?v=R3GfuzLMPkA",
+        "StartTime": 0,
+        "StopTime": 0
+      },
+      {
+        "Title": "(steam) Pizza Possum Co-Op Trailer",
+        "VideoPath": "https://video.fastly.steamstatic.com/store_trailers/256951885/movie_max_vp9.webm?t=1686321338",
+        "StartTime": 0,
+        "StopTime": 0
+      },
+      {
+        "Title": "Non-existing local file",
+        "VideoPath": "OnlineVideoLinks\\Assets\\does-not-exist.mp4",
+        "StartTime": 0,
+        "StopTime": 0
+      },
+      {
+        "Title": "Non-existing URL",
+        "VideoPath": "https://does-not-exist.hello.world.me",
+        "StartTime": 0,
+        "StopTime": 0
+      }
+    ]
+  }
+}

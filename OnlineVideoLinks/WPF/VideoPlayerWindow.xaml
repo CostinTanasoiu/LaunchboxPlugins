@@ -1,0 +1,76 @@
+﻿<Window x:Class="OnlineVideoLinks.WPF.VideoPlayerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OnlineVideoLinks.WPF"
+        mc:Ignorable="d"
+        xmlns:uc="clr-namespace:OnlineVideoLinks.WPF.UserControls"
+        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        Title="VideoPlayerWindow" Height="450" Width="800"
+        WindowState="Maximized" WindowStyle="None"
+        ContentRendered="Window_ContentRendered"
+        Closing="Window_Closing"
+        KeyUp="Window_KeyUp">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="BlueGrey" SecondaryColor="Teal" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <DockPanel>
+        <Grid DockPanel.Dock="Bottom" Background="Black">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" Margin="0,0,10,0">
+                <materialDesign:PackIcon Kind="GamepadVariant" Foreground="LightGray"
+                    Width="58" Height="58" Margin="10,0,0,0" />
+                <uc:PlayerButtonWithBadge 
+                    MainIcon="SkipBackward" BadgeIcon="GamepadRoundLeft" BadgeColor="DarkGray"
+                    ToolTip="Skip 10s backward"
+                    Margin="10,0,0,0"
+                    Click="btnSkipBack_Click" />
+                <uc:PlayerButtonWithBadge 
+                    MainIcon="PlayPause" BadgeIcon="AlphabetACircle" BadgeColor="ForestGreen"
+                    ToolTip="Play / Pause"
+                    Margin="10,0,0,0"
+                    Click="btnPlay_Click" />
+                <uc:PlayerButtonWithBadge 
+                    MainIcon="Stop" BadgeIcon="AlphabetBCircle" BadgeColor="IndianRed"
+                    ToolTip="Stop"
+                    Margin="10,0,0,0"
+                    Click="btnStop_Click" />
+                <uc:PlayerButtonWithBadge 
+                    MainIcon="SkipForward" BadgeIcon="GamepadRoundRight" BadgeColor="DarkGray"
+                    ToolTip="Skip 10s forward"
+                    Margin="10,0,0,0"
+                    Click="btnSkipFwd_Click" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1">
+                <TextBlock Name="txtProgress" FontSize="24" 
+                           VerticalAlignment="Center" Margin="0,0,10,0">
+                    --:-- / --:--
+                </TextBlock>
+            </StackPanel>
+        </Grid>
+        <Grid Background="Black">
+            <MediaElement Name="mediaElement"
+                          LoadedBehavior="Manual" UnloadedBehavior="Stop"
+                          MediaOpened="MediaElement_MediaOpened"
+                          MediaEnded="MediaElement_MediaEnded" />
+            <ProgressBar Name="progressBar" Width="200" Height="30" 
+                         VerticalAlignment="Center" HorizontalAlignment="Center" 
+                         IsIndeterminate="True" Visibility="Collapsed"/>
+        </Grid>
+    </DockPanel>
+</Window>

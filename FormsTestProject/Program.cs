@@ -19,6 +19,7 @@
 */
 
 using LaunchboxPluginsTests.MockedClasses;
+using OnlineVideoLinks.Gamepad;
 using OnlineVideoLinks.Utilities;
 using System;
 using System.Collections.Concurrent;
@@ -30,6 +31,8 @@ using System.Windows.Forms;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
 using OnlineVideoLinks;
+using OnlineVideoLinks.Forms;
+using OnlineVideoLinks.WPF;
 
 namespace FormsTestProject
 {
@@ -45,36 +48,52 @@ namespace FormsTestProject
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            OnlineVideoLinks.Utilities.VlcUtilities.VerifyYtDlp();
+            var forms = new List<Form>();
+            //forms.Add(ConfigureCustomFieldEditor());
+            //forms.Add(ConfigureVideoManagerForm());
+            //forms.Add(ConfigureNewVideoManagerForm());
+            forms.Add(ConfigureVideoSelectorForm());
 
-            var form1 = ConfigureCustomFieldEditor();
-            var form2 = ConfigureVideoManagerForm();
-            var form3 = ConfigureVideoSelectorForm();
-            
-            form1.Show();
-            form2.Show();
-            form3.Show();
+            foreach (var form in forms)
+                form.Show();
 
-            Application.Run(new MainForm());
+            Application.Run();
         }
 
         static Form ConfigureVideoManagerForm()
         {
             new PluginStartup();
-            var form = new OnlineVideoLinks.Forms.NewVideoManagerForm();
+            var form = new VideoManagerForm(new GameMock
+            {
+                Id = "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                Title = "Death and Return of Superman, The",
+                Genres = new BlockingCollection<string> { "Beat' Em Up" },
+                PlayModes = new string[] { "Single Player" }
+            }, () => new VideoPlayerForm());
+            return form;
+        }
+
+        static Form ConfigureNewVideoManagerForm()
+        {
+            new PluginStartup();
+            var form = new NewVideoManagerForm();
             return form;
         }
 
         static Form ConfigureVideoSelectorForm()
         {
             new PluginStartup();
-            var form = new OnlineVideoLinks.VideoSelectorForm(new GameMock
+            var form = new VideoSelectorForm(new GameMock
             {
                 Id = "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
                 Title = "Death and Return of Superman, The",
                 Genres = new BlockingCollection<string> { "Beat' Em Up" },
                 PlayModes = new string[] { "Single Player" }
-            }, new GameVideoUtility(), new GamepadXinputProvider());
+            },
+            PluginContext.Instance.VideoUtility,
+            () => new VideoPlayerForm(),
+            PluginContext.Instance.GamepadInput
+            );
             return form;
         }
 

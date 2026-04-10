@@ -1,6 +1,5 @@
 ﻿using log4net;
 using OnlineVideoLinks.Models;
-using OnlineVideoLinks.Utilities;
 using SharpDX.DirectInput;
 using SharpDX.XInput;
 using System;
@@ -13,25 +12,34 @@ using System.Text;
 using System.Windows.Forms;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
+using OnlineVideoLinks.Gamepad;
+using OnlineVideoLinks.Utilities;
 
-namespace OnlineVideoLinks
+namespace OnlineVideoLinks.Forms
 {
     public partial class VideoSelectorForm : Form
     {
         ILog _log = LogManager.GetLogger(nameof(VideoSelectorForm));
         IGame _game;
         IGameVideoUtility _gameVideoUtilities;
+        Func<IVideoPlayer> _videoPlayerFactory;
 
         //GamepadDinputProvider _gamepadDinputProvider;
         IGamepadXinputProvider _gamepadXinputProvider;
 
-        public VideoSelectorForm(IGame game, 
-            IGameVideoUtility gameVideoUtilities, IGamepadXinputProvider gamepadXinputProvider)
+        // Current video player instance (created fresh for each video)
+        private IVideoPlayer _currentPlayer;
+
+        public VideoSelectorForm(IGame game,
+            IGameVideoUtility gameVideoUtilities,
+            Func<IVideoPlayer> videoPlayerFactory,
+            IGamepadXinputProvider gamepadXinputProvider)
         {
             InitializeComponent();
 
             _game = game;
             _gameVideoUtilities = gameVideoUtilities;
+            _videoPlayerFactory = videoPlayerFactory;
             _gamepadXinputProvider = gamepadXinputProvider;
 
             var customVideos = _gameVideoUtilities.GetGameVideos(_game);
@@ -49,7 +57,7 @@ namespace OnlineVideoLinks
                 Cursor.Hide();
         }
 
-        private void _gamepadXinputProvider_ButtonPressed(object sender, Models.XInputEventArgs e)
+        private void _gamepadXinputProvider_ButtonPressed(object sender, XInputEventArgs e)
         {
             if (this.IsHandleCreated)
                 Invoke(new Action(() =>
@@ -59,31 +67,39 @@ namespace OnlineVideoLinks
             else HandleXInput_ButtonPressed(e.ButtonPressed);
         }
 
-        private void HandleXInput_ButtonPressed(GamepadButtonFlags buttonPressed)
+        private async void HandleXInput_ButtonPressed(GamepadButtonFlags buttonPressed)
         {
+            if (buttonPressed == GamepadButtonFlags.None)
+                return;
+
+            // If a player exists and is playing, forward input to it
+            if (_currentPlayer != null && _currentPlayer.IsPlaying)
+            {
+                _currentPlayer.SendGamepadInput(buttonPressed);
+                _log.Info($"Sent gamepad input to player panel: {buttonPressed}");
+                return;
+            }
+
+            _log.Info($"Allowing gamepad button pressed on selector panel: {buttonPressed}");
+
             switch (buttonPressed)
             {
                 case GamepadButtonFlags.A:
-                    if (!_gameVideoUtilities.IsPlaying())
-                    {
-                        var selectedVideo = listBoxVideos.SelectedItem as GameVideo;
-                        _gameVideoUtilities.Play(selectedVideo);
-                    }
+                    var selectedVideo = listBoxVideos.SelectedItem as GameVideo;
+                    // Create a new player instance for this video
+                    _currentPlayer = _videoPlayerFactory();
+                    _currentPlayer.PlayerClosed += (s, e) => _currentPlayer = null;
+                    await _currentPlayer.Play(selectedVideo);
                     break;
                 case GamepadButtonFlags.B:
-                    if (_gameVideoUtilities.IsPlaying())
-                    {
-                        _gameVideoUtilities.StopPlaying();
-                    }
-                    else
-                        this.Close();
+                    this.Close();
                     break;
                 case GamepadButtonFlags.DPadDown:
-                    if (!_gameVideoUtilities.IsPlaying() && listBoxVideos.SelectedIndex < listBoxVideos.Items.Count - 1)
+                    if (listBoxVideos.SelectedIndex < listBoxVideos.Items.Count - 1)
                         listBoxVideos.SelectedIndex++;
                     break;
                 case GamepadButtonFlags.DPadUp:
-                    if (!_gameVideoUtilities.IsPlaying() && listBoxVideos.SelectedIndex > 0)
+                    if (listBoxVideos.SelectedIndex > 0)
                         listBoxVideos.SelectedIndex--;
                     break;
             }
@@ -91,6 +107,8 @@ namespace OnlineVideoLinks
 
         private void listBoxVideos_KeyUp(object sender, KeyEventArgs e)
         {
+            _log.Info($"Key up event: {e.KeyCode}");
+
             // Translating keys to gamepad buttons.
             if (e.KeyCode == Keys.Enter)
                 HandleXInput_ButtonPressed(GamepadButtonFlags.A);

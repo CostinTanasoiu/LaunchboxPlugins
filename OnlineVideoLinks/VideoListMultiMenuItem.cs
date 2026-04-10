@@ -1,6 +1,8 @@
 ﻿using OnlineVideoLinks.Database;
+using OnlineVideoLinks.Forms;
 using OnlineVideoLinks.Models;
 using OnlineVideoLinks.Utilities;
+using OnlineVideoLinks.WPF;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -16,7 +18,6 @@ namespace OnlineVideoLinks
     {
         public IEnumerable<IGameMenuItem> GetMenuItems(params IGame[] selectedGames)
         {
-            var gameVideoUtility = new GameVideoUtility();
             var menuItems = new List<IGameMenuItem>();
             foreach (var game in selectedGames)
             {
@@ -25,7 +26,7 @@ namespace OnlineVideoLinks
                 foreach (var entry in videoEntries)
                 {
                     var gameVideo = entry.ToGameVideo(game.Id);
-                    var menuItem = new VideoMenuItem(gameVideoUtility, gameVideo);
+                    var menuItem = new VideoMenuItem(gameVideo);
                     menuItems.Add(menuItem);
                 }
             }
@@ -56,7 +57,6 @@ namespace OnlineVideoLinks
 
     public class VideoMenuItem : IGameMenuItem
     {
-        private IGameVideoUtility _gameVideoUtility;
         private GameVideo _video;
         public string Caption { get; }
 
@@ -66,16 +66,16 @@ namespace OnlineVideoLinks
 
         public Image Icon => Resources.Video;
 
-        public VideoMenuItem(IGameVideoUtility gameVideoUtility, GameVideo video)
+        public VideoMenuItem(GameVideo video)
         {
             Caption = video.Title;
-            _gameVideoUtility = gameVideoUtility;
             _video = video;
         }
 
-        public void OnSelect(params IGame[] games)
+        public async void OnSelect(params IGame[] games)
         {
-            _gameVideoUtility.Play(_video);
+            var videoPlayer = new VideoPlayerForm();
+            await videoPlayer.Play(_video);
         }
     }
 }

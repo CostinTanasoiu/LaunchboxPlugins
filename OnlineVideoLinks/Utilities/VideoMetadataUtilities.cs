@@ -52,23 +52,29 @@ namespace OnlineVideoLinks.Utilities
 
         public static bool IsYoutubeUrl(string url)
         {
-            var uri = new Uri(url);
+            if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
+                return false;
             return YouTubeHosts.Contains(uri.Host, StringComparer.InvariantCultureIgnoreCase);
         }
 
         public static bool IsSteamUrl(string url)
         {
+            if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
+                return false;
             return url.Contains("store.steampowered.com", StringComparison.InvariantCultureIgnoreCase);
         }
 
         public static bool IsIgnUrl(string url)
         {
+            if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
+                return false;
             return url.Contains("ign.com", StringComparison.InvariantCultureIgnoreCase);
         }
 
         public static bool IsGogUrl(string url)
         {
-            var uri = new Uri(url);
+            if (!Uri.TryCreate(url, UriKind.Absolute, out var uri))
+                return false;
             return uri.Host.Equals("www.gog.com", StringComparison.InvariantCultureIgnoreCase);
         }
 
@@ -86,8 +92,8 @@ namespace OnlineVideoLinks.Utilities
                 {
                     Title = meta.Title,
                     Url = meta.Url,
-                    Duration = meta.Duration,
-                    Thumbnail = meta.Thumbnails?.StandardResUrl,
+                    Duration = meta.Duration.GetValueOrDefault(),
+                    Thumbnail = meta.Thumbnails.FirstOrDefault().Url,
                     StartTime = queryStrings["t"] != null && int.TryParse(queryStrings["t"], out var time)
                                 ? time 
                                 : 0

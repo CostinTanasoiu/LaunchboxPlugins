@@ -58,6 +58,8 @@ namespace OnlineVideoLinks
 				
 				VlcUtilities.VerifyYtDlp();
                 _log.Info("Verified yt-dlp for YouTube video support.");
+
+                PluginContext.Initialize();
             }
             catch (Exception ex)
             {
