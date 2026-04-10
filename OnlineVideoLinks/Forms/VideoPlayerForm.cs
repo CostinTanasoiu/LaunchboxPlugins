@@ -24,8 +24,7 @@ namespace OnlineVideoLinks.Forms
         const int SkipBwdSeconds = 15;
         const string LoadingAnimationResource = "OnlineVideoLinks.Resources.loading-animation.gif";
 
-        GameVideo? _gameVideo;
-        private System.Windows.Forms.Timer _progressTimer;
+        private Timer _progressTimer;
 
         public bool IsVisible => this.Visible;
         public bool IsPlaying => mediaPlayer.playState == WMPLib.WMPPlayState.wmppsPlaying;
@@ -46,7 +45,7 @@ namespace OnlineVideoLinks.Forms
             this.Shown += (s, e) => VideoPlayerForm_Resize(s, e); // Recalculate when form is shown
 
             // Timer to update progress display
-            _progressTimer = new System.Windows.Forms.Timer
+            _progressTimer = new Timer
             {
                 Interval = 500
             };
@@ -199,7 +198,6 @@ namespace OnlineVideoLinks.Forms
             mediaPlayer.OpenStateChange -= MediaPlayer_OpenStateChange;
             mediaPlayer.Ctlcontrols.stop();
             mediaPlayer.close();
-            _gameVideo = null;
 
             if (File.Exists(TempVideoPath))
                 File.Delete(TempVideoPath);

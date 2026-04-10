@@ -75,8 +75,7 @@ namespace OnlineVideoLinks
 
         public async void OnSelect(params IGame[] games)
         {
-            var player = new VideoPlayerForm();
-            await player.Play(_video);
+            await PluginContext.Instance.VideoPlayer.Play(_video);
         }
     }
 }

@@ -1,3 +1,4 @@
+using log4net;
 using System;
 using System.IO;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace OnlineVideoLinks.Utilities
 {
     public class YoutubeDownloader
     {
+        private static readonly ILog _log = LogManager.GetLogger(nameof(YoutubeDownloader));
         /// <summary>
         /// Gets the path to FFmpeg from LaunchBox's ThirdParty folder.
         /// Plugin is at: LaunchBox\Plugins\Costin.OnlineVideoLinks
@@ -33,6 +35,8 @@ namespace OnlineVideoLinks.Utilities
             var muxedStream = streamManifest
                 .GetMuxedStreams()
                 .GetWithHighestVideoQuality();
+
+            _log.Info($"Muxed stream: {muxedStream?.Container} | {muxedStream?.VideoQuality} | {muxedStream?.Size}");
 
             return muxedStream?.Url;
         }
@@ -64,10 +68,15 @@ namespace OnlineVideoLinks.Utilities
 
             // Download and mux streams into a single file using LaunchBox's FFmpeg
             var streamInfos = new IStreamInfo[] { audioStreamInfo, videoStreamInfo };
+            _log.Info($"Found streams for video '{videoUrl}'");
+            _log.Info($"Audio stream: {audioStreamInfo?.Container} | {audioStreamInfo?.Bitrate} | {audioStreamInfo?.Size}");
+            _log.Info($"Video stream: {videoStreamInfo?.Container} | {videoStreamInfo?.VideoQuality} | {videoStreamInfo?.Size}");
+
             var conversionRequest = new ConversionRequestBuilder(outputFilePath)
                 .SetFFmpegPath(ffmpegPath)
                 .Build();
             await youtube.Videos.DownloadAsync(streamInfos, conversionRequest);
+            _log.Info($"Downloaded and muxed video to: {outputFilePath}");
         }
 
         /// <summary>

@@ -89,10 +89,10 @@ namespace FormsTestProject
                 Title = "Death and Return of Superman, The",
                 Genres = new BlockingCollection<string> { "Beat' Em Up" },
                 PlayModes = new string[] { "Single Player" }
-            }, 
-            new GameVideoUtility(),
-            new VideoPlayerForm(),
-            new GamepadXinputProvider()
+            },
+            PluginContext.Instance.VideoUtility,
+            PluginContext.Instance.VideoPlayer,
+            PluginContext.Instance.GamepadInput
             );
             return form;
         }
