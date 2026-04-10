@@ -46,9 +46,6 @@ namespace OnlineVideoLinks.WPF
         /// <param name="video"></param>
         public async Task Play(GameVideo video)
         {
-            if (_isPlaying)
-                StopPlaying();
-
             _gameVideo = video;
 
             this.Show();

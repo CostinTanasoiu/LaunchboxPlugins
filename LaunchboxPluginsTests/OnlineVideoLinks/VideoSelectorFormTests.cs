@@ -30,7 +30,16 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
                 .Do(x => _isPlaying = true);
 
             _playerMock.When(x => x.StopPlaying())
-                .Do(x => _isPlaying = false);
+                .Do(x =>
+                {
+                    _isPlaying = false;
+                    // Raise PlayerClosed event when StopPlaying is called, simulating real behavior
+                    _playerMock.PlayerClosed += Raise.EventWith(_playerMock, EventArgs.Empty);
+                });
+
+            // Simulate real behavior: SendGamepadInput with B button calls StopPlaying
+            _playerMock.When(x => x.SendGamepadInput(GamepadButtonFlags.B))
+                .Do(x => _playerMock.StopPlaying());
 
             _playerMock.IsPlaying
                 .Returns(x =>

@@ -87,10 +87,7 @@ namespace OnlineVideoLinks.Forms
 
         public async Task Play(GameVideo video)
         {
-            if (IsPlaying)
-                StopPlaying();
-
-            ResetProgress();
+            lblProgress.Text = "--:-- / --:--";
 
             this.Show();
 
@@ -294,11 +291,6 @@ namespace OnlineVideoLinks.Forms
                     return base.ProcessCmdKey(ref msg, keyData);
             }
             return true;
-        }
-
-        private void ResetProgress()
-        {
-            lblProgress.Text = "--:-- / --:--";
         }
 
         private void ProgressTimer_Tick(object? sender, EventArgs e)
