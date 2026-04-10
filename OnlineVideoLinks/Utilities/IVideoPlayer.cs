@@ -8,42 +8,47 @@ using OnlineVideoLinks.Models;
 
 namespace OnlineVideoLinks.Utilities
 {
-    public interface IVideoPlayerPanel
+    /// <summary>
+    /// Interface for a self-managing video player.
+    /// The player shows itself when Play is called and disposes when closed.
+    /// Create a new instance for each video playback session.
+    /// </summary>
+    public interface IVideoPlayer
     {
         /// <summary>
-        /// Checks whether the player is visible.
+        /// Raised when the player is closed.
         /// </summary>
-        public bool IsVisible { get; }
+        event EventHandler PlayerClosed;
 
         /// <summary>
         /// Checks whether this video is currently playing.
         /// </summary>
-        public bool IsPlaying { get; }
+        bool IsPlaying { get; }
 
         /// <summary>
-        /// Plays this video.
+        /// Plays this video. The player window will show itself.
         /// </summary>
-        public Task Play(GameVideo video);
+        Task Play(GameVideo video);
 
         /// <summary>
-        /// Stops playing the video.
+        /// Stops playing the video and closes the player.
         /// </summary>
-        public void StopPlaying();
+        void StopPlaying();
 
         /// <summary>
-        /// Skips 10 seconds forward.
+        /// Skips forward.
         /// </summary>
-        public void SkipForward();
+        void SkipForward();
 
         /// <summary>
-        /// Skips 10 seconds backward.
+        /// Skips backward.
         /// </summary>
-        public void SkipBackward();
+        void SkipBackward();
 
         /// <summary>
         /// Toggles the play/pause function.
         /// </summary>
-        public void PlayPause();
+        void PlayPause();
 
         /// <summary>
         /// Sends gamepad input.

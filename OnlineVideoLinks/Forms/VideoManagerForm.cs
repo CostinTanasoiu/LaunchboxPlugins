@@ -40,7 +40,7 @@ namespace OnlineVideoLinks
     public partial class VideoManagerForm : Form
     {
         private IGame _game;
-        private IVideoPlayerPanel _playerPanel;
+        private Func<IVideoPlayer> _videoPlayerFactory;
         private HelpForm _helpForm = new HelpForm();
 
         private BindingList<GameVideo> _gameVideos = new BindingList<GameVideo>();
@@ -55,11 +55,11 @@ namespace OnlineVideoLinks
             InitializeComponent();
         }
 
-        public VideoManagerForm(IGame game, IVideoPlayerPanel playerPanel)
+        public VideoManagerForm(IGame game, Func<IVideoPlayer> videoPlayerFactory)
         {
             InitializeComponent();
             _game = game;
-            _playerPanel = playerPanel;
+            _videoPlayerFactory = videoPlayerFactory;
 
             this.Text = "Manage videos for: " + game.Title;
 
@@ -118,7 +118,8 @@ namespace OnlineVideoLinks
 
         private void PlayVideo(GameVideo gameVideo)
         {
-            _playerPanel.Play(gameVideo);
+            var player = _videoPlayerFactory();
+            player.Play(gameVideo);
         }
 
         private void ResetNewVideoFields()

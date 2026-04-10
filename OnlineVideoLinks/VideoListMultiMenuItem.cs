@@ -57,7 +57,6 @@ namespace OnlineVideoLinks
 
     public class VideoMenuItem : IGameMenuItem
     {
-        private IGameVideoUtility _gameVideoUtility;
         private GameVideo _video;
         public string Caption { get; }
 
@@ -75,7 +74,8 @@ namespace OnlineVideoLinks
 
         public async void OnSelect(params IGame[] games)
         {
-            await PluginContext.Instance.VideoPlayer.Play(_video);
+            var videoPlayer = new VideoPlayerForm();
+            await videoPlayer.Play(_video);
         }
     }
 }

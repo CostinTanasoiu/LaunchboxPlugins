@@ -13,16 +13,18 @@ namespace OnlineVideoLinks.WPF
     /// <summary>
     /// Interaction logic for VideoPlayerWindow.xaml
     /// </summary>
-    public partial class VideoPlayerWindow : Window, IVideoPlayerPanel
+    public partial class VideoPlayerWindow : Window, IVideoPlayer
     {
         const string TempVideoPath = "temp_video.mp4";
 
         private GameVideo _gameVideo;
         private DispatcherTimer _progressTimer;
         private bool _isPlaying;
+        private bool _isClosing;
+
+        public event EventHandler PlayerClosed;
 
         public bool IsPlaying => _isPlaying;
-        public bool IsVisible => this.Visibility == Visibility.Visible;
 
         public VideoPlayerWindow()
         {
@@ -106,12 +108,20 @@ namespace OnlineVideoLinks.WPF
 
         public void StopPlaying()
         {
+            if (_isClosing)
+                return;
+
+            _isClosing = true;
             _progressTimer.Stop();
             mediaElement.Stop();
             mediaElement.Close();
             mediaElement.Source = null;
             _isPlaying = false;
-            this.Hide();
+
+            if (File.Exists(TempVideoPath))
+                File.Delete(TempVideoPath);
+
+            this.Close();
         }
 
         /// <summary>
@@ -196,11 +206,21 @@ namespace OnlineVideoLinks.WPF
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            StopPlaying();
+            // Ensure cleanup happens even if window is closed directly (e.g., via X button)
+            if (!_isClosing)
+            {
+                _isClosing = true;
+                _progressTimer.Stop();
+                mediaElement.Stop();
+                mediaElement.Close();
+                mediaElement.Source = null;
+                _isPlaying = false;
 
-            // Clean up temp file if it exists
-            if (File.Exists(TempVideoPath))
-                File.Delete(TempVideoPath);
+                if (File.Exists(TempVideoPath))
+                    File.Delete(TempVideoPath);
+            }
+
+            PlayerClosed?.Invoke(this, EventArgs.Empty);
         }
 
         private void btnPlay_Click(object sender, RoutedEventArgs e)

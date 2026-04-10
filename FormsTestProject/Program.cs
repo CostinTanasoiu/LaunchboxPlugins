@@ -69,7 +69,7 @@ namespace FormsTestProject
                 Title = "Death and Return of Superman, The",
                 Genres = new BlockingCollection<string> { "Beat' Em Up" },
                 PlayModes = new string[] { "Single Player" }
-            }, new VideoPlayerForm());
+            }, () => new VideoPlayerForm());
             return form;
         }
 
@@ -91,7 +91,7 @@ namespace FormsTestProject
                 PlayModes = new string[] { "Single Player" }
             },
             PluginContext.Instance.VideoUtility,
-            PluginContext.Instance.VideoPlayer,
+            () => new VideoPlayerForm(),
             PluginContext.Instance.GamepadInput
             );
             return form;

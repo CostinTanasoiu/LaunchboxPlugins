@@ -21,14 +21,12 @@ namespace OnlineVideoLinks
         public static PluginContext Instance => _instance ?? throw new InvalidOperationException("PluginContext has not been initialized. Call Initialize() first.");
 
         public GameVideoUtility VideoUtility { get; }
-        public VideoPlayerForm VideoPlayer { get; }
         public GamepadXinputProvider GamepadInput { get; }
 
         private PluginContext()
         {
             VideoUtility = new GameVideoUtility();
             GamepadInput = new GamepadXinputProvider();
-            VideoPlayer = new VideoPlayerForm();
         }
 
         public static void Initialize()

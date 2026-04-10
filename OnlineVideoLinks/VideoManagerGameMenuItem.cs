@@ -58,7 +58,7 @@ namespace OnlineVideoLinks
 
         public void OnSelected(IGame selectedGame)
         {
-            var form = new VideoManagerForm(selectedGame, PluginContext.Instance.VideoPlayer);
+            var form = new VideoManagerForm(selectedGame, () => new VideoPlayerForm());
             form.ShowDialog();
             form.Dispose();
         }

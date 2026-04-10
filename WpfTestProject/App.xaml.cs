@@ -39,7 +39,7 @@ namespace WpfTestProject
 
             var window = new VideoSelectorWindow(game,
                 new GameVideoUtility(),
-                new VideoPlayerWindow(),
+                () => new VideoPlayerWindow(),
                 new GamepadXinputProvider());
 
             window.Show();

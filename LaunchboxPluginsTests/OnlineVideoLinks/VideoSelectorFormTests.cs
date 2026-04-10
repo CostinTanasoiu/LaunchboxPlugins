@@ -20,24 +20,26 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
         Fixture _fixture = new Fixture();
         IGameVideoUtility _gameVideoUtilitiesMock = Substitute.For<IGameVideoUtility>();
         IGamepadXinputProvider _gamepadXinputProviderMock = Substitute.For<IGamepadXinputProvider>();
-        IVideoPlayerPanel _playerPanel = Substitute.For<IVideoPlayerPanel>();
+        IVideoPlayer _playerMock = Substitute.For<IVideoPlayer>();
 
         private bool _isPlaying = false;
 
         public VideoSelectorFormTests()
         {
-            _playerPanel.When(x => x.Play(Arg.Any<GameVideo>()))
+            _playerMock.When(x => x.Play(Arg.Any<GameVideo>()))
                 .Do(x => _isPlaying = true);
 
-            _playerPanel.When(x => x.StopPlaying())
+            _playerMock.When(x => x.StopPlaying())
                 .Do(x => _isPlaying = false);
 
-            _playerPanel.IsPlaying
+            _playerMock.IsPlaying
                 .Returns(x =>
                 {
                     return _isPlaying;
                 });
         }
+
+        private Func<IVideoPlayer> CreatePlayerFactory() => () => _playerMock;
 
         [Theory]
         [InlineData(5, new GamepadButtonFlags[] { 
@@ -67,7 +69,7 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
             _gameVideoUtilitiesMock.GetGameVideos(dummyGame)
                 .Returns(dummyVideos);
 
-            var form = new VideoSelectorForm(dummyGame, _gameVideoUtilitiesMock, _playerPanel, _gamepadXinputProviderMock);
+            var form = new VideoSelectorForm(dummyGame, _gameVideoUtilitiesMock, CreatePlayerFactory(), _gamepadXinputProviderMock);
 
             // Telling the IGamepadXinputProvider mock to raise events for the given buttons
             foreach (var button in buttons)
@@ -75,7 +77,7 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
 
             // Asserts
             _gamepadXinputProviderMock.Received(1).StartListening();
-            _playerPanel.Received(1).Play(dummyVideos[expectedVideoIndex]);
+            _playerMock.Received(1).Play(dummyVideos[expectedVideoIndex]);
         }
 
         [Theory]
@@ -100,7 +102,7 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
             _gameVideoUtilitiesMock.GetGameVideos(dummyGame)
                 .Returns(dummyVideos);
 
-            var form = new VideoSelectorForm(dummyGame, _gameVideoUtilitiesMock, _playerPanel, _gamepadXinputProviderMock);
+            var form = new VideoSelectorForm(dummyGame, _gameVideoUtilitiesMock, CreatePlayerFactory(), _gamepadXinputProviderMock);
 
             // Telling the IGamepadXinputProvider mock to raise events for the given buttons
             foreach (var button in buttons)
@@ -108,7 +110,7 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
 
             // Asserts
             _gamepadXinputProviderMock.Received(1).StartListening();
-            _playerPanel.DidNotReceiveWithAnyArgs().Play(Arg.Any<GameVideo>());
+            _playerMock.DidNotReceiveWithAnyArgs().Play(Arg.Any<GameVideo>());
         }
 
         [Theory]
@@ -139,7 +141,7 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
             _gameVideoUtilitiesMock.GetGameVideos(dummyGame)
                 .Returns(dummyVideos);
 
-            var form = new VideoSelectorForm(dummyGame, _gameVideoUtilitiesMock, _playerPanel, _gamepadXinputProviderMock);
+            var form = new VideoSelectorForm(dummyGame, _gameVideoUtilitiesMock, CreatePlayerFactory(), _gamepadXinputProviderMock);
 
             // Telling the IGamepadXinputProvider mock to raise events for the given buttons
             foreach (var button in buttons)
@@ -147,8 +149,8 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
 
             // Asserts
             _gamepadXinputProviderMock.Received(1).StartListening();
-            _playerPanel.ReceivedWithAnyArgs(1).Play(null);
-            _playerPanel.Received(1).StopPlaying();
+            _playerMock.ReceivedWithAnyArgs(1).Play(null);
+            _playerMock.Received(1).StopPlaying();
         }
 
         [Theory]
@@ -170,7 +172,7 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
             _gameVideoUtilitiesMock.GetGameVideos(dummyGame)
                 .Returns(dummyVideos);
 
-            var form = new VideoSelectorForm(dummyGame, _gameVideoUtilitiesMock, _playerPanel, _gamepadXinputProviderMock);
+            var form = new VideoSelectorForm(dummyGame, _gameVideoUtilitiesMock, CreatePlayerFactory(), _gamepadXinputProviderMock);
 
             // Telling the IGamepadXinputProvider mock to raise events for the given buttons
             foreach (var button in buttons)
@@ -178,7 +180,7 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
 
             // Asserts
             _gamepadXinputProviderMock.Received(1).StartListening();
-            _playerPanel.ReceivedWithAnyArgs(1).Play(null);
+            _playerMock.ReceivedWithAnyArgs(1).Play(null);
         }
 
         [Fact]
@@ -190,7 +192,7 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
             _gameVideoUtilitiesMock.GetGameVideos(dummyGame)
                 .Returns(dummyVideos);
 
-            var form = new VideoSelectorForm(dummyGame, _gameVideoUtilitiesMock, _playerPanel, _gamepadXinputProviderMock);
+            var form = new VideoSelectorForm(dummyGame, _gameVideoUtilitiesMock, CreatePlayerFactory(), _gamepadXinputProviderMock);
 
             // Telling the IGamepadXinputProvider mock to raise events for the given buttons
             var buttons = new GamepadButtonFlags[]
@@ -204,9 +206,9 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
 
             // Asserts
             _gamepadXinputProviderMock.Received(1).StartListening();
-            _playerPanel.Received(1).Play(dummyVideos[0]);
-            _playerPanel.Received(1).StopPlaying();
-            _playerPanel.Received(1).Play(dummyVideos[3]);
+            _playerMock.Received(1).Play(dummyVideos[0]);
+            _playerMock.Received(1).StopPlaying();
+            _playerMock.Received(1).Play(dummyVideos[3]);
         }
 
         [Theory]
@@ -233,14 +235,14 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
             _gameVideoUtilitiesMock.GetGameVideos(dummyGame)
                 .Returns(dummyVideos);
 
-            var form = new VideoSelectorForm(dummyGame, _gameVideoUtilitiesMock, _playerPanel, _gamepadXinputProviderMock);
+            var form = new VideoSelectorForm(dummyGame, _gameVideoUtilitiesMock, CreatePlayerFactory(), _gamepadXinputProviderMock);
 
             // Telling the IGamepadXinputProvider mock to raise events for the given buttons
             foreach (var button in buttons)
                 _gamepadXinputProviderMock.ButtonPressed += Raise.EventWith(null, new XInputEventArgs(button));
 
             // Asserts
-            Assert.False(_playerPanel.IsPlaying);
+            Assert.False(_playerMock.IsPlaying);
             Assert.True(form.IsDisposed);
         }
     }

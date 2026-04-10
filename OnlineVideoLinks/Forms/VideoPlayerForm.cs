@@ -17,7 +17,7 @@ using System.IO;
 
 namespace OnlineVideoLinks.Forms
 {
-    public partial class VideoPlayerForm : Form, IVideoPlayerPanel
+    public partial class VideoPlayerForm : Form, IVideoPlayer
     {
         const string TempVideoPath = "temp_video.mp4";
         const int SkipFwdSeconds = 15;
@@ -25,8 +25,10 @@ namespace OnlineVideoLinks.Forms
         const string LoadingAnimationResource = "OnlineVideoLinks.Resources.loading-animation.gif";
 
         private Timer _progressTimer;
+        private bool _isClosing;
 
-        public bool IsVisible => this.Visible;
+        public event EventHandler PlayerClosed;
+
         public bool IsPlaying => mediaPlayer.playState == WMPLib.WMPPlayState.wmppsPlaying;
 
         public VideoPlayerForm()
@@ -103,6 +105,7 @@ namespace OnlineVideoLinks.Forms
 
             // Subscribe to state change to hide progress bar when ready
             mediaPlayer.OpenStateChange += MediaPlayer_OpenStateChange;
+            mediaPlayer.PlayStateChange += MediaPlayer_PlayStateChange;
 
             //mediaPlayer.URL = video.VideoPath;
             if (VideoMetadataUtilities.IsYoutubeUrl(video.VideoPath))
@@ -192,17 +195,31 @@ namespace OnlineVideoLinks.Forms
 
         public void StopPlaying()
         {
+            if (_isClosing)
+                return;
+
+            _isClosing = true;
             _progressTimer.Stop();
             loadingAnimation.StopAnimation();
             loadingAnimation.Visible = false;
             mediaPlayer.OpenStateChange -= MediaPlayer_OpenStateChange;
+            mediaPlayer.PlayStateChange -= MediaPlayer_PlayStateChange;
             mediaPlayer.Ctlcontrols.stop();
             mediaPlayer.close();
 
             if (File.Exists(TempVideoPath))
                 File.Delete(TempVideoPath);
 
-            this.Hide();
+            this.Close();
+        }
+
+        private void MediaPlayer_PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
+        {
+            // wmppsMediaEnded = 8 means media playback has ended
+            if (e.newState == (int)WMPLib.WMPPlayState.wmppsMediaEnded)
+            {
+                StopPlaying();
+            }
         }
 
         private void MediaPlayer_OpenStateChange(object sender, AxWMPLib._WMPOCXEvents_OpenStateChangeEvent e)
@@ -218,9 +235,23 @@ namespace OnlineVideoLinks.Forms
 
         private void VideoPlayerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            StopPlaying();
+            // Ensure cleanup happens even if form is closed directly (e.g., via X button)
+            if (!_isClosing)
+            {
+                _isClosing = true;
+                _progressTimer.Stop();
+                loadingAnimation.StopAnimation();
+                mediaPlayer.OpenStateChange -= MediaPlayer_OpenStateChange;
+                mediaPlayer.PlayStateChange -= MediaPlayer_PlayStateChange;
+                mediaPlayer.Ctlcontrols.stop();
+                mediaPlayer.close();
+
+                if (File.Exists(TempVideoPath))
+                    File.Delete(TempVideoPath);
+            }
 
             mediaPlayer.Dispose();
+            PlayerClosed?.Invoke(this, EventArgs.Empty);
         }
 
         private void btnPlay_Click(object sender, EventArgs e)

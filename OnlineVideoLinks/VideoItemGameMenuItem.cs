@@ -40,7 +40,7 @@ namespace OnlineVideoLinks
             var form = new VideoSelectorForm(
                 selectedGame,
                 PluginContext.Instance.VideoUtility,
-                new VideoPlayerForm(),
+                () => new VideoPlayerForm(),
                 PluginContext.Instance.GamepadInput);
             form.ShowDialog();
             form.Dispose();
@@ -48,7 +48,7 @@ namespace OnlineVideoLinks
             //var window = new VideoSelectorWindow(
             //    selectedGame,
             //    new GameVideoUtility(),
-            //    new VideoPlayerWindow(),
+            //    () => new VideoPlayerWindow(),
             //    new GamepadXinputProvider());
             //window.ShowDialog();
         }

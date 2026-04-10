@@ -39,7 +39,7 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
     public class VideoManagerFormTests : IDisposable
     {
         private Fixture _fixture = new Fixture();
-        private IVideoPlayerPanel _playerPanel = Substitute.For<IVideoPlayerPanel>();
+        private IVideoPlayer _playerMock = Substitute.For<IVideoPlayer>();
         private string _testFolder;
         private GameVideoDb _gameVideoDb;
 
@@ -49,6 +49,8 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
             Directory.CreateDirectory(_testFolder);
             _gameVideoDb = new GameVideoDb(_testFolder);
         }
+
+        private Func<IVideoPlayer> CreatePlayerFactory() => () => _playerMock;
 
         public void Dispose()
         {
@@ -99,7 +101,7 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
             };
             GameVideoDb.Instance.SetVideosForGame(gameId, gameTitle, gamePlatform, videos);
 
-            var form = new VideoManagerForm(gameMock, _playerPanel);
+            var form = new VideoManagerForm(gameMock, CreatePlayerFactory());
 
             Assert.Equal(4, form.GameVideos.Count);
             Assert.Equal("Gameplay teaser", form.GameVideos[0].Title);

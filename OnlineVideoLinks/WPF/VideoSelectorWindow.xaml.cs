@@ -27,21 +27,24 @@ namespace OnlineVideoLinks.WPF
         ILog _log = LogManager.GetLogger(nameof(Forms.VideoSelectorForm));
         IGame _game;
         IGameVideoUtility _gameVideoUtilities;
-        IVideoPlayerPanel _playerPanel;
+        Func<IVideoPlayer> _videoPlayerFactory;
 
         //GamepadDinputProvider _gamepadDinputProvider;
         IGamepadXinputProvider _gamepadXinputProvider;
 
+        // Current video player instance (created fresh for each video)
+        private IVideoPlayer _currentPlayer;
+
         public VideoSelectorWindow(IGame game,
             IGameVideoUtility gameVideoUtilities,
-            IVideoPlayerPanel playerPanel,
+            Func<IVideoPlayer> videoPlayerFactory,
             IGamepadXinputProvider gamepadXinputProvider)
         {
             InitializeComponent();
 
             _game = game;
             _gameVideoUtilities = gameVideoUtilities;
-            _playerPanel = playerPanel;
+            _videoPlayerFactory = videoPlayerFactory;
             _gamepadXinputProvider = gamepadXinputProvider;
 
             var customVideos = _gameVideoUtilities.GetGameVideos(_game);
@@ -93,9 +96,10 @@ namespace OnlineVideoLinks.WPF
             if (buttonPressed == GamepadButtonFlags.None)
                 return;
 
-            if (_playerPanel.IsVisible)
+            // If a player exists and is playing, forward input to it
+            if (_currentPlayer != null && _currentPlayer.IsPlaying)
             {
-                _playerPanel.SendGamepadInput(buttonPressed);
+                _currentPlayer.SendGamepadInput(buttonPressed);
                 return;
             }
 
@@ -103,7 +107,10 @@ namespace OnlineVideoLinks.WPF
             {
                 case GamepadButtonFlags.A:
                     var selectedVideo = listBoxVideos.SelectedItem as GameVideo;
-                    _playerPanel.Play(selectedVideo);
+                    // Create a new player instance for this video
+                    _currentPlayer = _videoPlayerFactory();
+                    _currentPlayer.PlayerClosed += (s, e) => _currentPlayer = null;
+                    _currentPlayer.Play(selectedVideo);
                     break;
                 case GamepadButtonFlags.B:
                     this.Close();
