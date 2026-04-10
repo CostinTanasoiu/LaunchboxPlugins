@@ -52,8 +52,14 @@
         "StopTime": 0
       },
       {
-        "Title": "The Super Mario Galaxy Movie – Official Trailer",
+        "Title": "(youtube) The Super Mario Galaxy Movie – Official Trailer",
         "VideoPath": "https://www.youtube.com/watch?v=GuCejewteF8",
+        "StartTime": 0,
+        "StopTime": 0
+      },
+      {
+        "Title": "(youtube) SAMSUNG UHD Demo, up to 4K",
+        "VideoPath": "https://www.youtube.com/watch?v=R3GfuzLMPkA",
         "StartTime": 0,
         "StopTime": 0
       },

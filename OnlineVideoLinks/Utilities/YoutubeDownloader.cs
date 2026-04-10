@@ -11,6 +11,8 @@ namespace OnlineVideoLinks.Utilities
 {
     public class YoutubeDownloader
     {
+        private const int VIDEO_QUALITY_DESIRED = 1080;
+
         private static readonly ILog _log = LogManager.GetLogger(nameof(YoutubeDownloader));
         /// <summary>
         /// Gets the path to FFmpeg from LaunchBox's ThirdParty folder.
@@ -60,10 +62,11 @@ namespace OnlineVideoLinks.Utilities
                 .Where(s => s.Container == Container.Mp4)
                 .GetWithHighestBitrate();
 
-            // Select best video stream (highest quality)
+            // Select best video stream (highest quality up to VIDEO_QUALITY_DESIRED)
             var videoStreamInfo = streamManifest
                 .GetVideoStreams()
                 .Where(s => s.Container == Container.Mp4)
+                .Where(s => s.VideoQuality.MaxHeight <= VIDEO_QUALITY_DESIRED)
                 .GetWithHighestVideoQuality();
 
             // Download and mux streams into a single file using LaunchBox's FFmpeg
