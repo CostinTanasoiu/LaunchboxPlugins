@@ -15,11 +15,15 @@ using System.Windows.Media;
 using OnlineVideoLinks.Models;
 using System.IO;
 using System.Threading;
+using log4net;
 
 namespace OnlineVideoLinks.Forms
 {
     public partial class VideoPlayerForm : Form, IVideoPlayer
     {
+        private static ILog _log;
+        private static ILog Log => _log ??= LogManager.GetLogger(nameof(VideoPlayerForm));
+
         const int SkipFwdSeconds = 15;
         const int SkipBwdSeconds = 15;
         const string LoadingAnimationResource = "OnlineVideoLinks.Resources.loading-animation.gif";
@@ -158,6 +162,9 @@ namespace OnlineVideoLinks.Forms
 
         public async Task Play(GameVideo video)
         {
+            Log.Info($"Play called for video: Title='{video.Title}', GameId='{video.GameId}', " +
+                $"VideoPath='{video.VideoPath}', StartTime={video.StartTime}, StopTime={video.StopTime}");
+
             lblProgress.Text = "--:-- / --:--";
 
             _video = video;
@@ -190,14 +197,25 @@ namespace OnlineVideoLinks.Forms
             {
                 //mediaPlayer.URL = video.VideoPath;
                 if (VideoMetadataUtilities.IsYoutubeUrl(video.VideoPath))
+                {
+                    Log.Info($"Loading YouTube video: {video.VideoPath}");
                     await LoadYoutubeVideo(video.VideoPath, video.StartTime, video.StopTime, _cancellation.Token);
+                }
                 else
+                {
+                    Log.Info($"Loading regular video: {video.VideoPath}");
                     LoadRegularVideo(video.VideoPath);
+                }
             }
             catch (OperationCanceledException)
             {
-                // Loading was cancelled, form is closing
+                Log.Info("Video loading was cancelled.");
                 return;
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Error loading video: {video.VideoPath}", ex);
+                throw;
             }
 
             // Check if form was closed during loading
@@ -210,6 +228,8 @@ namespace OnlineVideoLinks.Forms
 
             mediaPlayer.Ctlcontrols.play();
             _progressTimer.Start();
+
+            Log.Info("Video playback started.");
         }
 
         private void LoadRegularVideo(string videoPath)
@@ -232,12 +252,14 @@ namespace OnlineVideoLinks.Forms
                 mediaUri = new Uri(filePath);
             }
 
+            Log.Debug($"Resolved media URI: {mediaUri}");
             mediaPlayer.URL = mediaUri.ToString();
         }
 
         private async Task LoadYoutubeVideo(string videoPath, int startTime, int stopTime, CancellationToken cancellationToken)
         {
             var playablePath = await YoutubeDownloader.GetPlayableVideoPath(videoPath, TempVideoPath, startTime, stopTime, cancellationToken);
+            Log.Debug($"YouTube playable path resolved: {playablePath}");
             mediaPlayer.URL = playablePath;
         }
 
@@ -247,6 +269,8 @@ namespace OnlineVideoLinks.Forms
         /// <param name="button"></param>
         public void SendGamepadInput(GamepadButtonFlags button)
         {
+            Log.Debug($"Gamepad input received: {button}");
+
             switch (button)
             {
                 case GamepadButtonFlags.A:
@@ -263,31 +287,45 @@ namespace OnlineVideoLinks.Forms
         public void PlayPause()
         {
             if (IsPlaying)
+            {
+                Log.Debug("Pausing playback.");
                 mediaPlayer.Ctlcontrols.pause();
+            }
             else
+            {
+                Log.Debug("Resuming playback.");
                 mediaPlayer.Ctlcontrols.play();
+            }
         }
 
         public void SkipBackward()
         {
+            var oldPosition = mediaPlayer.Ctlcontrols.currentPosition;
             if (mediaPlayer.Ctlcontrols.currentPosition > SkipBwdSeconds)
                 mediaPlayer.Ctlcontrols.currentPosition -= SkipBwdSeconds;
             else
                 mediaPlayer.Ctlcontrols.currentPosition = 0;
+
+            Log.Debug($"Skipped backward: {oldPosition:F1}s -> {mediaPlayer.Ctlcontrols.currentPosition:F1}s");
         }
 
         public void SkipForward()
         {
+            var oldPosition = mediaPlayer.Ctlcontrols.currentPosition;
             if (mediaPlayer.Ctlcontrols.currentPosition + SkipFwdSeconds < mediaPlayer.currentMedia.duration)
                 mediaPlayer.Ctlcontrols.currentPosition += SkipFwdSeconds;
             else
                 mediaPlayer.Ctlcontrols.currentPosition = mediaPlayer.currentMedia.duration;
+
+            Log.Debug($"Skipped forward: {oldPosition:F1}s -> {mediaPlayer.Ctlcontrols.currentPosition:F1}s");
         }
 
         public void StopPlaying()
         {
             if (_isClosing)
                 return;
+
+            Log.Info("Stopping playback and closing player.");
 
             _isClosing = true;
 
@@ -313,25 +351,34 @@ namespace OnlineVideoLinks.Forms
             mediaPlayer.close();
 
             if (File.Exists(TempVideoPath))
+            {
+                Log.Debug($"Deleting temp video file: {TempVideoPath}");
                 File.Delete(TempVideoPath);
+            }
 
             this.Close();
         }
 
         private void MediaPlayer_PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
         {
+            Log.Debug($"PlayStateChange: {(WMPLib.WMPPlayState)e.newState}");
+
             // wmppsMediaEnded = 8 means media playback has ended
             if (e.newState == (int)WMPLib.WMPPlayState.wmppsMediaEnded)
             {
+                Log.Info("Media playback ended.");
                 StopPlaying();
             }
         }
 
         private void MediaPlayer_OpenStateChange(object sender, AxWMPLib._WMPOCXEvents_OpenStateChangeEvent e)
         {
+            Log.Debug($"OpenStateChange: {(WMPLib.WMPOpenState)e.newState}");
+
             // wmposMediaOpen = 13 means media is fully open and ready to play
             if (e.newState == (int)WMPLib.WMPOpenState.wmposMediaOpen)
             {
+                Log.Info("Media opened successfully.");
                 loadingAnimation.StopAnimation();
                 loadingAnimation.Visible = false;
                 mediaPlayer.OpenStateChange -= MediaPlayer_OpenStateChange;
@@ -339,6 +386,7 @@ namespace OnlineVideoLinks.Forms
                 // Seek to start time if specified
                 if (_video.StartTime > 0)
                 {
+                    Log.Debug($"Seeking to start time: {_video.StartTime}s");
                     mediaPlayer.Ctlcontrols.currentPosition = _video.StartTime;
                 }
             }
@@ -346,6 +394,8 @@ namespace OnlineVideoLinks.Forms
 
         private void VideoPlayerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Log.Info($"Form closing. Reason: {e.CloseReason}");
+
             // Ensure cleanup happens even if form is closed directly (e.g., via X button)
             if (!_isClosing)
             {
@@ -372,7 +422,10 @@ namespace OnlineVideoLinks.Forms
                 mediaPlayer.close();
 
                 if (File.Exists(TempVideoPath))
+                {
+                    Log.Debug($"Deleting temp video file: {TempVideoPath}");
                     File.Delete(TempVideoPath);
+                }
             }
 
             mediaPlayer.Dispose();
@@ -430,6 +483,7 @@ namespace OnlineVideoLinks.Forms
             // Check if we've reached the stop time
             if (_video.StopTime > 0 && currentPosition >= _video.StopTime)
             {
+                Log.Info($"Reached stop time ({_video.StopTime}s). Stopping playback.");
                 StopPlaying();
                 return;
             }
