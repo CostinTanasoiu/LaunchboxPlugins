@@ -41,6 +41,7 @@ namespace OnlineVideoLinks.Forms
             flowLayoutPanel1 = new FlowLayoutPanel();
             lblProgress = new Label();
             loadingAnimation = new OnlineVideoLinks.Forms.UserControls.LoadingAnimationControl();
+            lblError = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)mediaPlayer).BeginInit();
             flowLayoutPanel1.SuspendLayout();
@@ -152,12 +153,26 @@ namespace OnlineVideoLinks.Forms
             loadingAnimation.TabIndex = 13;
             loadingAnimation.Visible = false;
             // 
+            // lblError
+            // 
+            lblError.AutoSize = false;
+            lblError.Font = new Font("Segoe UI", 16F, FontStyle.Regular, GraphicsUnit.Point);
+            lblError.ForeColor = Color.White;
+            lblError.Location = new Point(100, 200);
+            lblError.Name = "lblError";
+            lblError.Size = new Size(800, 250);
+            lblError.TabIndex = 14;
+            lblError.Text = "";
+            lblError.TextAlign = ContentAlignment.MiddleCenter;
+            lblError.Visible = false;
+            // 
             // VideoPlayerForm
             //
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Black;
             ClientSize = new Size(1000, 562);
+            Controls.Add(lblError);
             Controls.Add(loadingAnimation);
             Controls.Add(lblProgress);
             Controls.Add(flowLayoutPanel1);
@@ -185,5 +200,6 @@ namespace OnlineVideoLinks.Forms
         private FlowLayoutPanel flowLayoutPanel1;
         private Label lblProgress;
         private UserControls.LoadingAnimationControl loadingAnimation;
+        private Label lblError;
     }
 }

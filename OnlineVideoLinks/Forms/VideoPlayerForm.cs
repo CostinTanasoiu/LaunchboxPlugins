@@ -34,6 +34,7 @@ namespace OnlineVideoLinks.Forms
         private System.Windows.Forms.Timer _progressTimer;
         private System.Windows.Forms.Timer _mouseHideTimer;
         private bool _isClosing;
+        private bool _isLoading;
         private CancellationTokenSource _cancellation;
         private bool _isCursorHidden;
         private Point? _lastMousePosition;
@@ -107,6 +108,9 @@ namespace OnlineVideoLinks.Forms
             loadingAnimation.Location = new Point(
                 (this.ClientSize.Width - loadingAnimation.Width) / 2,
                 (this.ClientSize.Height - flowLayoutPanel1.Height - loadingAnimation.Height) / 2);
+
+            // Center error label in the form (above the control panel)
+            RepositionErrorLabel();
         }
 
         private void VideoPlayerForm_MouseMove(object sender, MouseEventArgs e)
@@ -160,6 +164,24 @@ namespace OnlineVideoLinks.Forms
             HideCursor();
         }
 
+        private void ShowError(string message)
+        {
+            Log.Warn($"Showing error to user: {message}");
+            lblError.Text = $"{message}\n\nPress B or Esc to go back.";
+            RepositionErrorLabel();
+            lblError.Visible = true;
+            lblError.BringToFront();
+        }
+
+        private void RepositionErrorLabel()
+        {
+            int labelWidth = this.ClientSize.Width * 2 / 3;
+            int labelHeight = this.ClientSize.Height - flowLayoutPanel1.Height;
+            lblError.Size = new Size(labelWidth, labelHeight);
+            lblError.Location = new Point(
+                (this.ClientSize.Width - lblError.Width) / 2, 0);
+        }
+
         public async Task Play(GameVideo video)
         {
             Log.Info($"Play called for video: Title='{video.Title}', GameId='{video.GameId}', " +
@@ -189,9 +211,11 @@ namespace OnlineVideoLinks.Forms
             // Subscribe to state change to hide progress bar when ready
             mediaPlayer.OpenStateChange += MediaPlayer_OpenStateChange;
             mediaPlayer.PlayStateChange += MediaPlayer_PlayStateChange;
+            mediaPlayer.MediaError += MediaPlayer_MediaError;
 
             // Create cancellation token for this load operation
             _cancellation = new CancellationTokenSource();
+            _isLoading = true;
 
             try
             {
@@ -215,7 +239,14 @@ namespace OnlineVideoLinks.Forms
             catch (Exception ex)
             {
                 Log.Error($"Error loading video: {video.VideoPath}", ex);
-                throw;
+                loadingAnimation.StopAnimation();
+                loadingAnimation.Visible = false;
+                ShowError($"Failed to load video.\n{ex.Message}");
+                return;
+            }
+            finally
+            {
+                _isLoading = false;
             }
 
             // Check if form was closed during loading
@@ -248,6 +279,9 @@ namespace OnlineVideoLinks.Forms
                 var filePath = Path.IsPathRooted(videoPath)
                     ? videoPath
                     : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, videoPath);
+
+                if (!File.Exists(filePath))
+                    throw new FileNotFoundException($"Video file not found: {filePath}");
 
                 mediaUri = new Uri(filePath);
             }
@@ -286,6 +320,9 @@ namespace OnlineVideoLinks.Forms
 
         public void PlayPause()
         {
+            if (_isLoading)
+                return;
+
             if (IsPlaying)
             {
                 Log.Debug("Pausing playback.");
@@ -300,6 +337,9 @@ namespace OnlineVideoLinks.Forms
 
         public void SkipBackward()
         {
+            if (_isLoading)
+                return;
+
             var oldPosition = mediaPlayer.Ctlcontrols.currentPosition;
             if (mediaPlayer.Ctlcontrols.currentPosition > SkipBwdSeconds)
                 mediaPlayer.Ctlcontrols.currentPosition -= SkipBwdSeconds;
@@ -311,6 +351,9 @@ namespace OnlineVideoLinks.Forms
 
         public void SkipForward()
         {
+            if (_isLoading)
+                return;
+
             var oldPosition = mediaPlayer.Ctlcontrols.currentPosition;
             if (mediaPlayer.Ctlcontrols.currentPosition + SkipFwdSeconds < mediaPlayer.currentMedia.duration)
                 mediaPlayer.Ctlcontrols.currentPosition += SkipFwdSeconds;
@@ -345,8 +388,10 @@ namespace OnlineVideoLinks.Forms
             _progressTimer.Stop();
             loadingAnimation.StopAnimation();
             loadingAnimation.Visible = false;
+            lblError.Visible = false;
             mediaPlayer.OpenStateChange -= MediaPlayer_OpenStateChange;
             mediaPlayer.PlayStateChange -= MediaPlayer_PlayStateChange;
+            mediaPlayer.MediaError -= MediaPlayer_MediaError;
             mediaPlayer.Ctlcontrols.stop();
             mediaPlayer.close();
 
@@ -392,6 +437,15 @@ namespace OnlineVideoLinks.Forms
             }
         }
 
+        private void MediaPlayer_MediaError(object sender, AxWMPLib._WMPOCXEvents_MediaErrorEvent e)
+        {
+            Log.Error($"Media error for video: {_video?.VideoPath}");
+            loadingAnimation.StopAnimation();
+            loadingAnimation.Visible = false;
+            _progressTimer.Stop();
+            ShowError($"Failed to load video.\n{_video?.VideoPath}");
+        }
+
         private void VideoPlayerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Log.Info($"Form closing. Reason: {e.CloseReason}");
@@ -416,8 +470,10 @@ namespace OnlineVideoLinks.Forms
 
                 _progressTimer.Stop();
                 loadingAnimation.StopAnimation();
+                lblError.Visible = false;
                 mediaPlayer.OpenStateChange -= MediaPlayer_OpenStateChange;
                 mediaPlayer.PlayStateChange -= MediaPlayer_PlayStateChange;
+                mediaPlayer.MediaError -= MediaPlayer_MediaError;
                 mediaPlayer.Ctlcontrols.stop();
                 mediaPlayer.close();
 
