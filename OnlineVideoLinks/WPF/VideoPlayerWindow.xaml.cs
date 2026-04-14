@@ -218,7 +218,12 @@ namespace OnlineVideoLinks.WPF
 
         private async Task LoadYoutubeVideo(CancellationToken cancellationToken)
         {
-            var videoPath = await YoutubeDownloader.GetPlayableVideoPath(_gameVideo.VideoPath, TempVideoPath, cancellationToken);
+            var videoPath = await YoutubeDownloader.GetPlayableVideoPath(
+                _gameVideo.VideoPath, 
+                TempVideoPath, 
+                _gameVideo.StartTime, 
+                _gameVideo.StopTime, 
+                cancellationToken);
 
             mediaElement.Source = new Uri(videoPath);
             mediaElement.Play();

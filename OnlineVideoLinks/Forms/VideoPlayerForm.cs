@@ -190,7 +190,7 @@ namespace OnlineVideoLinks.Forms
             {
                 //mediaPlayer.URL = video.VideoPath;
                 if (VideoMetadataUtilities.IsYoutubeUrl(video.VideoPath))
-                    await LoadYoutubeVideo(video.VideoPath, _cancellation.Token);
+                    await LoadYoutubeVideo(video.VideoPath, video.StartTime, video.StopTime, _cancellation.Token);
                 else
                     LoadRegularVideo(video.VideoPath);
             }
@@ -235,9 +235,9 @@ namespace OnlineVideoLinks.Forms
             mediaPlayer.URL = mediaUri.ToString();
         }
 
-        private async Task LoadYoutubeVideo(string videoPath, CancellationToken cancellationToken)
+        private async Task LoadYoutubeVideo(string videoPath, int startTime, int stopTime, CancellationToken cancellationToken)
         {
-            var playablePath = await YoutubeDownloader.GetPlayableVideoPath(videoPath, TempVideoPath, cancellationToken);
+            var playablePath = await YoutubeDownloader.GetPlayableVideoPath(videoPath, TempVideoPath, startTime, stopTime, cancellationToken);
             mediaPlayer.URL = playablePath;
         }
 

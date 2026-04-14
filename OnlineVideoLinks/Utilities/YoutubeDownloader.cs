@@ -28,7 +28,7 @@ namespace OnlineVideoLinks.Utilities
         /// <summary>
         /// Gets the direct URL for a muxed YouTube stream (up to 720p, no download required).
         /// </summary>
-        public static async Task<string> GetMuxedStreamUrl(string videoUrl, CancellationToken cancellationToken = default)
+        private static async Task<string> GetMuxedStreamUrl(string videoUrl, CancellationToken cancellationToken = default)
         {
             var youtube = new YoutubeClient();
             var streamManifest = await youtube.Videos.Streams.GetManifestAsync(videoUrl, cancellationToken);
@@ -47,7 +47,7 @@ namespace OnlineVideoLinks.Utilities
         /// Downloads and muxes the best quality audio and video streams into a single MP4 file.
         /// Uses LaunchBox's FFmpeg installation.
         /// </summary>
-        public static async Task DownloadBestQualityMP4(string videoUrl, string outputFilePath, CancellationToken cancellationToken = default)
+        private static async Task DownloadBestQualityMP4(string videoUrl, string outputFilePath, CancellationToken cancellationToken = default)
         {
             var ffmpegPath = GetLaunchBoxFFmpegPath();
             if (ffmpegPath == null)
@@ -84,13 +84,32 @@ namespace OnlineVideoLinks.Utilities
 
         /// <summary>
         /// Gets a playable video path or URL for a YouTube video.
-        /// Tries to download best quality first, falls back to muxed stream URL (720p max).
+        /// If start/stop timestamps are specified, returns muxed stream URL for instant playback (720p max).
+        /// Otherwise downloads best quality (up to 1080p) for full video playback.
         /// </summary>
-        public static async Task<string> GetPlayableVideoPath(string videoUrl, string outputFilePath, CancellationToken cancellationToken = default)
+        /// <param name="videoUrl">YouTube video URL</param>
+        /// <param name="outputFilePath">Path to save downloaded video (only used when no timestamps)</param>
+        /// <param name="startTime">Start time in seconds (0 = no start time)</param>
+        /// <param name="stopTime">Stop time in seconds (0 = no stop time)</param>
+        /// <param name="cancellationToken">Cancellation token</param>
+        public static async Task<string> GetPlayableVideoPath(
+            string videoUrl, 
+            string outputFilePath, 
+            int startTime = 0, 
+            int stopTime = 0, 
+            CancellationToken cancellationToken = default)
         {
+            // If timestamps are specified, use muxed stream URL for instant playback
+            // (player will handle seeking to start time and stopping at stop time)
+            if (startTime > 0 || stopTime > 0)
+            {
+                _log.Info($"Video has timestamps (start={startTime}, stop={stopTime}), using muxed stream URL for instant playback");
+                return await GetMuxedStreamUrl(videoUrl, cancellationToken);
+            }
+
+            // No timestamps - download full video for best quality
             try
             {
-                // Try to download best quality with FFmpeg muxing
                 await DownloadBestQualityMP4(videoUrl, outputFilePath, cancellationToken);
                 return Path.GetFullPath(outputFilePath);
             }
