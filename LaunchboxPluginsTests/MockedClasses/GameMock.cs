@@ -17,6 +17,8 @@ namespace LaunchboxPluginsTests.MockedClasses
             CustomFields = new List<ICustomField>();
         }
 
+        public string Id { get; set; }
+
         public Image RatingImage => null;
 
         public string ScreenshotImagePath => null;
@@ -56,9 +58,6 @@ namespace LaunchboxPluginsTests.MockedClasses
         public string DosBoxConfigurationPath { get; set; }
         public string EmulatorId { get; set; }
         public bool Favorite { get; set; }
-
-        public string Id => Guid.NewGuid().ToString();
-
         public DateTime? LastPlayedDate { get; set; }
         public string ManualPath { get; set; }
         public string MusicPath { get; set; }

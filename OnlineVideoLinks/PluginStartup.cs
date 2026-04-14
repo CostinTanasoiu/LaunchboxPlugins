@@ -55,6 +55,9 @@ namespace OnlineVideoLinks
                     _log?.Error("VLC was not found. Turning off plugin.");
                     StartupFailed = true;
                 }
+				
+				VlcUtilities.VerifyYtDlp();
+                _log.Info("Verified yt-dlp for YouTube video support.");
             }
             catch (Exception ex)
             {

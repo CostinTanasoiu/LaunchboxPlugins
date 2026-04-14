@@ -30,7 +30,6 @@ using System.Windows.Forms;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
 using OnlineVideoLinks;
-using OnlineVideoLinks.Models;
 
 namespace FormsTestProject
 {
@@ -46,27 +45,36 @@ namespace FormsTestProject
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            OnlineVideoLinks.Utilities.VlcUtilities.VerifyYtDlp();
+
             var form1 = ConfigureCustomFieldEditor();
             var form2 = ConfigureVideoManagerForm();
+            var form3 = ConfigureVideoSelectorForm();
             
             form1.Show();
             form2.Show();
+            form3.Show();
 
-            Application.Run();
+            Application.Run(new MainForm());
         }
 
         static Form ConfigureVideoManagerForm()
         {
             new PluginStartup();
-            var form = new OnlineVideoLinks.VideoManagerForm(
-                new GameMock
-                {
-                    Title = "Death and Return of Superman, The",
-                    Genres = new BlockingCollection<string> { "Beat' Em Up" },
-                    PlayModes = new string[] { "Single Player" }
-                },
-                new GameVideoUtility()
-            );
+            var form = new OnlineVideoLinks.Forms.NewVideoManagerForm();
+            return form;
+        }
+
+        static Form ConfigureVideoSelectorForm()
+        {
+            new PluginStartup();
+            var form = new OnlineVideoLinks.VideoSelectorForm(new GameMock
+            {
+                Id = "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+                Title = "Death and Return of Superman, The",
+                Genres = new BlockingCollection<string> { "Beat' Em Up" },
+                PlayModes = new string[] { "Single Player" }
+            }, new GameVideoUtility(), new GamepadXinputProvider());
             return form;
         }
 
@@ -76,24 +84,28 @@ namespace FormsTestProject
             {
                 new GameMock
                 {
+                    Id = Guid.NewGuid().ToString(),
                     Title = "Death and Return of Superman, The",
                     Genres = new BlockingCollection<string> { "Beat' Em Up" },
                     PlayModes = new string[] {"Single Player"}
                 },
                 new GameMock
                 {
+                    Id = Guid.NewGuid().ToString(),
                     Title = "Aladdin",
                     Genres = new BlockingCollection<string>{"Action", "Adventure"},
                     PlayModes = new string[] {"Single Player"}
                 },
                 new GameMock
                 {
+                    Id = Guid.NewGuid().ToString(),
                     Title = "The Ghoul Patrol",
                     Genres = new BlockingCollection<string>(),
                     PlayModes = new string[] {"Cooperative", "Multiplayer"}
                 },
                 new GameMock
                 {
+                    Id = Guid.NewGuid().ToString(),
                     Title = "Dragon View",
                     Genres = new BlockingCollection<string>{ "Action", "RPG" },
                     PlayModes = new string[] {"Single Player"}

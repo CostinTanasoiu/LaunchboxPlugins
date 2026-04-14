@@ -18,12 +18,16 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+using log4net;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -31,13 +35,13 @@ namespace OnlineVideoLinks.Utilities
 {
     public class VlcUtilities
     {
-        // I learned about the YouTube VLC addon here:
-        // https://www.latecnosfera.com/2016/10/vlc-unable-to-open-mrl.html
+        private static ILog _log;
+        private static ILog Log => _log ??= LogManager.GetLogger(nameof(VlcUtilities));
 
         /// <summary>
-        /// This is a link to the youtube.luac file from the development branch of VLC.
+        /// URL to download yt-dlp executable.
         /// </summary>
-        private const string YoutubeVlcAddonUrl = "https://raw.githubusercontent.com/videolan/vlc-3.0/refs/heads/master/share/lua/playlist/youtube.lua";
+        private const string YtDlpDownloadUrl = "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe";
 
         /// <summary>
         /// Retrieves the VLC folder path.
@@ -58,12 +62,13 @@ namespace OnlineVideoLinks.Utilities
             if (File.Exists(fullPath + "\\vlc.exe"))
                 return relativePath;
 
-            // Otherwise check whether VLC is installed in Program Files and return that.
+            // Otherwise try the Program Files installation
+            var absolutePath = "C:\\Program Files\\VideoLAN\\VLC";
+            fullPath = Path.Combine(absolutePath, "vlc.exe");
+            if (File.Exists(fullPath))
+                return absolutePath;
 
-            if (Environment.Is64BitOperatingSystem)
-                return $"C:\\Program Files\\VideoLAN\\VLC";
-            else
-                return $"C:\\Program Files (x86)\\VideoLAN\\VLC";
+            return null;
         }
 
         /// <summary>
@@ -72,16 +77,10 @@ namespace OnlineVideoLinks.Utilities
         /// <returns></returns>
         public static string GetVlcExecutablePath()
         {
-            return GetVlcFolderPath() + "\\vlc.exe";
-        }
-
-        /// <summary>
-        /// Retrieves the VLC Addons folder path.
-        /// </summary>
-        /// <returns></returns>
-        public static string GetVlcAddonsFolderPath()
-        {
-            return GetVlcFolderPath() + "\\lua\\playlist";
+            var folderPath = GetVlcFolderPath();
+            if (!string.IsNullOrEmpty(folderPath))
+                return $"\"{folderPath}\\vlc.exe\"";
+            return null;
         }
 
         /// <summary>
@@ -93,39 +92,129 @@ namespace OnlineVideoLinks.Utilities
         }
 
         /// <summary>
-        /// Installs the YouTube VLC addon if not already installed.
+        /// Gets the path to the yt-dlp executable in the plugin directory (Plugins\Costin.OnlineVideoLinks\Tools).
         /// </summary>
-        public static void VerifyYoutubeAddon()
+        public static string GetYtDlpPath()
         {
-            // Look for Launchbox's VLC distro
-            var vlcEnvironment = Environment.Is64BitOperatingSystem ? "x64" : "x86";
-            var vlcAddonsFolder = VlcUtilities.GetVlcAddonsFolderPath();
+            var pluginDir = Path.Combine(Environment.CurrentDirectory, "Plugins", "Costin.OnlineVideoLinks", "Tools");
+            return Path.Combine(pluginDir, "yt-dlp.exe");
+        }
 
-            var youtubeAddonPath = "";
+        /// <summary>
+        /// Downloads yt-dlp if not already installed.
+        /// yt-dlp is used to extract direct video URLs from YouTube since VLC's built-in
+        /// YouTube support frequently breaks due to YouTube API changes.
+        /// </summary>
+        public static void VerifyYtDlp()
+        {
+            var ytDlpPath = GetYtDlpPath();
+            var pluginDir = Path.GetDirectoryName(ytDlpPath);
 
-            // Check if the YouTube VLC addon is installed
-            if (Directory.Exists(vlcAddonsFolder))
+            // Ensure the plugin directory exists
+            if (!Directory.Exists(pluginDir))
             {
-                var files = Directory.GetFiles(vlcAddonsFolder, "youtube.luac", SearchOption.AllDirectories);
-                // I'll assume it's the first one in the array
-                if (files.Length != 0)
-                    youtubeAddonPath = files[0];
+                Directory.CreateDirectory(pluginDir);
             }
-            else Directory.CreateDirectory(vlcAddonsFolder);
 
-            // If we don't have the YouTube addon OR the file is more than a month old, then let's download it.
-            // This is because YouTube transmission protocols change over time, and VLC developers are quite
-            // keep up by updating their YouTube add-on file.
-            if (youtubeAddonPath == ""
-                || (DateTime.Now - File.GetLastWriteTime(youtubeAddonPath)).TotalDays > 1)
+            // Download yt-dlp if it doesn't exist or is older than 7 days
+            if (!File.Exists(ytDlpPath) || (DateTime.Now - File.GetLastWriteTime(ytDlpPath)).TotalDays > 7)
             {
-                using (var client = new WebClient())
+                try
                 {
-                    client.DownloadFile(YoutubeVlcAddonUrl, vlcAddonsFolder + "\\youtube.luac");
+                    Log.Info($"Downloading yt-dlp to {ytDlpPath}...");
+                    using (var client = new HttpClient())
+                    {
+                        client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0");
+                        var bytes = client.GetByteArrayAsync(YtDlpDownloadUrl).Result;
+                        File.WriteAllBytes(ytDlpPath, bytes);
+                    }
+                    Log.Info("yt-dlp downloaded successfully.");
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("Could not download yt-dlp.", ex);
                 }
             }
+        }
 
-            // All done. Now VLC should be able to play YouTube videos!
+        /// <summary>
+        /// Checks if the given URL is a YouTube URL.
+        /// </summary>
+        public static bool IsYouTubeUrl(string url)
+        {
+            if (string.IsNullOrWhiteSpace(url))
+                return false;
+
+            return url.Contains("youtube.com") || url.Contains("youtu.be");
+        }
+
+        /// <summary>
+        /// Uses yt-dlp to extract the direct video URL(s) from a YouTube link.
+        /// Returns video and audio URLs separately if they are split, or a single URL for combined formats.
+        /// Returns null if yt-dlp fails or is not available.
+        /// </summary>
+        public static (string videoUrl, string audioUrl) GetDirectVideoUrls(string youtubeUrl)
+        {
+            if (!IsYouTubeUrl(youtubeUrl))
+                return (youtubeUrl, null);
+
+            var ytDlpPath = GetYtDlpPath();
+            if (!File.Exists(ytDlpPath))
+            {
+                Log.Warn("yt-dlp not found, falling back to direct URL.");
+                return (youtubeUrl, null);
+            }
+
+            try
+            {
+                var process = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = ytDlpPath,
+                        // Get best video+audio format that's playable by VLC, prefer mp4
+                        // This may return two URLs: one for video, one for audio
+                        Arguments = $"-f \"bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4]/bv*+ba/b\" --get-url \"{youtubeUrl}\"",
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                        CreateNoWindow = true
+                    }
+                };
+
+                process.Start();
+                var output = process.StandardOutput.ReadToEnd().Trim();
+                var error = process.StandardError.ReadToEnd();
+                process.WaitForExit(30000); // 30 second timeout
+
+                if (process.ExitCode == 0 && !string.IsNullOrWhiteSpace(output))
+                {
+                    var urls = output.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (urls.Length >= 2)
+                    {
+                        // First URL is video, second is audio
+                        Log.Debug("Resolved YouTube URL to separate video and audio streams.");
+                        return (urls[0], urls[1]);
+                    }
+                    else if (urls.Length == 1)
+                    {
+                        // Single combined URL
+                        Log.Debug("Resolved YouTube URL to combined stream.");
+                        return (urls[0], null);
+                    }
+                }
+
+                if (!string.IsNullOrWhiteSpace(error) && !error.Contains("WARNING"))
+                {
+                    Log.Warn($"yt-dlp error: {error}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Error running yt-dlp.", ex);
+            }
+
+            return (youtubeUrl, null);
         }
     }
 }
