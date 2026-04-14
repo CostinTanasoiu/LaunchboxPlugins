@@ -15,6 +15,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{1ECA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfTestProject", "WpfTestProject\WpfTestProject.csproj", "{53C14080-C406-4548-A35E-1529061374EC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{604999E3-540C-4397-8C0F-509B69FF52F3}"
+	ProjectSection(SolutionItems) = preProject
+		CLAUDE.md = CLAUDE.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
