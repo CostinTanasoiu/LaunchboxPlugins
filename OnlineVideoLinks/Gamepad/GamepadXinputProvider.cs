@@ -79,11 +79,15 @@ namespace OnlineVideoLinks.Gamepad
                             var previousState = _previousStates[controller.UserIndex];
                             if (previousState.PacketNumber != state.PacketNumber)
                             {
-                                var btnValue = (int)state.Gamepad.Buttons;
-                                if (state.Gamepad.Buttons != GamepadButtonFlags.None)
+                                // Edge detection: only fire for buttons that are newly pressed
+                                var previousButtons = previousState.Gamepad.Buttons;
+                                var currentButtons = state.Gamepad.Buttons;
+                                var newlyPressed = currentButtons & ~previousButtons;
+
+                                if (newlyPressed != GamepadButtonFlags.None)
                                 {
-                                    _log.Info($"XInput pressed button '{state.Gamepad.Buttons}'");
-                                    ButtonPressed?.Invoke(this, new XInputEventArgs(state.Gamepad.Buttons));
+                                    _log.Info($"XInput pressed button '{newlyPressed}'");
+                                    ButtonPressed?.Invoke(this, new XInputEventArgs(newlyPressed));
                                 }
                             }
                         }
