@@ -72,18 +72,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Forms\UserControls\LoadingAnimationControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="Forms\UserControls\PlayerButtonWithBadge.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="Forms\VideoPlayerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="Forms\VideoSelectorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="Forms\UserControls\LoadingAnimationControl.cs" />
+    <Compile Update="Forms\UserControls\PlayerButtonWithBadge.cs" />
+    <Compile Update="Forms\VideoPlayerForm.cs" />
+    <Compile Update="Forms\VideoSelectorForm.cs" />
     <Compile Update="Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

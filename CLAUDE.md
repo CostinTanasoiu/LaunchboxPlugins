@@ -22,6 +22,8 @@ Plugins for the LaunchBox game frontend.
 - Use camelCase for local variable names.
 - Plugin definitions are in the root directory of each plugin project.
 - Each class should have its own file. Do not group multiple classes in a single file.
+- Ask for approval before making a GIT commit.
+- Make sure that all unit tests pass before committing.
 
 ## Resources
 - [LaunchBox Plugin Documentation](https://pluginapi.launchbox-app.com/html/4cf923f7-940c-5735-83de-04107a6ae0e6.htm)

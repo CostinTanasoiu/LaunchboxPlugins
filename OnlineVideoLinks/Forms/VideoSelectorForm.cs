@@ -30,6 +30,10 @@ namespace OnlineVideoLinks.Forms
         // Current video player instance (created fresh for each video)
         private IVideoPlayer _currentPlayer;
 
+        // Flag to indicate the form is ready to process input (set after handle is created in production,
+        // or immediately in tests where forms aren't shown)
+        private bool _isReadyForInput = false;
+
         public VideoSelectorForm(IGame game,
             IGameVideoUtility gameVideoUtilities,
             Func<IVideoPlayer> videoPlayerFactory,
@@ -49,26 +53,39 @@ namespace OnlineVideoLinks.Forms
 
             _gamepadXinputProvider.ButtonPressed += _gamepadXinputProvider_ButtonPressed;
             _gamepadXinputProvider.StartListening();
+
+            // In test scenarios (no handle), enable input immediately
+            // In production, input is enabled after form is shown (in Form_Load)
+            if (!this.IsHandleCreated)
+                _isReadyForInput = true;
         }
 
         private void VideoSelectorForm_Load(object sender, EventArgs e)
         {
             if(PluginHelper.StateManager?.IsBigBox == true)
                 Cursor.Hide();
+
+            // Enable gamepad input processing now that handle is created
+            _isReadyForInput = true;
         }
 
         private void _gamepadXinputProvider_ButtonPressed(object sender, XInputEventArgs e)
         {
+            // Don't process input until form is ready
+            if (!_isReadyForInput || this.IsDisposed)
+                return;
+
             // If form handle is created, marshal to UI thread; otherwise call directly (for tests)
-            if (this.IsHandleCreated && !this.IsDisposed)
+            if (this.IsHandleCreated)
             {
                 Invoke(new Action(() =>
                 {
                     HandleXInput_ButtonPressed(e.ButtonPressed);
                 }));
             }
-            else if (!this.IsDisposed)
+            else
             {
+                // Direct call for tests (no handle, but _isReadyForInput is true)
                 HandleXInput_ButtonPressed(e.ButtonPressed);
             }
         }
