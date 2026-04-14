@@ -8,7 +8,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Unbroken.LaunchBox.Plugins;
 using Unbroken.LaunchBox.Plugins.Data;
 
@@ -72,10 +74,21 @@ namespace OnlineVideoLinks
             _video = video;
         }
 
-        public async void OnSelect(params IGame[] games)
+        public void OnSelect(params IGame[] games)
         {
-            var videoPlayer = new VideoPlayerForm();
-            await videoPlayer.Play(_video);
+            // ActiveX controls (like Windows Media Player) require an STA thread.
+            // BigBox may call this from a non-STA thread, so we create a dedicated STA thread.
+            var video = _video;
+            var staThread = new Thread(() =>
+            {
+                var videoPlayer = new VideoPlayerForm();
+                videoPlayer.PlayerClosed += (s, e) => Application.ExitThread();
+                _ = videoPlayer.Play(video);
+                Application.Run();
+            });
+            staThread.SetApartmentState(ApartmentState.STA);
+            staThread.Start();
+            staThread.Join(); // Wait for the video player to close before returning
         }
     }
 }
