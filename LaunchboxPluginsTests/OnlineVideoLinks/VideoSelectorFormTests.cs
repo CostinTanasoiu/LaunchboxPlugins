@@ -85,7 +85,6 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
                 _gamepadXinputProviderMock.ButtonPressed += Raise.EventWith(null, new XInputEventArgs(button));
 
             // Asserts
-            _gamepadXinputProviderMock.Received(1).StartListening();
             _playerMock.Received(1).Play(dummyVideos[expectedVideoIndex]);
         }
 
@@ -118,7 +117,6 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
                 _gamepadXinputProviderMock.ButtonPressed += Raise.EventWith(null, new XInputEventArgs(button));
 
             // Asserts
-            _gamepadXinputProviderMock.Received(1).StartListening();
             _playerMock.DidNotReceiveWithAnyArgs().Play(Arg.Any<GameVideo>());
         }
 
@@ -157,7 +155,6 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
                 _gamepadXinputProviderMock.ButtonPressed += Raise.EventWith(null, new XInputEventArgs(button));
 
             // Asserts
-            _gamepadXinputProviderMock.Received(1).StartListening();
             _playerMock.ReceivedWithAnyArgs(1).Play(null);
             _playerMock.Received(1).StopPlaying();
         }
@@ -188,7 +185,6 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
                 _gamepadXinputProviderMock.ButtonPressed += Raise.EventWith(null, new XInputEventArgs(button));
 
             // Asserts
-            _gamepadXinputProviderMock.Received(1).StartListening();
             _playerMock.ReceivedWithAnyArgs(1).Play(null);
         }
 
@@ -214,7 +210,6 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
                 _gamepadXinputProviderMock.ButtonPressed += Raise.EventWith(null, new XInputEventArgs(button));
 
             // Asserts
-            _gamepadXinputProviderMock.Received(1).StartListening();
             _playerMock.Received(1).Play(dummyVideos[0]);
             _playerMock.Received(1).StopPlaying();
             _playerMock.Received(1).Play(dummyVideos[3]);

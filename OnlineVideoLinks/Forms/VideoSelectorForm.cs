@@ -30,10 +30,6 @@ namespace OnlineVideoLinks.Forms
         // Current video player instance (created fresh for each video)
         private IVideoPlayer _currentPlayer;
 
-        // Flag to indicate the form is ready to process input (set after handle is created in production,
-        // or immediately in tests where forms aren't shown)
-        private bool _isReadyForInput = false;
-
         public VideoSelectorForm(IGame game,
             IGameVideoUtility gameVideoUtilities,
             Func<IVideoPlayer> videoPlayerFactory,
@@ -52,12 +48,8 @@ namespace OnlineVideoLinks.Forms
             listBoxVideos.SelectedIndex = 0;
 
             _gamepadXinputProvider.ButtonPressed += _gamepadXinputProvider_ButtonPressed;
-            _gamepadXinputProvider.StartListening();
-
-            // In test scenarios (no handle), enable input immediately
-            // In production, input is enabled after form is shown (in Form_Load)
-            if (!this.IsHandleCreated)
-                _isReadyForInput = true;
+            // Don't start listening here - wait until form handle is created (in Load event)
+            // to avoid race condition where gamepad events fire before Application.Run()
         }
 
         private void VideoSelectorForm_Load(object sender, EventArgs e)
@@ -65,27 +57,22 @@ namespace OnlineVideoLinks.Forms
             if(PluginHelper.StateManager?.IsBigBox == true)
                 Cursor.Hide();
 
-            // Enable gamepad input processing now that handle is created
-            _isReadyForInput = true;
+            // Start listening for gamepad input now that form handle is created
+            _gamepadXinputProvider.StartListening();
         }
 
         private void _gamepadXinputProvider_ButtonPressed(object sender, XInputEventArgs e)
         {
-            // Don't process input until form is ready
-            if (!_isReadyForInput || this.IsDisposed)
-                return;
-
             // If form handle is created, marshal to UI thread; otherwise call directly (for tests)
-            if (this.IsHandleCreated)
+            if (this.IsHandleCreated && !this.IsDisposed)
             {
                 Invoke(new Action(() =>
                 {
                     HandleXInput_ButtonPressed(e.ButtonPressed);
                 }));
             }
-            else
+            else if (!this.IsDisposed)
             {
-                // Direct call for tests (no handle, but _isReadyForInput is true)
                 HandleXInput_ButtonPressed(e.ButtonPressed);
             }
         }
