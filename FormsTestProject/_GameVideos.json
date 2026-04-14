@@ -64,6 +64,18 @@
         "StopTime": 0
       },
       {
+        "Title": "Tengen Tetris timestamped",
+        "VideoPath": "https://www.youtube.com/watch?v=qTGg_BppQAQ",
+        "StartTime": 1444,
+        "StopTime": 1467
+      },
+      {
+        "Title": "Journey to Silius timestamped",
+        "VideoPath": "https://youtu.be/14-rnJNXWrU",
+        "StartTime": 612,
+        "StopTime": 694
+      },
+      {
         "Title": "(steam) Pizza Possum Co-Op Trailer",
         "VideoPath": "https://video.fastly.steamstatic.com/store_trailers/256951885/movie_max_vp9.webm?t=1686321338",
         "StartTime": 0,

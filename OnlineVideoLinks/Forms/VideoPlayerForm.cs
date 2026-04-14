@@ -20,11 +20,12 @@ namespace OnlineVideoLinks.Forms
 {
     public partial class VideoPlayerForm : Form, IVideoPlayer
     {
-        const string TempVideoPath = "temp_video.mp4";
         const int SkipFwdSeconds = 15;
         const int SkipBwdSeconds = 15;
         const string LoadingAnimationResource = "OnlineVideoLinks.Resources.loading-animation.gif";
         const int MouseHideDelayMs = 3000;
+
+        string TempVideoPath = $"temp_video_{DateTime.UtcNow.Ticks}.mp4";
 
         private System.Windows.Forms.Timer _progressTimer;
         private System.Windows.Forms.Timer _mouseHideTimer;
@@ -32,6 +33,7 @@ namespace OnlineVideoLinks.Forms
         private CancellationTokenSource _cancellation;
         private bool _isCursorHidden;
         private Point? _lastMousePosition;
+        private GameVideo _video;
 
         public event EventHandler PlayerClosed;
 
@@ -157,6 +159,8 @@ namespace OnlineVideoLinks.Forms
         public async Task Play(GameVideo video)
         {
             lblProgress.Text = "--:-- / --:--";
+
+            _video = video;
 
             this.Show();
 
@@ -331,6 +335,12 @@ namespace OnlineVideoLinks.Forms
                 loadingAnimation.StopAnimation();
                 loadingAnimation.Visible = false;
                 mediaPlayer.OpenStateChange -= MediaPlayer_OpenStateChange;
+
+                // Seek to start time if specified
+                if (_video.StartTime > 0)
+                {
+                    mediaPlayer.Ctlcontrols.currentPosition = _video.StartTime;
+                }
             }
         }
 
@@ -413,13 +423,23 @@ namespace OnlineVideoLinks.Forms
 
         private void ProgressTimer_Tick(object? sender, EventArgs e)
         {
-            var current = TimeSpan.FromSeconds(mediaPlayer.Ctlcontrols.currentPosition);
+            var currentPosition = mediaPlayer.Ctlcontrols.currentPosition;
+            var current = TimeSpan.FromSeconds(currentPosition);
             var currentFormatted = TimespanFormat(current);
+
+            // Check if we've reached the stop time
+            if (_video.StopTime > 0 && currentPosition >= _video.StopTime)
+            {
+                StopPlaying();
+                return;
+            }
 
             // Duration may be 0 for certain formats or while media is still loading
             if (mediaPlayer.currentMedia != null && mediaPlayer.currentMedia.duration > 0)
             {
-                var total = TimeSpan.FromSeconds(mediaPlayer.currentMedia.duration);
+                // If stop time is set, show that as the total instead of full duration
+                var totalSeconds = _video.StopTime > 0 ? _video.StopTime : mediaPlayer.currentMedia.duration;
+                var total = TimeSpan.FromSeconds(totalSeconds);
                 lblProgress.Text = $"{currentFormatted} / {TimespanFormat(total)}";
             }
             else

@@ -17,12 +17,11 @@ namespace OnlineVideoLinks.Utilities
         private static readonly ILog _log = LogManager.GetLogger(nameof(YoutubeDownloader));
         /// <summary>
         /// Gets the path to FFmpeg from LaunchBox's ThirdParty folder.
-        /// Plugin is at: LaunchBox\Plugins\Costin.OnlineVideoLinks
         /// FFmpeg is at: LaunchBox\ThirdParty\FFMPEG\ffmpeg.exe
         /// </summary>
         private static string GetLaunchBoxFFmpegPath()
         {
-            var ffmpegPath = Path.Combine(Environment.CurrentDirectory, "ThirdParty", "FFMPEG", "ffmpeg.exe");
+            var ffmpegPath = Path.Combine(PluginContext.Instance.LaunchBoxRootDirectory, "ThirdParty", "FFMPEG", "ffmpeg.exe");
             return File.Exists(ffmpegPath) ? ffmpegPath : null;
         }
 

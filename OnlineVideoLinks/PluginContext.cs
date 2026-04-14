@@ -23,10 +23,14 @@ namespace OnlineVideoLinks
         public GameVideoUtility VideoUtility { get; }
         public GamepadXinputProvider GamepadInput { get; }
 
+        public string LaunchBoxRootDirectory => Environment.CurrentDirectory;
+
         private PluginContext()
         {
             VideoUtility = new GameVideoUtility();
             GamepadInput = new GamepadXinputProvider();
+
+            
         }
 
         public static void Initialize()

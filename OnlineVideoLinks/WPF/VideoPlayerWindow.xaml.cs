@@ -27,6 +27,8 @@ namespace OnlineVideoLinks.WPF
         private CancellationTokenSource _cancellation;
         private bool _isCursorHidden;
         private Point? _lastMousePosition;
+        private int _startTime;
+        private int _stopTime;
 
         public event EventHandler PlayerClosed;
 
@@ -63,6 +65,10 @@ namespace OnlineVideoLinks.WPF
         public async Task Play(GameVideo video)
         {
             _gameVideo = video;
+
+            // Store start/stop times
+            _startTime = video.StartTime;
+            _stopTime = video.StopTime;
 
             this.Show();
 
@@ -242,6 +248,12 @@ namespace OnlineVideoLinks.WPF
         private void MediaElement_MediaOpened(object sender, RoutedEventArgs e)
         {
             progressBar.Visibility = Visibility.Collapsed;
+
+            // Seek to start time if specified
+            if (_startTime > 0)
+            {
+                mediaElement.Position = TimeSpan.FromSeconds(_startTime);
+            }
         }
 
         private void MediaElement_MediaEnded(object sender, RoutedEventArgs e)
@@ -319,10 +331,21 @@ namespace OnlineVideoLinks.WPF
 
         private void ProgressTimer_Tick(object sender, EventArgs e)
         {
+            var current = mediaElement.Position;
+
+            // Check if we've reached the stop time
+            if (_stopTime > 0 && current.TotalSeconds >= _stopTime)
+            {
+                StopPlaying();
+                return;
+            }
+
             if (mediaElement.NaturalDuration.HasTimeSpan)
             {
-                var current = mediaElement.Position;
-                var total = mediaElement.NaturalDuration.TimeSpan;
+                // If stop time is set, show that as the total instead of full duration
+                var total = _stopTime > 0 
+                    ? TimeSpan.FromSeconds(_stopTime) 
+                    : mediaElement.NaturalDuration.TimeSpan;
                 txtProgress.Text = $"{TimespanFormat(current)} / {TimespanFormat(total)}";
             }
         }
