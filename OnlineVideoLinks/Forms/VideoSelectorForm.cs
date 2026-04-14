@@ -30,6 +30,10 @@ namespace OnlineVideoLinks.Forms
         // Current video player instance (created fresh for each video)
         private IVideoPlayer _currentPlayer;
 
+        // Brief activation guard to prevent input bleed-through from the
+        // A/Enter press that opened this form in BigBox.
+        private bool _isActivating;
+
         public VideoSelectorForm(IGame game,
             IGameVideoUtility gameVideoUtilities,
             Func<IVideoPlayer> videoPlayerFactory,
@@ -59,6 +63,13 @@ namespace OnlineVideoLinks.Forms
 
             // Start listening for gamepad input now that form handle is created
             _gamepadXinputProvider.StartListening();
+
+            // Briefly ignore input to prevent the A/Enter press that opened
+            // this form in BigBox from immediately selecting the first video.
+            _isActivating = true;
+            var activationTimer = new System.Windows.Forms.Timer { Interval = 300 };
+            activationTimer.Tick += (s, ev) => { _isActivating = false; activationTimer.Stop(); activationTimer.Dispose(); };
+            activationTimer.Start();
         }
 
         private void _gamepadXinputProvider_ButtonPressed(object sender, XInputEventArgs e)
@@ -80,6 +91,9 @@ namespace OnlineVideoLinks.Forms
         private void HandleXInput_ButtonPressed(GamepadButtonFlags buttonPressed)
         {
             if (buttonPressed == GamepadButtonFlags.None)
+                return;
+
+            if (_isActivating)
                 return;
 
             // If a player exists and is playing, forward input to it
