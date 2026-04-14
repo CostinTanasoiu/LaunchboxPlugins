@@ -17,12 +17,16 @@ namespace OnlineVideoLinks.WPF
     public partial class VideoPlayerWindow : Window, IVideoPlayer
     {
         const string TempVideoPath = "temp_video.mp4";
+        const int MouseHideDelayMs = 3000;
 
         private GameVideo _gameVideo;
         private DispatcherTimer _progressTimer;
+        private DispatcherTimer _mouseHideTimer;
         private bool _isPlaying;
         private bool _isClosing;
         private CancellationTokenSource _cancellation;
+        private bool _isCursorHidden;
+        private Point? _lastMousePosition;
 
         public event EventHandler PlayerClosed;
 
@@ -40,6 +44,16 @@ namespace OnlineVideoLinks.WPF
                 Interval = TimeSpan.FromMilliseconds(500)
             };
             _progressTimer.Tick += ProgressTimer_Tick;
+
+            // Timer to auto-hide mouse cursor after inactivity
+            _mouseHideTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(MouseHideDelayMs)
+            };
+            _mouseHideTimer.Tick += MouseHideTimer_Tick;
+
+            // Track mouse movement to show/hide cursor
+            this.MouseMove += VideoPlayerWindow_MouseMove;
         }
 
         /// <summary>
@@ -51,6 +65,9 @@ namespace OnlineVideoLinks.WPF
             _gameVideo = video;
 
             this.Show();
+
+            // Start the hide timer (cursor will be hidden in ContentRendered)
+            _mouseHideTimer.Start();
 
             // Show loading indicator
             // TODO
@@ -132,6 +149,10 @@ namespace OnlineVideoLinks.WPF
             _cancellation?.Dispose();
             _cancellation = null;
 
+            // Stop mouse hide timer and restore cursor
+            _mouseHideTimer.Stop();
+            ShowCursor();
+
             _progressTimer.Stop();
             mediaElement.Stop();
             mediaElement.Close();
@@ -155,8 +176,12 @@ namespace OnlineVideoLinks.WPF
         //    }));
         //}
 
-        private async void Window_ContentRendered(object sender, EventArgs e)
+        private void Window_ContentRendered(object sender, EventArgs e)
         {
+            // Hide cursor once window is fully rendered
+            // Initialize last position so first real mouse move will be detected
+            _lastMousePosition = Mouse.GetPosition(this);
+            HideCursor();
         }
 
         private void LoadRegularVideo()
@@ -236,6 +261,10 @@ namespace OnlineVideoLinks.WPF
                 _cancellation?.Dispose();
                 _cancellation = null;
 
+                // Stop mouse hide timer and restore cursor
+                _mouseHideTimer.Stop();
+                ShowCursor();
+
                 _progressTimer.Stop();
                 mediaElement.Stop();
                 mediaElement.Close();
@@ -301,6 +330,51 @@ namespace OnlineVideoLinks.WPF
         private string TimespanFormat(TimeSpan t)
         {
             return t.Hours > 0 ? t.ToString("hh\\:mm\\:ss") : t.ToString("mm\\:ss");
+        }
+
+        private void VideoPlayerWindow_MouseMove(object sender, MouseEventArgs e)
+        {
+            var currentPosition = e.GetPosition(this);
+
+            // Only show cursor if mouse actually moved (not programmatic events)
+            if (_lastMousePosition.HasValue && _lastMousePosition.Value == currentPosition)
+                return;
+
+            _lastMousePosition = currentPosition;
+            ShowCursorTemporarily();
+        }
+
+        private void ShowCursorTemporarily()
+        {
+            ShowCursor();
+
+            // Restart the hide timer
+            _mouseHideTimer.Stop();
+            _mouseHideTimer.Start();
+        }
+
+        private void ShowCursor()
+        {
+            if (_isCursorHidden)
+            {
+                Mouse.OverrideCursor = null;
+                _isCursorHidden = false;
+            }
+        }
+
+        private void HideCursor()
+        {
+            if (!_isCursorHidden)
+            {
+                Mouse.OverrideCursor = Cursors.None;
+                _isCursorHidden = true;
+            }
+        }
+
+        private void MouseHideTimer_Tick(object sender, EventArgs e)
+        {
+            _mouseHideTimer.Stop();
+            HideCursor();
         }
     }
 }

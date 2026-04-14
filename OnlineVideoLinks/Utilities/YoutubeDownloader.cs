@@ -99,8 +99,10 @@ namespace OnlineVideoLinks.Utilities
             {
                 throw; // Re-throw cancellation exceptions
             }
-            catch
+            catch (Exception ex)
             {
+                _log.Warn($"Failed to download and mux video '{videoUrl}' with FFmpeg. Falling back to muxed stream URL. Error: {ex.Message}");
+
                 // Fall back to muxed stream URL (720p max, no download)
                 return await GetMuxedStreamUrl(videoUrl, cancellationToken);
             }

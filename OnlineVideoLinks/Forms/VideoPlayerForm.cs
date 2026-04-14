@@ -24,10 +24,14 @@ namespace OnlineVideoLinks.Forms
         const int SkipFwdSeconds = 15;
         const int SkipBwdSeconds = 15;
         const string LoadingAnimationResource = "OnlineVideoLinks.Resources.loading-animation.gif";
+        const int MouseHideDelayMs = 3000;
 
         private System.Windows.Forms.Timer _progressTimer;
+        private System.Windows.Forms.Timer _mouseHideTimer;
         private bool _isClosing;
         private CancellationTokenSource _cancellation;
+        private bool _isCursorHidden;
+        private Point? _lastMousePosition;
 
         public event EventHandler PlayerClosed;
 
@@ -58,6 +62,17 @@ namespace OnlineVideoLinks.Forms
 
             // Load the loading animation from embedded resource
             loadingAnimation.LoadFromEmbeddedResource(LoadingAnimationResource);
+
+            // Timer to auto-hide mouse cursor after inactivity
+            _mouseHideTimer = new System.Windows.Forms.Timer
+            {
+                Interval = MouseHideDelayMs
+            };
+            _mouseHideTimer.Tick += MouseHideTimer_Tick;
+
+            // Track mouse movement to show/hide cursor
+            this.MouseMove += VideoPlayerForm_MouseMove;
+            mediaPlayer.MouseMoveEvent += MediaPlayer_MouseMoveEvent;
         }
 
         private void VideoPlayerForm_Resize(object? sender, EventArgs e)
@@ -88,11 +103,68 @@ namespace OnlineVideoLinks.Forms
                 (this.ClientSize.Height - flowLayoutPanel1.Height - loadingAnimation.Height) / 2);
         }
 
+        private void VideoPlayerForm_MouseMove(object sender, MouseEventArgs e)
+        {
+            HandleMouseMove();
+        }
+
+        private void MediaPlayer_MouseMoveEvent(object sender, AxWMPLib._WMPOCXEvents_MouseMoveEvent e)
+        {
+            HandleMouseMove();
+        }
+
+        private void HandleMouseMove()
+        {
+            // Use screen coordinates for consistent comparison
+            var currentPosition = System.Windows.Forms.Cursor.Position;
+
+            // Only show cursor if mouse actually moved (not programmatic events)
+            if (_lastMousePosition.HasValue && _lastMousePosition.Value == currentPosition)
+                return;
+
+            _lastMousePosition = currentPosition;
+            ShowCursorTemporarily();
+        }
+
+        private void ShowCursorTemporarily()
+        {
+            if (_isCursorHidden)
+            {
+                Cursor.Show();
+                _isCursorHidden = false;
+            }
+
+            // Restart the hide timer
+            _mouseHideTimer.Stop();
+            _mouseHideTimer.Start();
+        }
+
+        private void HideCursor()
+        {
+            if (!_isCursorHidden)
+            {
+                Cursor.Hide();
+                _isCursorHidden = true;
+            }
+        }
+
+        private void MouseHideTimer_Tick(object sender, EventArgs e)
+        {
+            _mouseHideTimer.Stop();
+            HideCursor();
+        }
+
         public async Task Play(GameVideo video)
         {
             lblProgress.Text = "--:-- / --:--";
 
             this.Show();
+
+            // Hide cursor and start the hide timer
+            // Reset last position so first mouse move will be detected
+            _lastMousePosition = System.Windows.Forms.Cursor.Position;
+            HideCursor();
+            _mouseHideTimer.Start();
 
             // Show loading indicator
             loadingAnimation.Visible = true;
@@ -220,6 +292,14 @@ namespace OnlineVideoLinks.Forms
             _cancellation?.Dispose();
             _cancellation = null;
 
+            // Stop mouse hide timer and restore cursor
+            _mouseHideTimer.Stop();
+            if (_isCursorHidden)
+            {
+                Cursor.Show();
+                _isCursorHidden = false;
+            }
+
             _progressTimer.Stop();
             loadingAnimation.StopAnimation();
             loadingAnimation.Visible = false;
@@ -265,6 +345,14 @@ namespace OnlineVideoLinks.Forms
                 _cancellation?.Cancel();
                 _cancellation?.Dispose();
                 _cancellation = null;
+
+                // Stop mouse hide timer and restore cursor
+                _mouseHideTimer.Stop();
+                if (_isCursorHidden)
+                {
+                    Cursor.Show();
+                    _isCursorHidden = false;
+                }
 
                 _progressTimer.Stop();
                 loadingAnimation.StopAnimation();
