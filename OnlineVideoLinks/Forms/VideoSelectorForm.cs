@@ -59,15 +59,17 @@ namespace OnlineVideoLinks.Forms
 
         private void _gamepadXinputProvider_ButtonPressed(object sender, XInputEventArgs e)
         {
-            if (this.IsHandleCreated)
-                Invoke(new Action(() =>
-                {
-                    HandleXInput_ButtonPressed(e.ButtonPressed);
-                }));
-            else HandleXInput_ButtonPressed(e.ButtonPressed);
+            // Ignore input if form handle isn't created yet or form is disposed
+            if (!this.IsHandleCreated || this.IsDisposed)
+                return;
+
+            Invoke(new Action(() =>
+            {
+                HandleXInput_ButtonPressed(e.ButtonPressed);
+            }));
         }
 
-        private async void HandleXInput_ButtonPressed(GamepadButtonFlags buttonPressed)
+        private void HandleXInput_ButtonPressed(GamepadButtonFlags buttonPressed)
         {
             if (buttonPressed == GamepadButtonFlags.None)
                 return;
@@ -86,10 +88,17 @@ namespace OnlineVideoLinks.Forms
             {
                 case GamepadButtonFlags.A:
                     var selectedVideo = listBoxVideos.SelectedItem as GameVideo;
-                    // Create a new player instance for this video
-                    _currentPlayer = _videoPlayerFactory();
-                    _currentPlayer.PlayerClosed += (s, e) => _currentPlayer = null;
-                    await _currentPlayer.Play(selectedVideo);
+                    if (selectedVideo == null)
+                        return;
+
+                    // Always create video player on UI thread (required for ActiveX controls).
+                    // Use Invoke to ensure this regardless of which thread called this method.
+                    this.Invoke(() =>
+                    {
+                        _currentPlayer = _videoPlayerFactory();
+                        _currentPlayer.PlayerClosed += (s, e) => _currentPlayer = null;
+                        _ = _currentPlayer.Play(selectedVideo);
+                    });
                     break;
                 case GamepadButtonFlags.B:
                     this.Close();

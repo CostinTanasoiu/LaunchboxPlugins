@@ -25,9 +25,10 @@ namespace OnlineVideoLinks.Gamepad
         ILog _log = LogManager.GetLogger(nameof(GamepadXinputProvider));
         Controller[] _controllers;
         Dictionary<UserIndex, State> _previousStates = new Dictionary<UserIndex, State>();
-        Timer timer;
+        Timer? _timer;
+        private readonly object _timerLock = new object();
 
-        public event EventHandler<XInputEventArgs> ButtonPressed;
+        public event EventHandler<XInputEventArgs>? ButtonPressed;
 
         public bool IsGamepadConnected
         {
@@ -54,7 +55,13 @@ namespace OnlineVideoLinks.Gamepad
         /// </summary>
         public void StartListening()
         {
-            timer = new Timer(new TimerCallback(TimerTick), null, 0, 100);
+            lock (_timerLock)
+            {
+                // Dispose existing timer if any, then create a new one
+                _timer?.Dispose();
+                _timer = new Timer(new TimerCallback(TimerTick), null, 0, 100);
+                _log.Info("Gamepad listening started.");
+            }
         }
 
         /// <summary>
@@ -62,10 +69,15 @@ namespace OnlineVideoLinks.Gamepad
         /// </summary>
         public void StopListening()
         {
-            timer.Dispose();
+            lock (_timerLock)
+            {
+                _timer?.Dispose();
+                _timer = null;
+                _log.Info("Gamepad listening stopped.");
+            }
         }
 
-        private void TimerTick(object timerState)
+        private void TimerTick(object? timerState)
         {
             try
             {
@@ -98,7 +110,7 @@ namespace OnlineVideoLinks.Gamepad
             }
             catch (Exception ex)
             {
-                timer.Dispose();
+                // Log the error but don't stop the timer - allow recovery
                 _log.Error("XInput tick error", ex);
             }
         }
