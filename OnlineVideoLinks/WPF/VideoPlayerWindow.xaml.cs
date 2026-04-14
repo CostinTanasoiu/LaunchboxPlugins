@@ -3,6 +3,7 @@ using OnlineVideoLinks.Utilities;
 using SharpDX.XInput;
 using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -21,6 +22,7 @@ namespace OnlineVideoLinks.WPF
         private DispatcherTimer _progressTimer;
         private bool _isPlaying;
         private bool _isClosing;
+        private CancellationTokenSource _cancellation;
 
         public event EventHandler PlayerClosed;
 
@@ -54,10 +56,25 @@ namespace OnlineVideoLinks.WPF
             // TODO
             progressBar.Visibility = Visibility.Visible;
 
-            if (VideoMetadataUtilities.IsYoutubeUrl(_gameVideo.VideoPath))
-                await LoadYoutubeVideo();
-            else
-                LoadRegularVideo();
+            // Create cancellation token for this load operation
+            _cancellation = new CancellationTokenSource();
+
+            try
+            {
+                if (VideoMetadataUtilities.IsYoutubeUrl(_gameVideo.VideoPath))
+                    await LoadYoutubeVideo(_cancellation.Token);
+                else
+                    LoadRegularVideo();
+            }
+            catch (OperationCanceledException)
+            {
+                // Loading was cancelled, window is closing
+                return;
+            }
+
+            // Check if window was closed during loading
+            if (_isClosing)
+                return;
         }
 
         /// <summary>
@@ -109,6 +126,12 @@ namespace OnlineVideoLinks.WPF
                 return;
 
             _isClosing = true;
+
+            // Cancel any ongoing download
+            _cancellation?.Cancel();
+            _cancellation?.Dispose();
+            _cancellation = null;
+
             _progressTimer.Stop();
             mediaElement.Stop();
             mediaElement.Close();
@@ -162,9 +185,9 @@ namespace OnlineVideoLinks.WPF
             _progressTimer.Start();
         }
 
-        private async Task LoadYoutubeVideo()
+        private async Task LoadYoutubeVideo(CancellationToken cancellationToken)
         {
-            var videoPath = await YoutubeDownloader.GetPlayableVideoPath(_gameVideo.VideoPath, TempVideoPath);
+            var videoPath = await YoutubeDownloader.GetPlayableVideoPath(_gameVideo.VideoPath, TempVideoPath, cancellationToken);
 
             mediaElement.Source = new Uri(videoPath);
             mediaElement.Play();
@@ -207,6 +230,12 @@ namespace OnlineVideoLinks.WPF
             if (!_isClosing)
             {
                 _isClosing = true;
+
+                // Cancel any ongoing download
+                _cancellation?.Cancel();
+                _cancellation?.Dispose();
+                _cancellation = null;
+
                 _progressTimer.Stop();
                 mediaElement.Stop();
                 mediaElement.Close();

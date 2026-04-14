@@ -2,6 +2,7 @@ using log4net;
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using YoutubeExplode;
 using YoutubeExplode.Converter;
@@ -28,10 +29,10 @@ namespace OnlineVideoLinks.Utilities
         /// <summary>
         /// Gets the direct URL for a muxed YouTube stream (up to 720p, no download required).
         /// </summary>
-        public static async Task<string> GetMuxedStreamUrl(string videoUrl)
+        public static async Task<string> GetMuxedStreamUrl(string videoUrl, CancellationToken cancellationToken = default)
         {
             var youtube = new YoutubeClient();
-            var streamManifest = await youtube.Videos.Streams.GetManifestAsync(videoUrl);
+            var streamManifest = await youtube.Videos.Streams.GetManifestAsync(videoUrl, cancellationToken);
 
             // Get best muxed stream (contains both audio and video, max 720p)
             var muxedStream = streamManifest
@@ -47,14 +48,14 @@ namespace OnlineVideoLinks.Utilities
         /// Downloads and muxes the best quality audio and video streams into a single MP4 file.
         /// Uses LaunchBox's FFmpeg installation.
         /// </summary>
-        public static async Task DownloadBestQualityMP4(string videoUrl, string outputFilePath)
+        public static async Task DownloadBestQualityMP4(string videoUrl, string outputFilePath, CancellationToken cancellationToken = default)
         {
             var ffmpegPath = GetLaunchBoxFFmpegPath();
             if (ffmpegPath == null)
                 throw new FileNotFoundException("FFmpeg not found in LaunchBox ThirdParty folder");
 
             var youtube = new YoutubeClient();
-            var streamManifest = await youtube.Videos.Streams.GetManifestAsync(videoUrl);
+            var streamManifest = await youtube.Videos.Streams.GetManifestAsync(videoUrl, cancellationToken);
 
             // Select best audio stream (highest bitrate)
             var audioStreamInfo = streamManifest
@@ -78,7 +79,7 @@ namespace OnlineVideoLinks.Utilities
             var conversionRequest = new ConversionRequestBuilder(outputFilePath)
                 .SetFFmpegPath(ffmpegPath)
                 .Build();
-            await youtube.Videos.DownloadAsync(streamInfos, conversionRequest);
+            await youtube.Videos.DownloadAsync(streamInfos, conversionRequest, cancellationToken: cancellationToken);
             _log.Info($"Downloaded and muxed video to: {outputFilePath}");
         }
 
@@ -86,18 +87,22 @@ namespace OnlineVideoLinks.Utilities
         /// Gets a playable video path or URL for a YouTube video.
         /// Tries to download best quality first, falls back to muxed stream URL (720p max).
         /// </summary>
-        public static async Task<string> GetPlayableVideoPath(string videoUrl, string outputFilePath)
+        public static async Task<string> GetPlayableVideoPath(string videoUrl, string outputFilePath, CancellationToken cancellationToken = default)
         {
             try
             {
                 // Try to download best quality with FFmpeg muxing
-                await DownloadBestQualityMP4(videoUrl, outputFilePath);
+                await DownloadBestQualityMP4(videoUrl, outputFilePath, cancellationToken);
                 return Path.GetFullPath(outputFilePath);
+            }
+            catch (OperationCanceledException)
+            {
+                throw; // Re-throw cancellation exceptions
             }
             catch
             {
                 // Fall back to muxed stream URL (720p max, no download)
-                return await GetMuxedStreamUrl(videoUrl);
+                return await GetMuxedStreamUrl(videoUrl, cancellationToken);
             }
         }
     }

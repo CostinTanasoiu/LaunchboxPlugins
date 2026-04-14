@@ -14,6 +14,7 @@ using System.Windows.Forms;
 using System.Windows.Media;
 using OnlineVideoLinks.Models;
 using System.IO;
+using System.Threading;
 
 namespace OnlineVideoLinks.Forms
 {
@@ -24,8 +25,9 @@ namespace OnlineVideoLinks.Forms
         const int SkipBwdSeconds = 15;
         const string LoadingAnimationResource = "OnlineVideoLinks.Resources.loading-animation.gif";
 
-        private Timer _progressTimer;
+        private System.Windows.Forms.Timer _progressTimer;
         private bool _isClosing;
+        private CancellationTokenSource _cancellation;
 
         public event EventHandler PlayerClosed;
 
@@ -48,7 +50,7 @@ namespace OnlineVideoLinks.Forms
             this.Shown += (s, e) => VideoPlayerForm_Resize(s, e); // Recalculate when form is shown
 
             // Timer to update progress display
-            _progressTimer = new Timer
+            _progressTimer = new System.Windows.Forms.Timer
             {
                 Interval = 500
             };
@@ -105,11 +107,26 @@ namespace OnlineVideoLinks.Forms
             mediaPlayer.OpenStateChange += MediaPlayer_OpenStateChange;
             mediaPlayer.PlayStateChange += MediaPlayer_PlayStateChange;
 
-            //mediaPlayer.URL = video.VideoPath;
-            if (VideoMetadataUtilities.IsYoutubeUrl(video.VideoPath))
-                await LoadYoutubeVideo(video.VideoPath);
-            else
-                LoadRegularVideo(video.VideoPath);
+            // Create cancellation token for this load operation
+            _cancellation = new CancellationTokenSource();
+
+            try
+            {
+                //mediaPlayer.URL = video.VideoPath;
+                if (VideoMetadataUtilities.IsYoutubeUrl(video.VideoPath))
+                    await LoadYoutubeVideo(video.VideoPath, _cancellation.Token);
+                else
+                    LoadRegularVideo(video.VideoPath);
+            }
+            catch (OperationCanceledException)
+            {
+                // Loading was cancelled, form is closing
+                return;
+            }
+
+            // Check if form was closed during loading
+            if (_isClosing)
+                return;
 
             mediaPlayer.settings.volume = 50; // Set volume to 50%
             mediaPlayer.settings.mute = false;
@@ -142,9 +159,9 @@ namespace OnlineVideoLinks.Forms
             mediaPlayer.URL = mediaUri.ToString();
         }
 
-        private async Task LoadYoutubeVideo(string videoPath)
+        private async Task LoadYoutubeVideo(string videoPath, CancellationToken cancellationToken)
         {
-            var playablePath = await YoutubeDownloader.GetPlayableVideoPath(videoPath, TempVideoPath);
+            var playablePath = await YoutubeDownloader.GetPlayableVideoPath(videoPath, TempVideoPath, cancellationToken);
             mediaPlayer.URL = playablePath;
         }
 
@@ -197,6 +214,12 @@ namespace OnlineVideoLinks.Forms
                 return;
 
             _isClosing = true;
+
+            // Cancel any ongoing download
+            _cancellation?.Cancel();
+            _cancellation?.Dispose();
+            _cancellation = null;
+
             _progressTimer.Stop();
             loadingAnimation.StopAnimation();
             loadingAnimation.Visible = false;
@@ -237,6 +260,12 @@ namespace OnlineVideoLinks.Forms
             if (!_isClosing)
             {
                 _isClosing = true;
+
+                // Cancel any ongoing download
+                _cancellation?.Cancel();
+                _cancellation?.Dispose();
+                _cancellation = null;
+
                 _progressTimer.Stop();
                 loadingAnimation.StopAnimation();
                 mediaPlayer.OpenStateChange -= MediaPlayer_OpenStateChange;
