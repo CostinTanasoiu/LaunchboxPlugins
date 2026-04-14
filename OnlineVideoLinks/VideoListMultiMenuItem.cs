@@ -20,6 +20,10 @@ namespace OnlineVideoLinks
     {
         public IEnumerable<IGameMenuItem> GetMenuItems(params IGame[] selectedGames)
         {
+            // We only want this for one selected game
+            if(selectedGames.Length != 1)
+                return Enumerable.Empty<IGameMenuItem>();
+
             var menuItems = new List<IGameMenuItem>();
             foreach (var game in selectedGames)
             {
@@ -32,6 +36,9 @@ namespace OnlineVideoLinks
                     menuItems.Add(menuItem);
                 }
             }
+
+            if (menuItems.Count == 0)
+                return Enumerable.Empty<IGameMenuItem>();
 
             var parentMenuItem = new ParentMenuItem
             {
@@ -54,6 +61,24 @@ namespace OnlineVideoLinks
 
         public void OnSelect(params IGame[] games)
         {
+            if (PluginHelper.StateManager.IsBigBox && games.Length == 1)
+            {
+                // ActiveX controls (like Windows Media Player) require an STA thread.
+                // BigBox may call this from a non-STA thread, so we create a dedicated STA thread.
+                // Don't use Join() - let the thread run independently so the menu can close.
+                var game = games[0];
+                var staThread = new Thread(() =>
+                {
+                    var form = new VideoSelectorForm(
+                        game,
+                        PluginContext.Instance.VideoUtility,
+                        () => new VideoPlayerForm(),
+                        PluginContext.Instance.GamepadInput);
+                    Application.Run(form);
+                });
+                staThread.SetApartmentState(ApartmentState.STA);
+                staThread.Start();
+            }
         }
     }
 
@@ -78,6 +103,7 @@ namespace OnlineVideoLinks
         {
             // ActiveX controls (like Windows Media Player) require an STA thread.
             // BigBox may call this from a non-STA thread, so we create a dedicated STA thread.
+            // Don't use Join() - let the thread run independently so the menu can close.
             var video = _video;
             var staThread = new Thread(() =>
             {
@@ -88,7 +114,6 @@ namespace OnlineVideoLinks
             });
             staThread.SetApartmentState(ApartmentState.STA);
             staThread.Start();
-            staThread.Join(); // Wait for the video player to close before returning
         }
     }
 }

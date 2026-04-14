@@ -59,14 +59,18 @@ namespace OnlineVideoLinks.Forms
 
         private void _gamepadXinputProvider_ButtonPressed(object sender, XInputEventArgs e)
         {
-            // Ignore input if form handle isn't created yet or form is disposed
-            if (!this.IsHandleCreated || this.IsDisposed)
-                return;
-
-            Invoke(new Action(() =>
+            // If form handle is created, marshal to UI thread; otherwise call directly (for tests)
+            if (this.IsHandleCreated && !this.IsDisposed)
+            {
+                Invoke(new Action(() =>
+                {
+                    HandleXInput_ButtonPressed(e.ButtonPressed);
+                }));
+            }
+            else if (!this.IsDisposed)
             {
                 HandleXInput_ButtonPressed(e.ButtonPressed);
-            }));
+            }
         }
 
         private void HandleXInput_ButtonPressed(GamepadButtonFlags buttonPressed)
@@ -91,14 +95,23 @@ namespace OnlineVideoLinks.Forms
                     if (selectedVideo == null)
                         return;
 
-                    // Always create video player on UI thread (required for ActiveX controls).
-                    // Use Invoke to ensure this regardless of which thread called this method.
-                    this.Invoke(() =>
+                    // Create video player - use Invoke only if handle is created (for thread safety)
+                    // Otherwise call directly (tests or same-thread scenarios)
+                    if (this.IsHandleCreated)
+                    {
+                        this.Invoke(() =>
+                        {
+                            _currentPlayer = _videoPlayerFactory();
+                            _currentPlayer.PlayerClosed += (s, e) => _currentPlayer = null;
+                            _ = _currentPlayer.Play(selectedVideo);
+                        });
+                    }
+                    else
                     {
                         _currentPlayer = _videoPlayerFactory();
                         _currentPlayer.PlayerClosed += (s, e) => _currentPlayer = null;
                         _ = _currentPlayer.Play(selectedVideo);
-                    });
+                    }
                     break;
                 case GamepadButtonFlags.B:
                     this.Close();
