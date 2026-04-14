@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace OnlineVideoLinks.Utilities
+namespace OnlineVideoLinks.Gamepad
 {
     public interface IGamepadXinputProvider
     {
@@ -25,9 +25,10 @@ namespace OnlineVideoLinks.Utilities
         ILog _log = LogManager.GetLogger(nameof(GamepadXinputProvider));
         Controller[] _controllers;
         Dictionary<UserIndex, State> _previousStates = new Dictionary<UserIndex, State>();
-        Timer timer;
+        Timer? _timer;
+        private readonly object _timerLock = new object();
 
-        public event EventHandler<XInputEventArgs> ButtonPressed;
+        public event EventHandler<XInputEventArgs>? ButtonPressed;
 
         public bool IsGamepadConnected
         {
@@ -54,7 +55,13 @@ namespace OnlineVideoLinks.Utilities
         /// </summary>
         public void StartListening()
         {
-            timer = new Timer(new TimerCallback(TimerTick), null, 0, 100);
+            lock (_timerLock)
+            {
+                // Dispose existing timer if any, then create a new one
+                _timer?.Dispose();
+                _timer = new Timer(new TimerCallback(TimerTick), null, 0, 100);
+                _log.Info("Gamepad listening started.");
+            }
         }
 
         /// <summary>
@@ -62,10 +69,15 @@ namespace OnlineVideoLinks.Utilities
         /// </summary>
         public void StopListening()
         {
-            timer.Dispose();
+            lock (_timerLock)
+            {
+                _timer?.Dispose();
+                _timer = null;
+                _log.Info("Gamepad listening stopped.");
+            }
         }
 
-        private void TimerTick(object timerState)
+        private void TimerTick(object? timerState)
         {
             try
             {
@@ -79,10 +91,16 @@ namespace OnlineVideoLinks.Utilities
                             var previousState = _previousStates[controller.UserIndex];
                             if (previousState.PacketNumber != state.PacketNumber)
                             {
-                                var btnValue = (int)state.Gamepad.Buttons;
-                                _log.Info($"XInput pressed button '{state.Gamepad.Buttons}'");
+                                // Edge detection: only fire for buttons that are newly pressed
+                                var previousButtons = previousState.Gamepad.Buttons;
+                                var currentButtons = state.Gamepad.Buttons;
+                                var newlyPressed = currentButtons & ~previousButtons;
 
-                                ButtonPressed?.Invoke(this, new XInputEventArgs(state.Gamepad.Buttons));
+                                if (newlyPressed != GamepadButtonFlags.None)
+                                {
+                                    _log.Info($"XInput pressed button '{newlyPressed}'");
+                                    ButtonPressed?.Invoke(this, new XInputEventArgs(newlyPressed));
+                                }
                             }
                         }
 
@@ -92,7 +110,7 @@ namespace OnlineVideoLinks.Utilities
             }
             catch (Exception ex)
             {
-                timer.Dispose();
+                // Log the error but don't stop the timer - allow recovery
                 _log.Error("XInput tick error", ex);
             }
         }

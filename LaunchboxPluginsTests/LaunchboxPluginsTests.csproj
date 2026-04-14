@@ -27,7 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="OnlineVideoLinks\Assets\jellyfish.mp4">
+    <None Update="OnlineVideoLinks\Assets\jellyfish_9s.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="OnlineVideoLinks\Assets\turtle_960x540_30s.mp4">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

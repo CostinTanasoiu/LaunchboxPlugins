@@ -3,12 +3,14 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net9.0-windows7.0</TargetFramework>
-    <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BulkGenreEditor\BulkGenreEditor.csproj" />
+    <PackageReference Include="MaterialDesignThemes" Version="3.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\LaunchboxPluginsTests\LaunchboxPluginsTests.csproj" />
     <ProjectReference Include="..\OnlineVideoLinks\OnlineVideoLinks.csproj" />
   </ItemGroup>

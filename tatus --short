@@ -1,0 +1,14 @@
+FormsTestProject/Program.cs
+LaunchboxPluginsTests/OnlineVideoLinks/VideoManagerFormTests.cs
+LaunchboxPluginsTests/OnlineVideoLinks/VideoSelectorFormTests.cs
+OnlineVideoLinks/Forms/VideoManagerForm.cs
+OnlineVideoLinks/Forms/VideoPlayerForm.cs
+OnlineVideoLinks/Forms/VideoSelectorForm.cs
+OnlineVideoLinks/PluginContext.cs
+OnlineVideoLinks/Utilities/IVideoPlayerPanel.cs
+OnlineVideoLinks/VideoItemGameMenuItem.cs
+OnlineVideoLinks/VideoListMultiMenuItem.cs
+OnlineVideoLinks/VideoManagerGameMenuItem.cs
+OnlineVideoLinks/WPF/VideoPlayerWindow.xaml.cs
+OnlineVideoLinks/WPF/VideoSelectorWindow.xaml.cs
+WpfTestProject/App.xaml.cs

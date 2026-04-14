@@ -37,11 +37,12 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
         [Fact]
         public void CanImportAndExportAppDetails()
         {
+            // Use a non-YouTube URL to avoid yt-dlp resolution in tests
             var additionalAppDummy = new AdditionalApplicationMock
             {
                 ApplicationPath = VlcUtilities.GetVlcExecutablePath(),
                 Name = "Video: Presentation",
-                CommandLine = "-f --start-time=337 --stop-time=387 https://youtu.be/q_7KUC6CY6Q"
+                CommandLine = "-f --start-time=337 --stop-time=387 https://example.com/video.mp4"
             };
 
             var gameMock = Substitute.For<IGame>();
@@ -53,8 +54,10 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
 
             Assert.Equal(additionalAppDummy.ApplicationPath, exportedApp.ApplicationPath);
             Assert.Equal(additionalAppDummy.Name, exportedApp.Name);
-            Assert.Equal("-f --qt-start-minimized --qt-notification=0 --play-and-exit --start-time=337 --stop-time=387 https://youtu.be/q_7KUC6CY6Q",
-                exportedApp.CommandLine);
+            Assert.Contains("--start-time=337", exportedApp.CommandLine);
+            Assert.Contains("--stop-time=387", exportedApp.CommandLine);
+            Assert.Contains("https://example.com/video.mp4", exportedApp.CommandLine);
+            Assert.Contains("--meta-title=\"Presentation\"", exportedApp.CommandLine);
         }
 
         [Theory]

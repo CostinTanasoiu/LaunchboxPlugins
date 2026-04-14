@@ -1,6 +1,8 @@
 ﻿using log4net;
 using OnlineVideoLinks.Database;
 using OnlineVideoLinks.Models;
+using OnlineVideoLinks.WPF;
+using SharpDX.XInput;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,20 +15,12 @@ namespace OnlineVideoLinks.Utilities
 {
     public interface IGameVideoUtility
     {
-        GameVideo CurrentlyPlayingVideo { get; set; }
         GameVideo[] GetGameVideos(IGame game);
-        bool IsPlaying();
-        void Play(GameVideo video);
-        void StopPlaying();
     }
 
     public class GameVideoUtility : IGameVideoUtility
     {
         ILog _log = LogManager.GetLogger(nameof(GameVideoUtility));
-
-        private Process _playingProcess;
-
-        public GameVideo CurrentlyPlayingVideo { get; set; }
 
         /// <summary>
         /// Checks whether a game has videos.
@@ -54,51 +48,6 @@ namespace OnlineVideoLinks.Utilities
                 gameVideos.Add(entry.ToGameVideo(game.Id));
             }
             return gameVideos.ToArray();
-        }
-
-        /// <summary>
-        /// Plays this video.
-        /// </summary>
-        public void Play(GameVideo video)
-        {
-            var vlcExecutable = VlcUtilities.GetVlcExecutablePath();
-            var cmdArgs = video.GetVlcCmdArguments();
-            _playingProcess = Process.Start(new ProcessStartInfo
-            {
-                FileName = vlcExecutable,
-                Arguments = cmdArgs,
-                UseShellExecute = false,
-                RedirectStandardInput = true
-            });
-
-            CurrentlyPlayingVideo = video;
-
-            //Thread.Sleep(5000);
-            //_playingProcess.StandardInput.Write(" ");
-        }
-
-        /// <summary>
-        /// Stops playing the video.
-        /// </summary>
-        public void StopPlaying()
-        {
-            if (_playingProcess != null)
-            {
-                //_playingProcess.Kill();
-                _playingProcess.CloseMainWindow();
-                _playingProcess.Close();
-                _playingProcess = null;
-
-                CurrentlyPlayingVideo = null;
-            }
-        }
-
-        /// <summary>
-        /// Checks whether this video is currently playing.
-        /// </summary>
-        public bool IsPlaying()
-        {
-            return _playingProcess != null && !_playingProcess.HasExited;
         }
     }
 }

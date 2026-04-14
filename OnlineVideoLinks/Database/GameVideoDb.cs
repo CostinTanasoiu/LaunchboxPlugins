@@ -33,7 +33,7 @@ namespace OnlineVideoLinks.Database
     /// </summary>
     public class GameVideoDb
     {
-        private const string FileName = "GameVideos.json";
+        private const string FileName = "_GameVideos.json";
         private readonly string _filePath;
         private Dictionary<string, GameDataEntry> _database;
 

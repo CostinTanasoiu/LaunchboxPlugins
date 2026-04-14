@@ -1,0 +1,567 @@
+﻿using OnlineVideoLinks.Utilities;
+using SharpDX.DirectInput;
+using SharpDX.XInput;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Forms;
+using System.Windows.Media;
+using OnlineVideoLinks.Models;
+using System.IO;
+using System.Threading;
+using log4net;
+
+namespace OnlineVideoLinks.Forms
+{
+    public partial class VideoPlayerForm : Form, IVideoPlayer
+    {
+        private static ILog _log;
+        private static ILog Log => _log ??= LogManager.GetLogger(nameof(VideoPlayerForm));
+
+        const int SkipFwdSeconds = 15;
+        const int SkipBwdSeconds = 15;
+        const string LoadingAnimationResource = "OnlineVideoLinks.Resources.loading-animation.gif";
+        const int MouseHideDelayMs = 3000;
+
+        string TempVideoPath = $"temp_video_{DateTime.UtcNow.Ticks}.mp4";
+
+        private System.Windows.Forms.Timer _progressTimer;
+        private System.Windows.Forms.Timer _mouseHideTimer;
+        private bool _isClosing;
+        private bool _isLoading;
+        private CancellationTokenSource _cancellation;
+        private bool _isCursorHidden;
+        private Point? _lastMousePosition;
+        private GameVideo _video;
+
+        public event EventHandler PlayerClosed;
+
+        public bool IsPlaying => mediaPlayer.playState == WMPLib.WMPPlayState.wmppsPlaying;
+        public bool IsVisible => Visible;
+
+        public VideoPlayerForm()
+        {
+            InitializeComponent();
+
+            // Removing the border to make the form look full-screen
+            this.FormBorderStyle = FormBorderStyle.None;
+
+            // This ensures the form will receive all key events before any control on the form receives them.
+            this.KeyPreview = true;
+
+            // Ensure progress label is on top and positioned correctly
+            lblProgress.BringToFront();
+            this.Resize += VideoPlayerForm_Resize;
+            this.Shown += (s, e) => VideoPlayerForm_Resize(s, e); // Recalculate when form is shown
+
+            // Timer to update progress display
+            _progressTimer = new System.Windows.Forms.Timer
+            {
+                Interval = 500
+            };
+            _progressTimer.Tick += ProgressTimer_Tick;
+
+            // Load the loading animation from embedded resource
+            loadingAnimation.LoadFromEmbeddedResource(LoadingAnimationResource);
+
+            // Timer to auto-hide mouse cursor after inactivity
+            _mouseHideTimer = new System.Windows.Forms.Timer
+            {
+                Interval = MouseHideDelayMs
+            };
+            _mouseHideTimer.Tick += MouseHideTimer_Tick;
+
+            // Track mouse movement to show/hide cursor
+            this.MouseMove += VideoPlayerForm_MouseMove;
+            mediaPlayer.MouseMoveEvent += MediaPlayer_MouseMoveEvent;
+        }
+
+        private void VideoPlayerForm_Resize(object? sender, EventArgs e)
+        {
+            // Position label in bottom-right, vertically centered with flowLayoutPanel1
+            int labelX = this.ClientSize.Width - lblProgress.Width - 20;
+            int labelY = flowLayoutPanel1.Top + (flowLayoutPanel1.Height - lblProgress.Height) / 2;
+            lblProgress.Location = new Point(labelX, labelY);
+
+            // Size loading animation up to 600x600, constrained by available space
+            const int MaxAnimationSize = 600;
+            const int Padding = 40; // Minimum padding from edges
+            int availableWidth = this.ClientSize.Width - (Padding * 2);
+            int availableHeight = this.ClientSize.Height - flowLayoutPanel1.Height - (Padding * 2);
+            int animationSize = Math.Min(MaxAnimationSize, Math.Min(availableWidth, availableHeight));
+            animationSize = Math.Max(animationSize, 100); // Minimum size of 100
+
+            System.Diagnostics.Debug.WriteLine($"Form ClientSize: {this.ClientSize.Width}x{this.ClientSize.Height}, " +
+                $"FlowPanel Height: {flowLayoutPanel1.Height}, " +
+                $"Available: {availableWidth}x{availableHeight}, " +
+                $"Animation Size: {animationSize}");
+
+            loadingAnimation.Size = new Size(animationSize, animationSize);
+
+            // Center loading animation in the form (above the control panel)
+            loadingAnimation.Location = new Point(
+                (this.ClientSize.Width - loadingAnimation.Width) / 2,
+                (this.ClientSize.Height - flowLayoutPanel1.Height - loadingAnimation.Height) / 2);
+
+            // Center error label in the form (above the control panel)
+            RepositionErrorLabel();
+        }
+
+        private void VideoPlayerForm_MouseMove(object sender, MouseEventArgs e)
+        {
+            HandleMouseMove();
+        }
+
+        private void MediaPlayer_MouseMoveEvent(object sender, AxWMPLib._WMPOCXEvents_MouseMoveEvent e)
+        {
+            HandleMouseMove();
+        }
+
+        private void HandleMouseMove()
+        {
+            // Use screen coordinates for consistent comparison
+            var currentPosition = System.Windows.Forms.Cursor.Position;
+
+            // Only show cursor if mouse actually moved (not programmatic events)
+            if (_lastMousePosition.HasValue && _lastMousePosition.Value == currentPosition)
+                return;
+
+            _lastMousePosition = currentPosition;
+            ShowCursorTemporarily();
+        }
+
+        private void ShowCursorTemporarily()
+        {
+            if (_isCursorHidden)
+            {
+                Cursor.Show();
+                _isCursorHidden = false;
+            }
+
+            // Restart the hide timer
+            _mouseHideTimer.Stop();
+            _mouseHideTimer.Start();
+        }
+
+        private void HideCursor()
+        {
+            if (!_isCursorHidden)
+            {
+                Cursor.Hide();
+                _isCursorHidden = true;
+            }
+        }
+
+        private void MouseHideTimer_Tick(object sender, EventArgs e)
+        {
+            _mouseHideTimer.Stop();
+            HideCursor();
+        }
+
+        private void ShowError(string message)
+        {
+            Log.Warn($"Showing error to user: {message}");
+            lblError.Text = $"{message}\n\nPress B or Esc to go back.";
+            RepositionErrorLabel();
+            lblError.Visible = true;
+            lblError.BringToFront();
+        }
+
+        private void RepositionErrorLabel()
+        {
+            int labelWidth = this.ClientSize.Width * 2 / 3;
+            int labelHeight = this.ClientSize.Height - flowLayoutPanel1.Height;
+            lblError.Size = new Size(labelWidth, labelHeight);
+            lblError.Location = new Point(
+                (this.ClientSize.Width - lblError.Width) / 2, 0);
+        }
+
+        public async Task Play(GameVideo video)
+        {
+            Log.Info($"Play called for video: Title='{video.Title}', GameId='{video.GameId}', " +
+                $"VideoPath='{video.VideoPath}', StartTime={video.StartTime}, StopTime={video.StopTime}");
+
+            lblProgress.Text = "--:-- / --:--";
+
+            _video = video;
+
+            this.Show();
+
+            // Hide cursor and start the hide timer
+            // Reset last position so first mouse move will be detected
+            _lastMousePosition = System.Windows.Forms.Cursor.Position;
+            HideCursor();
+            _mouseHideTimer.Start();
+
+            // Show loading indicator
+            loadingAnimation.Visible = true;
+            loadingAnimation.BringToFront();
+            loadingAnimation.StartAnimation();
+
+            // Prepare mediaPlayer before loading a new video
+            mediaPlayer.close();
+            mediaPlayer.URL = null;
+
+            // Subscribe to state change to hide progress bar when ready
+            mediaPlayer.OpenStateChange += MediaPlayer_OpenStateChange;
+            mediaPlayer.PlayStateChange += MediaPlayer_PlayStateChange;
+            mediaPlayer.MediaError += MediaPlayer_MediaError;
+
+            // Create cancellation token for this load operation
+            _cancellation = new CancellationTokenSource();
+            _isLoading = true;
+
+            try
+            {
+                //mediaPlayer.URL = video.VideoPath;
+                if (VideoMetadataUtilities.IsYoutubeUrl(video.VideoPath))
+                {
+                    Log.Info($"Loading YouTube video: {video.VideoPath}");
+                    await LoadYoutubeVideo(video.VideoPath, video.StartTime, video.StopTime, _cancellation.Token);
+                }
+                else
+                {
+                    Log.Info($"Loading regular video: {video.VideoPath}");
+                    LoadRegularVideo(video.VideoPath);
+                }
+            }
+            catch (OperationCanceledException)
+            {
+                Log.Info("Video loading was cancelled.");
+                return;
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Error loading video: {video.VideoPath}", ex);
+                loadingAnimation.StopAnimation();
+                loadingAnimation.Visible = false;
+                ShowError($"Failed to load video.\n{ex.Message}");
+                return;
+            }
+            finally
+            {
+                _isLoading = false;
+            }
+
+            // Check if form was closed during loading
+            if (_isClosing)
+                return;
+
+            mediaPlayer.settings.volume = 50; // Set volume to 50%
+            mediaPlayer.settings.mute = false;
+            mediaPlayer.stretchToFit = true;
+
+            mediaPlayer.Ctlcontrols.play();
+            _progressTimer.Start();
+
+            Log.Info("Video playback started.");
+        }
+
+        private void LoadRegularVideo(string videoPath)
+        {
+            Uri mediaUri;
+
+            // Check if it's a network URL or a local file path
+            if (Uri.TryCreate(videoPath, UriKind.Absolute, out var uri) &&
+                (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps))
+            {
+                mediaUri = uri;
+            }
+            else
+            {
+                // Local file path - resolve relative paths to absolute
+                var filePath = Path.IsPathRooted(videoPath)
+                    ? videoPath
+                    : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, videoPath);
+
+                if (!File.Exists(filePath))
+                    throw new FileNotFoundException($"Video file not found: {filePath}");
+
+                mediaUri = new Uri(filePath);
+            }
+
+            Log.Debug($"Resolved media URI: {mediaUri}");
+            mediaPlayer.URL = mediaUri.ToString();
+        }
+
+        private async Task LoadYoutubeVideo(string videoPath, int startTime, int stopTime, CancellationToken cancellationToken)
+        {
+            var playablePath = await YoutubeDownloader.GetPlayableVideoPath(videoPath, TempVideoPath, startTime, stopTime, cancellationToken);
+            Log.Debug($"YouTube playable path resolved: {playablePath}");
+            mediaPlayer.URL = playablePath;
+        }
+
+        /// <summary>
+        /// Sends gamepad input.
+        /// </summary>
+        /// <param name="button"></param>
+        public void SendGamepadInput(GamepadButtonFlags button)
+        {
+            Log.Debug($"Gamepad input received: {button}");
+
+            switch (button)
+            {
+                case GamepadButtonFlags.A:
+                    PlayPause(); break;
+                case GamepadButtonFlags.B:
+                    StopPlaying(); break;
+                case GamepadButtonFlags.DPadLeft:
+                    SkipBackward(); break;
+                case GamepadButtonFlags.DPadRight:
+                    SkipForward(); break;
+            }
+        }
+
+        public void PlayPause()
+        {
+            if (_isLoading)
+                return;
+
+            if (IsPlaying)
+            {
+                Log.Debug("Pausing playback.");
+                mediaPlayer.Ctlcontrols.pause();
+            }
+            else
+            {
+                Log.Debug("Resuming playback.");
+                mediaPlayer.Ctlcontrols.play();
+            }
+        }
+
+        public void SkipBackward()
+        {
+            if (_isLoading)
+                return;
+
+            var oldPosition = mediaPlayer.Ctlcontrols.currentPosition;
+            if (mediaPlayer.Ctlcontrols.currentPosition > SkipBwdSeconds)
+                mediaPlayer.Ctlcontrols.currentPosition -= SkipBwdSeconds;
+            else
+                mediaPlayer.Ctlcontrols.currentPosition = 0;
+
+            Log.Debug($"Skipped backward: {oldPosition:F1}s -> {mediaPlayer.Ctlcontrols.currentPosition:F1}s");
+        }
+
+        public void SkipForward()
+        {
+            if (_isLoading)
+                return;
+
+            var oldPosition = mediaPlayer.Ctlcontrols.currentPosition;
+            if (mediaPlayer.Ctlcontrols.currentPosition + SkipFwdSeconds < mediaPlayer.currentMedia.duration)
+                mediaPlayer.Ctlcontrols.currentPosition += SkipFwdSeconds;
+            else
+                mediaPlayer.Ctlcontrols.currentPosition = mediaPlayer.currentMedia.duration;
+
+            Log.Debug($"Skipped forward: {oldPosition:F1}s -> {mediaPlayer.Ctlcontrols.currentPosition:F1}s");
+        }
+
+        public void StopPlaying()
+        {
+            if (_isClosing)
+                return;
+
+            Log.Info("Stopping playback and closing player.");
+
+            _isClosing = true;
+
+            // Cancel any ongoing download
+            _cancellation?.Cancel();
+            _cancellation?.Dispose();
+            _cancellation = null;
+
+            // Stop mouse hide timer and restore cursor
+            _mouseHideTimer.Stop();
+            if (_isCursorHidden)
+            {
+                Cursor.Show();
+                _isCursorHidden = false;
+            }
+
+            _progressTimer.Stop();
+            loadingAnimation.StopAnimation();
+            loadingAnimation.Visible = false;
+            lblError.Visible = false;
+            mediaPlayer.OpenStateChange -= MediaPlayer_OpenStateChange;
+            mediaPlayer.PlayStateChange -= MediaPlayer_PlayStateChange;
+            mediaPlayer.MediaError -= MediaPlayer_MediaError;
+            mediaPlayer.Ctlcontrols.stop();
+            mediaPlayer.close();
+
+            if (File.Exists(TempVideoPath))
+            {
+                Log.Debug($"Deleting temp video file: {TempVideoPath}");
+                File.Delete(TempVideoPath);
+            }
+
+            this.Close();
+        }
+
+        private void MediaPlayer_PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
+        {
+            Log.Debug($"PlayStateChange: {(WMPLib.WMPPlayState)e.newState}");
+
+            // wmppsMediaEnded = 8 means media playback has ended
+            if (e.newState == (int)WMPLib.WMPPlayState.wmppsMediaEnded)
+            {
+                Log.Info("Media playback ended.");
+                StopPlaying();
+            }
+        }
+
+        private void MediaPlayer_OpenStateChange(object sender, AxWMPLib._WMPOCXEvents_OpenStateChangeEvent e)
+        {
+            Log.Debug($"OpenStateChange: {(WMPLib.WMPOpenState)e.newState}");
+
+            // wmposMediaOpen = 13 means media is fully open and ready to play
+            if (e.newState == (int)WMPLib.WMPOpenState.wmposMediaOpen)
+            {
+                Log.Info("Media opened successfully.");
+                loadingAnimation.StopAnimation();
+                loadingAnimation.Visible = false;
+                mediaPlayer.OpenStateChange -= MediaPlayer_OpenStateChange;
+
+                // Seek to start time if specified
+                if (_video.StartTime > 0)
+                {
+                    Log.Debug($"Seeking to start time: {_video.StartTime}s");
+                    mediaPlayer.Ctlcontrols.currentPosition = _video.StartTime;
+                }
+            }
+        }
+
+        private void MediaPlayer_MediaError(object sender, AxWMPLib._WMPOCXEvents_MediaErrorEvent e)
+        {
+            Log.Error($"Media error for video: {_video?.VideoPath}");
+            loadingAnimation.StopAnimation();
+            loadingAnimation.Visible = false;
+            _progressTimer.Stop();
+            ShowError($"Failed to load video.\n{_video?.VideoPath}");
+        }
+
+        private void VideoPlayerForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Log.Info($"Form closing. Reason: {e.CloseReason}");
+
+            // Ensure cleanup happens even if form is closed directly (e.g., via X button)
+            if (!_isClosing)
+            {
+                _isClosing = true;
+
+                // Cancel any ongoing download
+                _cancellation?.Cancel();
+                _cancellation?.Dispose();
+                _cancellation = null;
+
+                // Stop mouse hide timer and restore cursor
+                _mouseHideTimer.Stop();
+                if (_isCursorHidden)
+                {
+                    Cursor.Show();
+                    _isCursorHidden = false;
+                }
+
+                _progressTimer.Stop();
+                loadingAnimation.StopAnimation();
+                lblError.Visible = false;
+                mediaPlayer.OpenStateChange -= MediaPlayer_OpenStateChange;
+                mediaPlayer.PlayStateChange -= MediaPlayer_PlayStateChange;
+                mediaPlayer.MediaError -= MediaPlayer_MediaError;
+                mediaPlayer.Ctlcontrols.stop();
+                mediaPlayer.close();
+
+                if (File.Exists(TempVideoPath))
+                {
+                    Log.Debug($"Deleting temp video file: {TempVideoPath}");
+                    File.Delete(TempVideoPath);
+                }
+            }
+
+            mediaPlayer.Dispose();
+            PlayerClosed?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void btnPlay_Click(object sender, EventArgs e)
+        {
+            PlayPause();
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            StopPlaying();
+        }
+
+        private void btnSkipBack_Click(object sender, EventArgs e)
+        {
+            SkipBackward();
+        }
+
+        private void btnSkipFwd_Click(object sender, EventArgs e)
+        {
+            SkipForward();
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            switch (keyData)
+            {
+                case Keys.Enter:
+                case Keys.Space:
+                case Keys.A:
+                    PlayPause(); break;
+                case Keys.Escape:
+                    StopPlaying(); break;
+                case Keys.B:
+                    StopPlaying(); break;
+                case Keys.Left:
+                    SkipBackward(); break;
+                case Keys.Right:
+                    SkipForward(); break;
+                default:
+                    return base.ProcessCmdKey(ref msg, keyData);
+            }
+            return true;
+        }
+
+        private void ProgressTimer_Tick(object? sender, EventArgs e)
+        {
+            var currentPosition = mediaPlayer.Ctlcontrols.currentPosition;
+            var current = TimeSpan.FromSeconds(currentPosition);
+            var currentFormatted = TimespanFormat(current);
+
+            // Check if we've reached the stop time
+            if (_video.StopTime > 0 && currentPosition >= _video.StopTime)
+            {
+                Log.Info($"Reached stop time ({_video.StopTime}s). Stopping playback.");
+                StopPlaying();
+                return;
+            }
+
+            // Duration may be 0 for certain formats or while media is still loading
+            if (mediaPlayer.currentMedia != null && mediaPlayer.currentMedia.duration > 0)
+            {
+                // If stop time is set, show that as the total instead of full duration
+                var totalSeconds = _video.StopTime > 0 ? _video.StopTime : mediaPlayer.currentMedia.duration;
+                var total = TimeSpan.FromSeconds(totalSeconds);
+                lblProgress.Text = $"{currentFormatted} / {TimespanFormat(total)}";
+            }
+            else
+            {
+                // No duration available - show only current position
+                lblProgress.Text = currentFormatted;
+            }
+        }
+
+        private string TimespanFormat(TimeSpan t)
+        {
+            return t.Hours > 0 ? t.ToString("hh\\:mm\\:ss") : t.ToString("mm\\:ss");
+        }
+    }
+}
