@@ -24,7 +24,7 @@ namespace OnlineVideoLinks.WPF
 
         public event EventHandler PlayerClosed;
 
-        public bool IsPlaying => _isPlaying;
+        public bool IsVisible => Visibility == Visibility.Visible;
 
         public VideoPlayerWindow()
         {

@@ -30,6 +30,7 @@ namespace OnlineVideoLinks.Forms
         public event EventHandler PlayerClosed;
 
         public bool IsPlaying => mediaPlayer.playState == WMPLib.WMPPlayState.wmppsPlaying;
+        public bool IsVisible => Visible;
 
         public VideoPlayerForm()
         {

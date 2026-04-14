@@ -23,7 +23,7 @@ namespace OnlineVideoLinks.Utilities
         /// <summary>
         /// Checks whether this video is currently playing.
         /// </summary>
-        bool IsPlaying { get; }
+        bool IsVisible { get; }
 
         /// <summary>
         /// Plays this video. The player window will show itself.

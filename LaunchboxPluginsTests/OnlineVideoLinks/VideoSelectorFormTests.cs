@@ -22,17 +22,17 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
         IGamepadXinputProvider _gamepadXinputProviderMock = Substitute.For<IGamepadXinputProvider>();
         IVideoPlayer _playerMock = Substitute.For<IVideoPlayer>();
 
-        private bool _isPlaying = false;
+        private bool _isVisible = false;
 
         public VideoSelectorFormTests()
         {
             _playerMock.When(x => x.Play(Arg.Any<GameVideo>()))
-                .Do(x => _isPlaying = true);
+                .Do(x => _isVisible = true);
 
             _playerMock.When(x => x.StopPlaying())
                 .Do(x =>
                 {
-                    _isPlaying = false;
+                    _isVisible = false;
                     // Raise PlayerClosed event when StopPlaying is called, simulating real behavior
                     _playerMock.PlayerClosed += Raise.EventWith(_playerMock, EventArgs.Empty);
                 });
@@ -41,10 +41,10 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
             _playerMock.When(x => x.SendGamepadInput(GamepadButtonFlags.B))
                 .Do(x => _playerMock.StopPlaying());
 
-            _playerMock.IsPlaying
+            _playerMock.IsVisible
                 .Returns(x =>
                 {
-                    return _isPlaying;
+                    return _isVisible;
                 });
         }
 
@@ -251,7 +251,7 @@ namespace LaunchboxPluginsTests.OnlineVideoLinks
                 _gamepadXinputProviderMock.ButtonPressed += Raise.EventWith(null, new XInputEventArgs(button));
 
             // Asserts
-            Assert.False(_playerMock.IsPlaying);
+            Assert.False(_playerMock.IsVisible);
             Assert.True(form.IsDisposed);
         }
     }

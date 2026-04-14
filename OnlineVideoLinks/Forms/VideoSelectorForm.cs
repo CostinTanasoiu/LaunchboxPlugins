@@ -73,7 +73,7 @@ namespace OnlineVideoLinks.Forms
                 return;
 
             // If a player exists and is playing, forward input to it
-            if (_currentPlayer != null && _currentPlayer.IsPlaying)
+            if (_currentPlayer != null && _currentPlayer.IsVisible)
             {
                 _currentPlayer.SendGamepadInput(buttonPressed);
                 _log.Info($"Sent gamepad input to player panel: {buttonPressed}");
